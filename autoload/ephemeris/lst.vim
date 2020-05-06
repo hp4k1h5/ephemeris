@@ -1,13 +1,48 @@
 " vim:tabstop=2:shiftwidth=2:expandtab:textwidth=99
 " ephemeris autoload plugin file
 " Description: everything concerning lists and checkboxes
-" borrowed largely from https://github.com/vimwiki/vimwiki/blob/autoload/vimwiki/lst.vim
+" list manipulators borrowed largely from https://github.com/vimwiki/vimwiki/blob/autoload/vimwiki/lst.vim
 " Home: https://github.com/HP4k1h5/ephemeris/
 
 
 " ---------------------------------------------------------
 " incrementation functions for the various kinds of numbers
 " ---------------------------------------------------------
+
+function! ephemeris#lst#copy_todos()
+  " create today's path and .md entry file if necessary
+  let l:today = expand(g:calendar_diary)."/".strftime("%Y/%m/%d")
+  if !filereadable(l:today.".md")
+    echom "creating today's diary entry"
+    call mkdir(g:calendar_diary."".strftime("%Y/%m"), "p")
+    execute "badd ".l:today.".md"
+  endif
+
+  let l:dp = 1
+  " look back through a year's worth of potential diary entries
+  while l:dp < 365 
+    let l:prev = substitute(system("date -v -".l:dp."d '+%Y/%m/%d'"), "\n", "", "g")
+    let l:fn = expand(g:calendar_diary)."/".l:prev.".md"
+    if filereadable(l:fn)
+      " if file contains a todo, extract list and dump in today's entry
+      " TODO: currently TODO lists need to end the file, a smarter function
+      "     : will only grab `-` etc lines up to a natural end, 
+      "     : e.g. 3 consecutive newlines
+      let l:todostart = system("grep -n '### TODO:' ".l:fn)
+      if l:todostart != -1
+        let l:todostart = split(l:todostart, ":")[0]
+        " add buff, dump todo list, open latest entry, exit loop
+        execute "badd ".l:fn
+        execute "silent! ".bufnr(l:fn)." bufdo! ".l:todostart.",$ w! >> ".l:today.".md"
+        execute "silent! b ".l:today.".md"
+        break
+      endif
+    endif
+    let l:dp+=1
+  endwhile
+endfunction
+
+
 
 function! s:increment_1(value)
   return eval(a:value) + 1
@@ -32,7 +67,7 @@ function! s:increment_A(value)
   return join(list_of_chars, '')
 endfunction
 
-function ephemeris#lst#ech0()
-  echo "ech0"
-  echom "ech0"
+function! ephemeris#lst#inc_A()
+  
 endfunction
+
