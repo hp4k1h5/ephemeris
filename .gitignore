@@ -1,0 +1,21 @@
+# tmp files
+*.swp
+*.orig
+Session.vim
+
+# npm/yarn
+node_modules/
+package-lock.json
+.yarn/*
+!.yarn/cache
+!.yarn/releases
+!.yarn/plugins
+yarn-error.log
+.pnp.*
+
+# ts
+built/
+
+# dots
+.env
+.ackrc
