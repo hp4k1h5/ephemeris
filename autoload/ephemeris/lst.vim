@@ -46,21 +46,23 @@ function! ephemeris#lst#copy_todos()
   endwhile
 endfunction
 
-" - [ ] so...
-" - [x] so...
+" - [x] 1
+"   - [x] 1
+"   - [x] 1
+" - [ ] 2
+" - [x] 3
+
+
 function! ephemeris#lst#filter_tasks()
   let l:lines = getbufline('%', 1, '$') 
   let l:i = 1
   for line in l:lines
-    if stridx(line, '- [x]') == 2
+   if stridx(line, '- [x]') > -1
       call cursor(l:i, 1)
-      echom l:i
-      " redir => l:out
-      "   execute 'normal! dai'
-      " redir END
-      return 0
+      execute l:i.'d'
+    else
+      let l:i += 1
     endif
-    let l:i += 1
   endfor
 endfunction
 
