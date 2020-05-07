@@ -9,7 +9,7 @@ function! ephemeris#ind#create_index()
   let l:ifn = expand(g:calendar_diary).'/index.md'
   if expand('%') !=? l:ifn
     echom "noda same you idyit"
-    execute 'normal! :vsplit '.l:ifn
+    execute 'vsplit 'cl:ifn
     " execute 'normal! ggdGi## Diary Entries\r' 
   endif
 endfunction
