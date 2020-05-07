@@ -3,8 +3,9 @@
 " File: ephemeris.vim
 " Author: bob <robertwalks@gmail.com>
 " Last Change: Wed May  6 16:38:14 2020
-" Version: 2.9
+" Version: 0.0
 " Thanks:
+" TODO: replace with links
 "     vim-calendar 
 "     vimwiki
 " ChangeLog:
@@ -13,11 +14,15 @@
 if &compatible
   finish
 endif
+
 "*****************************************************************
 "* ephemeris commands
 "*****************************************************************
+
 command! -nargs=* EphemerisCopyTODOs call ephemeris#lst#copy_todos(<f-args>)
 command! -nargs=* EphemerisCreateIndex call ephemeris#ind#create_index(<f-args>)
+command! -nargs=* EphemerisGotoIndex call ephemeris#ind#goto_index(<f-args>)
+
 " command! -nargs=* Ephemeris call ephemeris#lst#ech0(<f-args>)
 " if !get(g:, 'calendar_no_mappings', 0)
 "   if !hasmapto('<Plug>CalendarV')
@@ -28,4 +33,3 @@ command! -nargs=* EphemerisCreateIndex call ephemeris#ind#create_index(<f-args>)
 "   endif
 " endif
 " nnoremap <silent> <Plug>CalendarV :cal calendar#show(0)<CR>
-

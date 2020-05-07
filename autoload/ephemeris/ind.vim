@@ -1,4 +1,5 @@
 function! ephemeris#ind#goto_index()
+  " find/create and goto index
   let l:ifn = expand(g:calendar_diary).'/index.md'
   if expand('%') !=? l:ifn
     let l:wn = bufwinnr(l:ifn)
@@ -10,9 +11,9 @@ function! ephemeris#ind#goto_index()
   endif
 
   " be in calendar_diary dir
-  if expand('%:p:h') !=? expand(g:calendar_diary)
+  " if expand('%:p:h') !=? expand(g:calendar_diary)
     execute 'cd ' expand(g:calendar_diary)
-  endif
+  " endif
 endfunction
 
 function! ephemeris#ind#create_index()
