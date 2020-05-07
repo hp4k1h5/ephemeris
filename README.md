@@ -1,6 +1,6 @@
 ## ephemeris
 
-##### a diary plugin/Calendar extension for vim
+**a diary plugin/Calendar extension for vim**
 
 this plugin extends some of the functionality provided by the [ mattn/vim-calendar ](https://github.com/mattn/calendar-vim) plugin's diary function. the calendar plugin itself is not required but this plugin reuses one of it's global variables `g:calendar_diary` without interfering with `calendar-vim`.
 
@@ -16,7 +16,7 @@ this plugin extends some of the functionality provided by the [ mattn/vim-calend
 
 set the root directory for your diary entries `g:calendar_diary` in your `.vimrc` i.e.
 
-```vimscript
+```
 let g:calendar_diary = '~/diary'
 ```
 
@@ -25,14 +25,14 @@ let g:calendar_diary = '~/diary'
 should work with your preferred vim plugin manager.  
 e.g. add
 
-```vimscript
+```
 Plug 'HP4k1h5/ephemeris'
 ```
 
 to your `.vimrc` and run
 
 ```
-:source $MYVIMRC | PlugInstall`
+:source $MYVIMRC | PlugInstall
 ```
 
 in command-line mode (see `:help cmdline`)
@@ -44,7 +44,7 @@ in command-line mode (see `:help cmdline`)
 
 #### functions
 
-```vimscript
+```
 :EphemerisCreateIndex()
 :EphemerisGotoIndex()
 :EphemerisCopyTodos()
@@ -52,8 +52,8 @@ in command-line mode (see `:help cmdline`)
 
 #### example mappings
 
-```vimscript
-nnoremap <leader> eci :EphemerisCreateIndex()<CR>
-nnoremap <leader> egi :EphemerisGotoIndex()<CR>
-nnoremap <leader> ect :EphemerisCopyTodos()<CR>
+```
+nmap <leader> eci :call EphemerisCreateIndex()<CR>
+nmap <leader> egi :call EphemerisGotoIndex()<CR>
+nmap <leader> ect :call EphemerisCopyTodos()<CR>
 ```
