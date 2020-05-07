@@ -9,10 +9,6 @@
 " incrementation functions for the various kinds of numbers
 " ---------------------------------------------------------
 
-" TODO: vvvvvvvv fix this vvvvvvvv
-" grep for todos in a project and add to TODO list
-" nnoremap <leader>cg     :silent execute "grep! -R " . shellescape(expand("<cWORD>")) . " ~/code/diary/"<cr>:copen<cr>
-
 function! ephemeris#lst#copy_todos()
   " create today's path and .md entry file if necessary
   let l:today = expand(g:calendar_diary)."/".strftime("%Y/%m/%d")
@@ -46,13 +42,6 @@ function! ephemeris#lst#copy_todos()
   endwhile
 endfunction
 
-" - [x] 1
-"   - [x] 1
-"   - [x] 1
-" - [ ] 2
-" - [x] 3
-
-
 function! ephemeris#lst#filter_tasks()
   let l:lines = getbufline('%', 1, '$') 
   let l:i = 1
@@ -65,19 +54,7 @@ function! ephemeris#lst#filter_tasks()
     endif
   endfor
 endfunction
-
-" execute l:i.'delete'
-" let l:all_tasks = system(
-" \ 'pcregrep -M --color  "\- \[.].|[\s]+(?=(\- \[.]|\Z))" '
-" \ .expand('%')
-" \ )
-" let l:inc_tasks = split(l:inc_tasks, '^@')
-" for task in l:inc_tasks
-"   if stridx()
-
-" lvimgrep! /- \[ \]/ %:p
-" lopen
-" let l:todostart = system("grep -n '- [.:?]' ".g:calendar_diary)
+" multiline pcre for similar `\- \[.].|[\s]+(?=(\- \[.]|\Z))` 
 
 function! s:increment_1(value)
   return eval(a:value) + 1
