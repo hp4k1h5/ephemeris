@@ -48,6 +48,7 @@ in command-line mode (see `:help cmdline`)
 :EphemerisCreateIndex()
 :EphemerisGotoIndex()
 :EphemerisCopyTodos()
+:EphemerisFilterTasks()
 ```
 
 #### example mappings
@@ -56,4 +57,5 @@ in command-line mode (see `:help cmdline`)
 nmap <leader> eci :call EphemerisCreateIndex()<CR>
 nmap <leader> egi :call EphemerisGotoIndex()<CR>
 nmap <leader> ect :call EphemerisCopyTodos()<CR>
+nmap <leader> eft :call EphemerisFilterTasks()<CR>
 ```
