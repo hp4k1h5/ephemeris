@@ -46,7 +46,36 @@ function! ephemeris#lst#copy_todos()
   endwhile
 endfunction
 
+" - [ ] so...
+" - [x] so...
+function! ephemeris#lst#filter_tasks()
+  let l:lines = getbufline('%', 1, '$') 
+  let l:i = 1
+  for line in l:lines
+    if stridx(line, '- [x]') == 2
+      call cursor(l:i, 1)
+      echom l:i
+      " redir => l:out
+      "   execute 'normal! dai'
+      " redir END
+      return 0
+    endif
+    let l:i += 1
+  endfor
+endfunction
 
+" execute l:i.'delete'
+" let l:all_tasks = system(
+" \ 'pcregrep -M --color  "\- \[.].|[\s]+(?=(\- \[.]|\Z))" '
+" \ .expand('%')
+" \ )
+" let l:inc_tasks = split(l:inc_tasks, '^@')
+" for task in l:inc_tasks
+"   if stridx()
+
+" lvimgrep! /- \[ \]/ %:p
+" lopen
+" let l:todostart = system("grep -n '- [.:?]' ".g:calendar_diary)
 
 function! s:increment_1(value)
   return eval(a:value) + 1
@@ -70,8 +99,3 @@ function! s:increment_A(value)
   endif
   return join(list_of_chars, '')
 endfunction
-
-function! ephemeris#lst#inc_A()
-  
-endfunction
-
