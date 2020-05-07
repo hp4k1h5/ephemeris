@@ -17,6 +17,7 @@ endif
 "* ephemeris commands
 "*****************************************************************
 command! -nargs=* EphemerisCopyTODOs call ephemeris#lst#copy_todos(<f-args>)
+command! -nargs=* EphemerisCreateIndex call ephemeris#ind#create_index(<f-args>)
 " command! -nargs=* Ephemeris call ephemeris#lst#ech0(<f-args>)
 " if !get(g:, 'calendar_no_mappings', 0)
 "   if !hasmapto('<Plug>CalendarV')

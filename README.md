@@ -1,6 +1,6 @@
-# ephemeris
+## ephemeris
 
-### a diary plugin/extension for vim
+##### a diary plugin/Calendar extension for vim
 
 this plugin extends some of the functionality provided by the calendar-vim plugin's diary function
 
@@ -16,3 +16,5 @@ this plugin extends some of the functionality provided by the calendar-vim plugi
 #### required
 
 - [ vim-calendar / https://github.com/mattn/calendar-vim ](https://github.com/mattn/calendar-vim)
+
+#### usage

@@ -9,6 +9,10 @@
 " incrementation functions for the various kinds of numbers
 " ---------------------------------------------------------
 
+" TODO: vvvvvvvv fix this vvvvvvvv
+" grep for todos in a project and add to TODO list
+" nnoremap <leader>cg     :silent execute "grep! -R " . shellescape(expand("<cWORD>")) . " ~/code/diary/"<cr>:copen<cr>
+
 function! ephemeris#lst#copy_todos()
   " create today's path and .md entry file if necessary
   let l:today = expand(g:calendar_diary)."/".strftime("%Y/%m/%d")
