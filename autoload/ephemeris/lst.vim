@@ -18,8 +18,13 @@ function! ephemeris#lst#copy_todos()
     execute "badd ".l:today.".md"
   endif
 
-  let l:dp = 1
+  " get/set todo regex
+  if !len(g:ephemeris_todos)
+    let g:ephemeris_todos = "### TODOs:"
+  endif
+
   " look back through a year's worth of potential diary entries
+  let l:dp = 1
   while l:dp < 365 
     let l:prev = substitute(system("date -v -".l:dp."d '+%Y/%m/%d'"), "\n", "", "g")
     let l:fn = expand(g:calendar_diary)."/".l:prev.".md"
@@ -28,7 +33,7 @@ function! ephemeris#lst#copy_todos()
       " TODO: currently TODO lists need to end the file, a smarter function
       "     : will only grab `-` etc lines up to a natural end, 
       "     : e.g. 3 consecutive newlines
-      let l:todostart = system("grep -n '### TODO:' ".l:fn)
+      let l:todostart = system("grep -n '".g:ephemeris_todos."' ".l:fn)
       if len(l:todostart)
         let l:todostart = split(l:todostart, ":")[0]
         " add buff, dump todo list, open latest entry, exit loop

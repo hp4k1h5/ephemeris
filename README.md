@@ -2,7 +2,8 @@
 
 **a diary plugin/Calendar extension for vim**
 
-this plugin extends some of the functionality provided by the [ mattn/vim-calendar ](https://github.com/mattn/calendar-vim) plugin's diary function. the calendar plugin itself is not required but this plugin reuses one of it's global variables `g:calendar_diary` without interfering with `calendar-vim`.
+this plugin extends some of the functionality provided by the [ mattn/vim-calendar ](https://github.com/mattn/calendar-vim) plugin's diary function. the calendar plugin itself is not required but this plugin reuses one of it's global variables `g:calendar_diary` without interfering with `calendar-vim`.  
+**see [ ephemeris.txt ](../ephemeris.txt) for additional help**
 
 #### functionalities
 
@@ -19,6 +20,11 @@ set the root directory for your diary entries `g:calendar_diary` in your `.vimrc
 ```
 let g:calendar_diary = '~/diary'
 ```
+##### optional
+```
+let g:ephemeris_todos = '=== TASK LIST ==='
+```
+
 
 ## installation
 
@@ -27,6 +33,7 @@ e.g. add
 
 ```
 Plug 'HP4k1h5/ephemeris'
+Plug 'mattn/calendar-vim' " recommended
 ```
 
 to your `.vimrc` and run
@@ -43,19 +50,33 @@ in command-line mode (see `:help cmdline`)
 - [ markdown-preview ](https://github.com/iamcco/markdown-preview.nvim) or your preferred markdown preview / syntax highlighter tool
 
 #### functions
+**see [ ephemeris.txt ](../ephemeris.txt) for additional help**
 
 ```
-:EphemerisCreateIndex()
-:EphemerisGotoIndex()
-:EphemerisCopyTodos()
-:EphemerisFilterTasks()
+:EphemerisCreateIndex
 ```
+- creates an index of all diary entries found in
+  `g:calendar_diary` and opens a vertical split with
+  the markdown-compatible index.
+```
+:EphemerisGotoIndex
+```
+- opens the index of all diary entries if it exists.found at `:echom expand(g:calendar_diary)."/index.md"`
+```
+:EphemerisCopyTodos
+```
+- copies the last set of `TODOs:` and appends them to
+  the current day's diary entry. 
+```
+:EphemerisFilterTasks
+```
+- filters **out** all completed tasks and their non-task oriented list items and text blocks
 
 #### example mappings
 
 ```
-nmap <leader> eci :call EphemerisCreateIndex()<CR>
-nmap <leader> egi :call EphemerisGotoIndex()<CR>
-nmap <leader> ect :call EphemerisCopyTodos()<CR>
-nmap <leader> eft :call EphemerisFilterTasks()<CR>
+nmap <leader> eci :call EphemerisCreateIndex<CR>
+nmap <leader> egi :call EphemerisGotoIndex<CR>
+nmap <leader> ect :call EphemerisCopyTodos<CR>
+nmap <leader> eft :call EphemerisFilterTasks<CR>
 ```
