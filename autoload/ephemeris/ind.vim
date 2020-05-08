@@ -34,7 +34,7 @@ function! ephemeris#ind#create_index()
 
   " add headers 
   call append(0, '# Diary Entries')
-  call append('$', '**found in '.expand(g:calendar_diary).'/ **')
+  call append('$', '**found in '.expand(g:calendar_diary).'/**')
   call append('$', '[toc]')
   " add entries
   " TODO: add custom sort
