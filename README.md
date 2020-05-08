@@ -3,7 +3,7 @@
 > a diary plugin/Calendar extension for vim
 
 this plugin extends some of the functionality provided by the
-[mattn/vim-calendar](https://github.com/mattn/calendar-vim) plugin's diary
+[mattn/calendar-vim](https://github.com/mattn/calendar-vim) plugin's diary
 function. the calendar plugin itself is not required but this plugin reuses one
 of it's global variables `g:calendar_diary` without interfering with
 `calendar-vim`.  
