@@ -62,8 +62,22 @@ ephemeris.vim makes the following commands available:
                                 
                                        *ephemeris-:EphemerisFilterTasks*
 :EphemerisFilterTasks           Create and show diary index in a vertical 
-                                split. 
-
+                                split. i.e. if you have a set of tasks like:
+                                ```
+                                - [ ] ephemeris docs
+                                  -[x] `.md`
+                                    - more list items but not tasks
+                                      and a nested block of text
+                                      with a few lines
+                                  -[ ] `txt`
+                                - [x] export autocommands
+                                ``` 
+                                and you run `:EphemerisFilterTasks` in the
+                                command-line mode, you will be left with
+                                ```
+                                - [ ] ephemeris docs
+                                  -[ ] `txt`
+                                ``` 
 
 MAPPINGS                               *ephemeris-mappings*
 
