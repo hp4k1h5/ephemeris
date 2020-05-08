@@ -45,7 +45,7 @@ ephemeris.vim makes the following commands available:
                                        *ephemeris-:EphemerisCopyTodos*
 :EphemerisCopyTodos             Finds last set of tasks, i.e.
                                 ```
-                                ### TODOs:
+                                ### TODOs
                                 - [ ] ephemeris docs
                                   -[x] `.md`
                                   -[ ] `txt`
@@ -53,8 +53,8 @@ ephemeris.vim makes the following commands available:
                                 ``` 
                                 in the `g:calendar_diary` directory. and
                                 copies those to the current day's diary entry.
-                                if you wish to use a different `TODO` prefix, 
-                                set your own by, e.g.
+                                if you wish to use a different `TODO` prefix,
+                                  other than the default `TODOs`
                                 `:set g:ephemeris_todos = "=== TASK LIST ==="`
                                 Everything below that marker is copied and
                                 append into the current day's diary entry.
@@ -105,6 +105,7 @@ Specify the directory for the diary files.
        
                                                 *g:ephemeris_todos*
 Specify the |matchstr()| for the TODO marker 
+**default:** "TODOs"
   `let g:ephemeris_todos="=== TASK LIST ==="`
 
 ABOUT                                           *ephemeris-about*

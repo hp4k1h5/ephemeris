@@ -20,7 +20,7 @@ function! ephemeris#lst#copy_todos()
 
   " get/set todo regex
   if !len(g:ephemeris_todos)
-    let g:ephemeris_todos = "### TODOs:"
+    let g:ephemeris_todos = "### TODOs"
   endif
 
   " look back through a year's worth of potential diary entries
