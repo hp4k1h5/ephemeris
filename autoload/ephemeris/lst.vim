@@ -29,7 +29,7 @@ function! ephemeris#lst#copy_todos()
       "     : will only grab `-` etc lines up to a natural end, 
       "     : e.g. 3 consecutive newlines
       let l:todostart = system("grep -n '### TODO:' ".l:fn)
-      if l:todostart != -1
+      if len(l:todostart)
         let l:todostart = split(l:todostart, ":")[0]
         " add buff, dump todo list, open latest entry, exit loop
         execute "badd ".l:fn
