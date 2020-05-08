@@ -2,7 +2,7 @@
 " What Is This: ephemeris 
 " File: ephemeris.vim
 " Author: bob <robertwalks@gmail.com>
-" Last Change: Wed May  6 16:38:14 2020
+" Last Change: Fri May  8 16:40:34 2020
 " Version: 0.1
 " Help: see README.md and doc/ephemeris.txt
 " Thanks:
