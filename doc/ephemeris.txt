@@ -83,6 +83,7 @@ ephemeris.vim makes the following commands available:
                                 ``` 
                                 ex: |:EphemerisFilterTasks|
 
+
 MAPPINGS                               *ephemeris-mappings*
 
 calendar.vim does not make the following normal mode mappings available but
@@ -92,16 +93,17 @@ are provided here as suggestions:
 <LocalLeader>eci          Creates and brings up the index in a vertical split.
                           Equivalent to calling |:EphemerisCreateDiaryIndex|.
 
+
                                                 *calendar-ect*
 <LocalLeader>ect          Copies and appends the last set of tasks defined by
                           `g:ephemeris_todos` into the current day's diary
                           entry
                           Equivalent to calling |:EphemerisCopyTodos|.
 
+
 SETTINGS                                        *ephemeris-settings*
 
 ephemeris.vim can be configured using the following settings:
-
        
                                                 *g:calendar_diary*
 Specify the directory for the diary files. 
@@ -111,6 +113,7 @@ Specify the directory for the diary files.
 Specify the |matchstr()| for the TODO marker 
 **default:** "TODOs"
   `let g:ephemeris_todos="=== TASK LIST ==="`
+
 
 ABOUT                                           *ephemeris-about*
 
