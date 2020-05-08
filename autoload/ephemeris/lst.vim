@@ -6,7 +6,7 @@
 
 
 " ---------------------------------------------------------
-" incrementation functions for the various kinds of numbers
+" list, task, todo utility functions
 " ---------------------------------------------------------
 
 function! ephemeris#lst#copy_todos()

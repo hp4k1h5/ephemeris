@@ -1,3 +1,13 @@
+" vim:tabstop=2:shiftwidth=2:expandtab:textwidth=99
+" ephemeris autoload plugin file
+" Description: everything concerning the diary index
+" Home: https://github.com/HP4k1h5/ephemeris/
+
+" ---------------------------------------------------------
+"  diary index utility functions 
+" ---------------------------------------------------------
+
+
 function! ephemeris#ind#goto_index()
   " find/create and goto index
   let l:ifn = expand(g:calendar_diary).'/index.md'
@@ -19,12 +29,12 @@ endfunction
 function! ephemeris#ind#create_index()
   " be in diary/index.md
   call ephemeris#ind#goto_index()
-  " clear index
+  " clear buffer 
   execute 'normal! ggdG'
 
   " add headers 
-  call append('$', '## Diary Entries')
-  call append('$', '**found in '.expand(g:calendar_diary).'**')
+  call append(0, '# Diary Entries')
+  call append('$', '**found in '.expand(g:calendar_diary).'/ **')
   call append('$', '[toc]')
   " add entries
   " TODO: add custom sort
@@ -34,13 +44,13 @@ function! ephemeris#ind#create_index()
     endif
     let l:l = split(item, '/')
     if len(l:l) == 1
-      let item = '- ### '.item
+      let item = '### '.item
     elseif len(l:l) == 2
-      let item = '  - ##### '.item
+      let item = '##### '.item
     else
-      let item =  '    - ['.item.']('.expand(g:calendar_diary).'/'.item.')'
+      let item =  '- ['.item.']('.item.')'
     endif
-    call append('$', item)
+      call append('$', item)
   endfor
 
   execute 'w'
