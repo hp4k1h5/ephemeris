@@ -38,12 +38,15 @@ ephemeris.vim makes the following commands available:
                                 split. 
                                 ex: |:EphemerisCreateDiaryIndex|
 
+
                                        *ephemeris-:EphemerisGotoDiaryIndex*
 :EphemerisGotoDiaryIndex        Show diary index in a vertical split.
-                                ex: |:EphemerisCopyTodos|
+                                ex: |:EphemerisGotoDiaryIndex|
+
 
                                        *ephemeris-:EphemerisCopyTodos*
-:EphemerisCopyTodos             Finds last set of tasks, i.e.
+:EphemerisCopyTodos             Finds last set of tasks in the 
+                                `g:calendar_diary` directory, i.e.
                                 ```
                                 ### TODOs
                                 - [ ] ephemeris docs
@@ -51,18 +54,18 @@ ephemeris.vim makes the following commands available:
                                   -[ ] `txt`
                                 - [x] export autocommands
                                 ``` 
-                                in the `g:calendar_diary` directory. and
-                                copies those to the current day's diary entry.
-                                if you wish to use a different `TODO` prefix,
-                                  other than the default `TODOs`
+                                and copies those to the current day's diary 
+                                entry. If you wish to use a different `TODO` 
+                                  prefix, other than the default `TODOs`
                                 `:set g:ephemeris_todos = "=== TASK LIST ==="`
                                 Everything below that marker is copied and
                                 append into the current day's diary entry.
                                 ex: |:EphemerisCopyTodos|
                                 
+
                                        *ephemeris-:EphemerisFilterTasks*
-:EphemerisFilterTasks           Create and show diary index in a vertical 
-                                split. i.e. if you have a set of tasks like:
+:EphemerisFilterTasks           Filter **out** all **completed** tasks
+                                i.e. if you have a set of tasks like:
                                 ```
                                 - [ ] ephemeris docs
                                   -[x] `.md`
@@ -78,6 +81,7 @@ ephemeris.vim makes the following commands available:
                                 - [ ] ephemeris docs
                                   -[ ] `txt`
                                 ``` 
+                                ex: |:EphemerisFilterTasks|
 
 MAPPINGS                               *ephemeris-mappings*
 
