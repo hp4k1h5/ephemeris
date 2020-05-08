@@ -43,12 +43,25 @@ function! ephemeris#lst#copy_todos()
 endfunction
 
 function! ephemeris#lst#filter_tasks()
-  let l:lines = getbufline('%', 1, '$') 
   let l:i = 1
-  for line in l:lines
-   if stridx(line, '- [x]') > -1
+  let l:skip = 0
+
+  for line in getbufline('%', 1, '$')
+    " skip deleted nested items
+    if l:skip > 0
+      let l:skip -= 1
+      continue
+    endif
+
+    " delete completed items
+    if stridx(line, '- [x]') > -1
       call cursor(l:i, 1)
       execute l:i.'d'
+      " delete nested items underneath completed blocks
+      while l:i <= line('$') && stridx(getline(l:i), '- [') == -1
+        execute l:i.'d'
+        let l:skip += 1
+      endwhile
     else
       let l:i += 1
     endif
