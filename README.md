@@ -39,28 +39,17 @@ let g:ephemeris_todos = '=== TASK LIST ==='
 ---------------------------------------------
 ### installation
 
-should work with your preferred vim plugin manager.\
-e.g. add
+should work with your preferred vim plugin manager. e.g. add
 
-``` {.hljs}
-Plug
-'HP4k1h5/ephemeris'
-
-Plug
-'mattn/calendar-vim'
-
-" recommended
-
-
+```vim
+Plug 'HP4k1h5/ephemeris'
+Plug 'mattn/calendar-vim' " recommended
 ```
 
 to your `.vimrc` and run
 
-``` {.hljs}
-:
-source
- $MYVIMRC | PlugInstall
-
+```vim
+:source $MYVIMRC | PlugInstall
 ```
 
 in command-line mode (see `:help cmdline`)
@@ -71,13 +60,14 @@ in command-line mode (see `:help cmdline`)
 - [markdown-preview](https://github.com/iamcco/markdown-preview.nvim)
     or your preferred markdown preview / syntax highlighter tool
 
+---------------------------------------------
 ### usage
 
 Call any of ephemeris' commands from anywhere.  Using `:EphemerisFilterTasks`
 will operate on the currently active buffer. Otherwise all functions are
 buffer agnostic and should work anywhere. see functions below...
 
-### functions
+#### functions
 
 **see [doc/ephemeris.txt](doc/ephemeris.txt) for additional help**
 
@@ -107,34 +97,38 @@ buffer agnostic and should work anywhere. see functions below...
 :EphemerisFilterTasks
 ```
 
-- filters **out** all completed tasks and their non-task oriented list
+- filters out **completed** tasks and their non-task oriented list
     items and text blocks
+
+``
 
 **:EphemerisFilterTasks** diagram
 
-```flowchart
-##### TODOs *before*
-- [x] incomplete task 1
-  - [x] complete task 1a
-- [ ] incomplete task 2
-  - [x] complete task 2a
-  - additional info not a task will be preserved if the task is
-  incomplete
-- [ ] incomplete task 3
-  - [ ] complete task 3a
-- [x] complete task 4
-  - but removed otherwise
-  - [ ] complete task 4a also
-  this will get preserved
-:EphemerisFilterTasks
-
-##### TODOs *after*
-- [ ] incomplete task 2
-  - additional info not a task will be preserved
-- [ ] incomplete task 3
-  - [ ] complete task 3a
-- [ ] complete task 4a also
-  this will get preserved
+```md
+*------------------------------------*
+| TODOs (before)                     |
+|- [x] complete task 1               |
+|- [ ] complete task 2               |
+|  - [x] complete task 2a            |
+|  - additional info that is not a   |    run in command-line mode
+| task will be preserved if the      |  *---------------------*
+| task is incomplete                 |--|:EphemerisFilterTasks|
+|- [x] incomplete task 3             |  *---------------------*
+|- [ ] complete task 3a              |              |
+|- [x] complete task 4               |              |
+|- but removed otherwise             |              |
+|- [ ] complete task 4a also         |              |
+|this will get preserved             |              |
+*------------------------------------*              V
+            *----------------------------------------------*
+            | TODOs  (after)                               |
+            |- [ ] incomplete task 2                       |
+            |- [ ] complete task 3a                        |
+            |- [ ] complete task 4a also                   |
+            |this will get preserved                       |
+            |                                              |
+            |                                              |
+            *----------------------------------------------*
 ```
 
 #### example-mappings
@@ -143,6 +137,5 @@ buffer agnostic and should work anywhere. see functions below...
 nmap <leader> eci :call EphemerisCreateIndex<CR>
 nmap <leader> egi :call EphemerisGotoIndex<CR>
 nmap <leader> ect :call EphemerisCopyTodos<CR>
-nmap
-<leader> eft :call EphemerisFilterTasks<CR>
+nmap <leader> eft :call EphemerisFilterTasks<CR>
 ```
