@@ -8,6 +8,9 @@ function. the calendar plugin itself is not required but this plugin reuses one
 of it's global variables `g:calendar_diary` without interfering with
 `calendar-vim`.  
 
+![split-screen screenshot of vim and a browser with the markdown
+preview](img/side-by-side.png)
+
 **see [doc/ephemeris.txt](doc/ephemeris.txt) for additional help**
 
 ## functionalities
