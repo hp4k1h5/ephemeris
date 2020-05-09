@@ -118,16 +118,14 @@ buffer agnostic and should work anywhere. see functions below...
 |- [x] complete task 4               |              |
 |- but removed otherwise             |              |
 |- [ ] complete task 4a also         |              |
-|this will get preserved             |              |
+|  this will get preserved           |              |
 *------------------------------------*              V
             *----------------------------------------------*
             | TODOs  (after)                               |
             |- [ ] incomplete task 2                       |
             |- [ ] complete task 3a                        |
             |- [ ] complete task 4a also                   |
-            |this will get preserved                       |
-            |                                              |
-            |                                              |
+            |  this will get preserved                     |
             *----------------------------------------------*
 ```
 
