@@ -137,3 +137,10 @@ nmap <leader> egi :call EphemerisGotoIndex<CR>
 nmap <leader> ect :call EphemerisCopyTodos<CR>
 nmap <leader> eft :call EphemerisFilterTasks<CR>
 ```
+
+##### consider
+
+```vim
+" keeps index properly sized
+au BufEnter g:calendar_diary :vertical resize 38
+```
