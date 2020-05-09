@@ -19,7 +19,7 @@ function! ephemeris#lst#copy_todos()
   endif
 
   " get/set todo regex
-  if !len(g:ephemeris_todos)
+  if !exists('g:ephemeris_todos')
     let g:ephemeris_todos = "### TODOs"
   endif
 

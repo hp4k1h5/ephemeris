@@ -22,7 +22,7 @@ function! ephemeris#ind#goto_index()
 
   " be in calendar_diary dir
   " if expand('%:p:h') !=? expand(g:calendar_diary)
-    execute 'cd ' expand(g:calendar_diary)
+    execute 'cd '.expand(g:calendar_diary)
   " endif
 endfunction
 
