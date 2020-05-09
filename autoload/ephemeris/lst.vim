@@ -74,25 +74,13 @@ function! ephemeris#lst#filter_tasks()
 endfunction
 " multiline pcre for similar `\- \[.].|[\s]+(?=(\- \[.]|\Z))` 
 
-function! s:increment_1(value)
-  return eval(a:value) + 1
-endfunction
-
-function! s:increment_A(value)
-  let list_of_chars = split(a:value, '.\zs')
-  let done = 0
-  for idx in reverse(range(len(list_of_chars)))
-    let cur_num = char2nr(list_of_chars[idx])
-    if cur_num < 90
-      let list_of_chars[idx] = nr2char(cur_num + 1)
-      let done = 1
-      break
-    else
-      let list_of_chars[idx] = 'A'
-    endif
-  endfor
-  if !done
-    call insert(list_of_chars, 'A')
+" - [x] ok
+" task helpers
+function! ephemeris#lst#toggle_check()
+  let l:l = getline('.')
+  if matchstr(l:l, '- [ ]', '- [x]')
+    call substitute('- [ ]', pat, sub, flags)
+  elseif matchstr(l:l, '- [x]')
+    call substitute(l:l, '- [x]', '- [ ]')
   endif
-  return join(list_of_chars, '')
 endfunction

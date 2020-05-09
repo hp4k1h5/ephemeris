@@ -19,3 +19,4 @@ built/
 # dots
 .env
 .ackrc
+*/plugged/
