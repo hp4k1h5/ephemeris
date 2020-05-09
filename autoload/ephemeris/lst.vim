@@ -74,13 +74,15 @@ function! ephemeris#lst#filter_tasks()
 endfunction
 " multiline pcre for similar `\- \[.].|[\s]+(?=(\- \[.]|\Z))` 
 
-" - [x] ok
 " task helpers
-function! ephemeris#lst#toggle_check()
+function! ephemeris#lst#toggle_task()
+  let l:n = line('.')
   let l:l = getline('.')
-  if matchstr(l:l, '- [ ]', '- [x]')
-    call substitute('- [ ]', pat, sub, flags)
-  elseif matchstr(l:l, '- [x]')
-    call substitute(l:l, '- [x]', '- [ ]')
+  let l:c = '- [x]'
+  let l:u = '- [ ]'
+  if stridx(l:l, l:u) > -1
+    call setline(l:n, substitute(l:l, escape(l:u, '['), l:c, ''))
+  elseif stridx(l:l, l:c) > -1 
+    call setline(l:n, substitute(l:l, escape(l:c, '['), l:u, ''))
   endif
 endfunction

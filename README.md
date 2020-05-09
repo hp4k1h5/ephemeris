@@ -132,10 +132,11 @@ buffer agnostic and should work anywhere. see functions below...
 #### example-mappings
 
 ```vim
-nmap <leader> eci :call EphemerisCreateIndex<CR>
-nmap <leader> egi :call EphemerisGotoIndex<CR>
-nmap <leader> ect :call EphemerisCopyTodos<CR>
-nmap <leader> eft :call EphemerisFilterTasks<CR>
+nmap <leader> eci :EphemerisCreateIndex<CR>
+nmap <leader> egi :EphemerisGotoIndex<CR>
+nmap <leader> ect :EphemerisCopyTodos<CR>
+nmap <leader> eft :EphemerisFilterTasks<CR>
+nmap <leader> et  :EphemerisToggleTask<CR>
 ```
 
 ##### consider

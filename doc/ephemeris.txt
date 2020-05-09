@@ -84,6 +84,13 @@ ephemeris.vim makes the following commands available:
                                 ex: |:EphemerisFilterTasks|
 
 
+                                        *ephemeris-:EphemerisToggleTask*
+:EphemerisToggleTask            Toggle status of task in line under cursor. 
+                                Toggles `- [ ]` & `-[x]`
+                                ex: |:EphemerisToggleTask|
+
+
+
 MAPPINGS                               *ephemeris-mappings*
 
 calendar.vim does not make the following normal mode mappings available but
