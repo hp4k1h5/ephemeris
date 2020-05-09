@@ -21,5 +21,5 @@ endif
 
 command! -nargs=* EphemerisCreateIndex call ephemeris#ind#create_index(<f-args>)
 command! -nargs=* EphemerisGotoIndex call ephemeris#ind#goto_index(<f-args>)
-command! -nargs=* EphemerisCopyTODOs call ephemeris#lst#copy_todos(<f-args>)
+command! -nargs=* EphemerisCopyTodos call ephemeris#lst#copy_todos(<f-args>)
 command! -nargs=* EphemerisFilterTasks call ephemeris#lst#filter_tasks(<f-args>)
