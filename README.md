@@ -21,7 +21,7 @@ interfering with `calendar-vim`.
   - filter/sort/aggregate/calculate
   - copy last set of TODO's / `- [ ]` to current day's diary entry
 
-### required!
+### ! required
 
 set the root directory for your diary entries `g:calendar_diary` in your
 `.vimrc` i.e.
@@ -32,12 +32,16 @@ let g:calendar_diary = '~/diary'
 
 ###### optional
 
+set the string for `EphemerisToggleTask` to look for.
+  default is `TODOs`. Everything below the marker in the most recent diary
+  entry is copied and appended into the current day's entry.
+
 ```vim
 let g:ephemeris_todos = '=== TASK LIST ==='
 ```
 
 ---------------------------------------------
-### installation
+#### installation
 
 should work with your preferred vim plugin manager. e.g. add
 
@@ -54,7 +58,7 @@ to your `.vimrc` and run
 
 in command-line mode (see `:help cmdline`)
 
-### optional-but-helpful
+##### optional-but-helpful
 - [vim-calendar
     /https://github.com/mattn/calendar-vim](https://github.com/mattn/calendar-vim)
 - [markdown-preview](https://github.com/iamcco/markdown-preview.nvim)
@@ -91,7 +95,8 @@ buffer agnostic and should work anywhere. see functions below...
 ```
 
 - copies the last set of `TODOs:` and appends them to the current
-    day's diary entry.
+    day's diary entry; will look through dates in the preceding 365 days, and
+    use the most recent entry containing the `g:ephemeris_todos` string.  
 
 ```vim
 :EphemerisFilterTasks
@@ -100,31 +105,29 @@ buffer agnostic and should work anywhere. see functions below...
 - filters out **completed** tasks and their non-task oriented list
     items and text blocks
 
-``
-
 **:EphemerisFilterTasks** diagram
 
 ```md
 *------------------------------------*
 | TODOs (before)                     |
 |- [x] complete task 1               |
-|- [ ] complete task 2               |
+|- [ ] incomplete task 2             |
 |  - [x] complete task 2a            |
 |  - additional info that is not a   |    run in command-line mode
 | task will be preserved if the      |  *---------------------*
 | task is incomplete                 |--|:EphemerisFilterTasks|
-|- [x] incomplete task 3             |  *---------------------*
-|- [ ] complete task 3a              |              |
+|- [x] complete task 3               |  *---------------------*
+|  - [ ] incomplete task 3a          |              |
 |- [x] complete task 4               |              |
-|- but removed otherwise             |              |
-|- [ ] complete task 4a also         |              |
-|  this will get preserved           |              |
+|  - but removed otherwise           |              |
+|  - [ ] incomplete task 4a also     |              |
+|   this will get preserved          |              |
 *------------------------------------*              V
             *----------------------------------------------*
             | TODOs  (after)                               |
             |- [ ] incomplete task 2                       |
-            |- [ ] complete task 3a                        |
-            |- [ ] complete task 4a also                   |
+            |- [ ] incomplete task 3a                      |
+            |- [ ] incomplete task 4a also                 |
             |  this will get preserved                     |
             *----------------------------------------------*
 ```
@@ -132,11 +135,11 @@ buffer agnostic and should work anywhere. see functions below...
 #### example-mappings
 
 ```vim
-nmap <leader> eci :EphemerisCreateIndex<CR>
-nmap <leader> egi :EphemerisGotoIndex<CR>
-nmap <leader> ect :EphemerisCopyTodos<CR>
-nmap <leader> eft :EphemerisFilterTasks<CR>
-nmap <leader> et  :EphemerisToggleTask<CR>
+nmap <leader>eci :EphemerisCreateIndex<CR>
+nmap <leader>egi :EphemerisGotoIndex<CR>
+nmap <leader>ect :EphemerisCopyTodos<CR>
+nmap <leader>eft :EphemerisFilterTasks<CR>
+nmap <leader>et  :EphemerisToggleTask<CR>
 ```
 
 ##### consider
