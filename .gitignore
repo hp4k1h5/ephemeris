@@ -20,3 +20,4 @@ built/
 .env
 .ackrc
 */plugged/
+doc/tags
