@@ -8,37 +8,41 @@
 " list, task, todo utility functions
 " ---------------------------------------------------------
 
+""
+" @public Copy TODOs from last set of TODOs going back up to 10 years. Your
+" @setting(g:calendar_diary) directory must  be organized in a `.../YYYY/MM/DD.md` hierarchy, in
+" order for this function to know which set of TODOs are _most recent_. TODOs are defined by the
+" string set in @setting(g:ephemeris_todos). Default is 'TODOs'. **Everything** below that marker
+" is copied to the current day's diary entry. It will open today's diary entry in a split. This
+" function can be called from anywhere.
 function! ephemeris#lst#copy_todos()
   " create today's path and .md entry file if necessary
-  let l:today = expand(g:calendar_diary).'/'.strftime('%Y/%m/%d')
-  if !filereadable(l:today.'.md')
-    echom "creating today's diary entry"
-    call mkdir(g:calendar_diary.'/'.strftime('%Y/%m'), 'p')
-    execute "badd ".l:today.".md"
-  endif
+  let l:today = expand(g:calendar_diary).'/'.strftime('%Y/%m/%d') if !filereadable(l:today.'.md')
+  echom 'creating today's diary entry' call mkdir(g:calendar_diary.'/'.strftime('%Y/%m'), 'p')
+  execute 'badd '.l:today.'.md' endif
 
   " get/set todo regex
   if !exists('g:ephemeris_todos')
-    let g:ephemeris_todos = "### TODOs"
+    let g:ephemeris_todos = '### TODOs'
   endif
 
   " look back through a year's worth of potential diary entries
   let l:dp = 1
-  while l:dp < 365 
-    let l:prev = substitute(system("date -v -".l:dp."d '+%Y/%m/%d'"), "\n", "", "g")
-    let l:fn = expand(g:calendar_diary)."/".l:prev.".md"
+  while l:dp < 365 * 10
+    let l:prev = substitute(system('date -v -'.l:dp.'d '+%Y/%m/%d''), '\n', '', 'g')
+    let l:fn = expand(g:calendar_diary).'/'.l:prev.'.md'
     if filereadable(l:fn)
       " if file contains a todo, extract list and dump in today's entry
       " TODO: currently TODO lists need to end the file, a smarter function
       "     : will only grab `-` etc lines up to a natural end, 
       "     : e.g. 3 consecutive newlines
-      let l:todostart = system("grep -n '".g:ephemeris_todos."' ".l:fn)
+      let l:todostart = system('grep -n ''.g:ephemeris_todos.'' '.l:fn)
       if len(l:todostart)
-        let l:todostart = split(l:todostart, ":")[0]
+        let l:todostart = split(l:todostart, ':')[0]
         " add buff, dump todo list, open latest entry, exit loop
-        execute "badd ".l:fn
-        execute "silent! ".bufnr(l:fn)." bufdo! ".l:todostart.",$ w! >> ".l:today.".md"
-        execute "silent! b ".l:today.".md"
+        execute 'badd '.l:fn
+        execute 'silent! '.bufnr(l:fn).' bufdo! '.l:todostart.',$ w! >> '.l:today.'.md'
+        execute 'silent! b '.l:today.'.md'
         break
       endif
     endif
@@ -46,6 +50,10 @@ function! ephemeris#lst#copy_todos()
   endwhile
 endfunction
 
+""
+" @public Filter out completed tasks and their associated blocks.  A completed task is defined by
+" the string `- [x]`. That line and all lines between it and the next incomplete task, `- [ ]`,
+" exclusive, will be deleted. 
 function! ephemeris#lst#filter_tasks()
   let l:i = 1
   let l:skip = 0

@@ -1,5 +1,5 @@
 " vim:tabstop=2:shiftwidth=2:expandtab:textwidth=99
-" ephemeris autoload plugin file
+" ephemeris autoload index file
 " Description: everything concerning the diary index
 " Home: https://github.com/HP4k1h5/ephemeris/
 
@@ -7,13 +7,16 @@
 "  diary index utility functions 
 " ---------------------------------------------------------
 
+""
+" @public
+" Find or create, and go to diary index file. Index located at @setting(g:calendar_diary)/index.md.
 function! ephemeris#ind#goto_index()
   " find/create and goto index
   let l:ifn = expand(g:calendar_diary).'/index.md'
   if expand('%') !=# l:ifn
     let l:wn = bufwinnr(l:ifn)
     if bufexists(l:ifn) && l:wn > -1
-        execute l:wn."wincmd w"
+        execute l:wn.'wincmd w'
       else
         execute 'vsplit '.l:ifn
     endif
@@ -23,6 +26,11 @@ function! ephemeris#ind#goto_index()
     execute 'cd '.expand(g:calendar_diary)
 endfunction
 
+""
+" @public
+" Create an index of diary entries found recursively under the @setting(g:calendar_diary)
+" directory at @setting(g:calendar_diary)/index.md, and open the index in a vertical split. Entries
+" are formatted as markdown links.
 function! ephemeris#ind#create_index()
   " be in diary/index.md
   call ephemeris#ind#goto_index()

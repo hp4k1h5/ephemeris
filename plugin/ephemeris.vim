@@ -1,13 +1,15 @@
+""
 "=============================================================================
-" What Is This: ephemeris 
+" What Is This: @plugin(name)
 " File: ephemeris.vim
-" Author: bob <robertwalks@gmail.com>
-" Last Change: Fri May  8 16:40:34 2020
-" Version: 0.1
+" Author: @plugin(author)
+" Last Change: 2020/05/13
+" Version: 0.2
 " Help: see README.md and doc/ephemeris.txt
 " Thanks:
 "     vim-calendar [ mattn/vim-calendar ](https://github.com/mattn/calendar-vim)
 " ChangeLog:
+"     0.2  : fixes (2020/05/13)
 "     0.1  : init (2020/05/08)
 "     0.0  : init (2020/05/06)
 
