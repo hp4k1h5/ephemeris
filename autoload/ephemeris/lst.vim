@@ -4,17 +4,16 @@
 " list manipulators borrowed largely from https://github.com/vimwiki/vimwiki/blob/autoload/vimwiki/lst.vim
 " Home: https://github.com/HP4k1h5/ephemeris/
 
-
 " ---------------------------------------------------------
 " list, task, todo utility functions
 " ---------------------------------------------------------
 
 function! ephemeris#lst#copy_todos()
   " create today's path and .md entry file if necessary
-  let l:today = expand(g:calendar_diary)."/".strftime("%Y/%m/%d")
-  if !filereadable(l:today.".md")
+  let l:today = expand(g:calendar_diary).'/'.strftime('%Y/%m/%d')
+  if !filereadable(l:today.'.md')
     echom "creating today's diary entry"
-    call mkdir(g:calendar_diary."".strftime("%Y/%m"), "p")
+    call mkdir(g:calendar_diary.'/'.strftime('%Y/%m'), 'p')
     execute "badd ".l:today.".md"
   endif
 
@@ -50,7 +49,6 @@ endfunction
 function! ephemeris#lst#filter_tasks()
   let l:i = 1
   let l:skip = 0
-
   for line in getbufline('%', 1, '$')
     " skip deleted nested items
     if l:skip > 0

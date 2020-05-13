@@ -7,23 +7,20 @@
 "  diary index utility functions 
 " ---------------------------------------------------------
 
-
 function! ephemeris#ind#goto_index()
   " find/create and goto index
   let l:ifn = expand(g:calendar_diary).'/index.md'
-  if expand('%') !=? l:ifn
+  if expand('%') !=# l:ifn
     let l:wn = bufwinnr(l:ifn)
     if bufexists(l:ifn) && l:wn > -1
         execute l:wn."wincmd w"
       else
-        execute 'vsplit 'l:ifn
+        execute 'vsplit '.l:ifn
     endif
   endif
 
   " be in calendar_diary dir
-  " if expand('%:p:h') !=? expand(g:calendar_diary)
     execute 'cd '.expand(g:calendar_diary)
-  " endif
 endfunction
 
 function! ephemeris#ind#create_index()
@@ -39,7 +36,7 @@ function! ephemeris#ind#create_index()
   " add entries
   " TODO: add custom sort
   for item in glob('**/*', 0, 1)
-    if item ==? 'index.md'
+    if item ==# 'index.md'
       continue
     endif
     let l:l = split(item, '/')
@@ -56,16 +53,5 @@ function! ephemeris#ind#create_index()
   execute 'w'
 endfunction
 
-
 " simple remap to dump text
 " noremap <leader>dci    ggdGi## Diary Entries<CR><C-r>=glob('**/*')<CR><ESC>:w<CR>
-
-" hidden layer formatting 
-    " let l:l = split(item, '/')
-    " if len(l:l) > 1
-    "   let l:l[0] = '../ '
-    " endif
-    " if len(l:l) == 3
-    "   let l:l[1] = '../'
-    " endif
-    " call append('$', join(l:l, ''))
