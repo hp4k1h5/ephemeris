@@ -12,6 +12,9 @@ interfering with `calendar-vim`.
 
 **see [doc/ephemeris.txt](doc/ephemeris.txt) for additional help**
 
+version information available at [ vim.org
+](https://www.vim.org/scripts/script.php?script_id=5879)
+
 ---------------------------------------------
 #### functionalities
 
