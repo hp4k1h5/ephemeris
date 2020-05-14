@@ -18,10 +18,23 @@ ephemeris#ind#create_index()                    *ephemeris#ind#create_index()*
   index in a vertical split. Entries are formatted as markdown links.
 
 ephemeris#lst#copy_todos()                        *ephemeris#lst#copy_todos()*
-  Copy TODOs from last set of TODOs. TODOs are defined by the string set in
-  |g:ephemeris_todos|. Default is @default('TODOs'). **Everything** below that
-  marker is copied to the current day's diary entry. It will open today's
-  diary entry in a split. This function can be called from anywher.
+  Copy TODOs from last set of TODOs going back up to 10 years. Your
+  |g:calendar_diary| directory must  be organized in a `.../YYYY/MM/DD.md`
+  hierarchy, in order for this function to know which set of TODOs are _most
+  recent_. TODOs are defined by the string set in |g:ephemeris_todos|. Default
+  is 'TODOs'. **Everything** below that marker is copied to the current day's
+  diary entry. It will open today's diary entry in a split. This function can
+  be called from anywhere.
+
+ephemeris#lst#filter_tasks()                    *ephemeris#lst#filter_tasks()*
+  Filter out completed tasks and their associated blocks in the current
+  buffer. e.g.
+>
+<
+  ** todos (before) **
+  [ ] ephemeris docs
+  [x] `.md`
+  <
 
 
 vim:tw=78:ts=8:ft=help:norl:

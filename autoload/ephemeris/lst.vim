@@ -9,12 +9,13 @@
 " ---------------------------------------------------------
 
 ""
-" @public Copy TODOs from last set of TODOs going back up to 10 years. Your
-" @setting(g:calendar_diary) directory must  be organized in a `.../YYYY/MM/DD.md` hierarchy, in
-" order for this function to know which set of TODOs are _most recent_. TODOs are defined by the
-" string set in @setting(g:ephemeris_todos). Default is 'TODOs'. **Everything** below that marker
-" is copied to the current day's diary entry. It will open today's diary entry in a split. This
-" function can be called from anywhere.
+" @public 
+" Copy TODOs from last set of TODOs going back up to 10 years. Your @setting(g:calendar_diary)
+" directory must  be organized in a `.../YYYY/MM/DD.md` hierarchy, in order for this function to
+" know which set of TODOs are _most recent_. TODOs are defined by the string set in
+" @setting(g:ephemeris_todos). Default is 'TODOs'. **Everything** below that marker is copied to
+" the current day's diary entry. It will open today's diary entry in a split. This function can be
+" called from anywhere.
 function! ephemeris#lst#copy_todos()
   " create today's path and .md entry file if necessary
   let l:today = expand(g:calendar_diary).'/'.strftime('%Y/%m/%d') if !filereadable(l:today.'.md')
@@ -51,9 +52,13 @@ function! ephemeris#lst#copy_todos()
 endfunction
 
 ""
-" @public Filter out completed tasks and their associated blocks.  A completed task is defined by
-" the string `- [x]`. That line and all lines between it and the next incomplete task, `- [ ]`,
-" exclusive, will be deleted. 
+" @public 
+" Filter out completed tasks and their associated blocks in the current buffer. e.g.
+" >
+" ** todos (before) **
+" - [ ] ephemeris docs
+"   - [x] `.md`
+" <
 function! ephemeris#lst#filter_tasks()
   let l:i = 1
   let l:skip = 0
