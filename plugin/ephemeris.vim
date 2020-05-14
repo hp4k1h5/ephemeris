@@ -40,12 +40,37 @@ if &compatible
   finish
 endif
 
-" commands
+" COMMANDS
 ""
 " Create '.md' diary index of all '.md' files found under the
-" @setting(g:calendar_diary) directory, and open in a vertical split.
+" @setting(g:calendar_diary) directory, and go to vertical split.  Calls
+" @function(ephemeris#ind#create_index)
 command! -nargs=* EphemerisCreateIndex call ephemeris#ind#create_index(<f-args>)
+
+""
+" Open diary index in a vertical split or focus diary index buffer. Index is
+" found at @setting(g:calendar_diary)/index.md
 command! -nargs=* EphemerisGotoIndex call ephemeris#ind#goto_index(<f-args>)
+
+""
+" Look backwards through previous entries for last 'TODOs' marker set in
+" @setting(g:ephemeris_todos), as defined by the tasks found below the string
+" default is 'TODOs'. Calls @function(ephemeris#lst#copy_todos)
 command! -nargs=* EphemerisCopyTodos call ephemeris#lst#copy_todos(<f-args>)
+
+""
+" Delete completed tasks, e.g. `- [x] task A`, and all associated subblocks
+" until the next incomplete task, e.g. `- [ ] task B` or EOF. See example in
+" @function(ephemeris#lst#filter_tasks).
 command! -nargs=* EphemerisFilterTasks call ephemeris#lst#filter_tasks(<f-args>)
+
+""
+" Toggles the state of a task between 
+" >
+"   - [ ] incomplete
+"     and
+"   - [x] complete 
+" <
+" will not affect the state of any other tasks. Calls
+" @function(ephemeris#lst#toggle_task)
 command! -nargs=* EphemerisToggleTask call ephemeris#lst#toggle_task(<f-args>)

@@ -50,7 +50,32 @@ COMMANDS                                                  *ephemeris-commands*
 
 :EphemerisCreateIndex                                  *:EphemerisCreateIndex*
   Create '.md' diary index of all '.md' files found under the
-  |g:calendar_diary| directory, and open in a vertical split.
+  |g:calendar_diary| directory, and go to vertical split.  Calls
+  |ephemeris#ind#create_index()|
+
+:EphemerisGotoIndex                                      *:EphemerisGotoIndex*
+  Open diary index in a vertical split or focus diary index buffer. Index is
+  found at |g:calendar_diary|/index.md
+
+:EphemerisCopyTodos                                      *:EphemerisCopyTodos*
+  Look backwards through previous entries for last  'TODOs' marker set in
+  |g:ephemeris_todos|, as defined by the tasks found below the string default
+  is 'TODOs'. Calls function(ephemeris#lst#copy_todos)
+
+:EphemerisFilterTasks [x]                              *:EphemerisFilterTasks*
+  Delete completed tasks, i.e. `- [x] completed task example`, and all
+  associated subblocks until the next incomplete task, i.e. `- [ ] incomplete
+  task example` or EOF. See example in |ephemeris#lst#filter_tasks()|.
+
+:EphemerisToggleTask                                    *:EphemerisToggleTask*
+  Toggles the state of a task between
+>
+    - [ ] incomplete
+      and
+    - [x] complete
+<
+  will not affect the state of any other tasks. Calls
+  |ephemeris#lst#toggle_task()|
 
 ==============================================================================
 FUNCTIONS                                                *ephemeris-functions*
