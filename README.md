@@ -1,19 +1,23 @@
-# README
+# ephemeris
 
 > a diary plugin/Calendar extension for vim
 
 this plugin extends some of the functionality provided by the
-[mattn/calendar-vim](https://github.com/mattn/calendar-vim) plugin's
-diary function. the calendar plugin itself is not required but this
-plugin reuses one of it's global variables `g:calendar_diary` without
-interfering with `calendar-vim`.
+[mattn/calendar-vim](https://github.com/mattn/calendar-vim) plugin's diary
+function. the calendar plugin itself is not required but this plugin reuses
+one of it's global variables `g:calendar_diary` without interfering with
+`calendar-vim`.
 
 ![diary index and markdown side-by-side](img/side-by-side.png)
 
 **see [doc/ephemeris.txt](doc/ephemeris.txt) for additional help**
 
-version information available at [ vim.org
-](https://www.vim.org/scripts/script.php?script_id=5879)
+version information available at [vim.org](https://www.vim.org/scripts/script.php?script_id=5879)
+
+---------------------------------------------
+## contents
+
+[toc]
 
 ---------------------------------------------
 #### functionalities
@@ -22,7 +26,7 @@ version information available at [ vim.org
   - index access/refresh
 - smart **checkbox** list item management
   - filter/sort/aggregate/calculate
-  - copy last set of TODO's / `- [ ]` to current day's diary entry
+  - copy last set of TODO's `- [ ]` to current day's diary entry
 
 ### ! required
 
@@ -35,9 +39,9 @@ let g:calendar_diary = '~/diary'
 
 ###### optional
 
-set the string for `EphemerisToggleTask` to look for.
-  default is `TODOs`. Everything below the marker in the most recent diary
-  entry is copied and appended into the current day's entry.
+set the string for `EphemerisToggleTask` to look for.  default is `TODOs`.
+Everything below the marker in the most recent diary entry is copied and
+appended into the current day's entry.
 
 ```vim
 let g:ephemeris_todos = '=== TASK LIST ==='
