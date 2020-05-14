@@ -4,42 +4,53 @@ HP4k1h5 <robertwalks@gmail.com>                                    *ephemeris*
 ==============================================================================
 CONTENTS                                                  *ephemeris-contents*
   1. Introduction............................................|ephemeris-intro|
-  2. Functions...........................................|ephemeris-functions|
+  2. Commands.............................................|ephemeris-commands|
+  3. Functions...........................................|ephemeris-functions|
 
 ==============================================================================
 INTRODUCTION                                                 *ephemeris-intro*
 
 ephemeris is a diary and calendar extension plugin for vim. It provides a
-collection of functions and commands that can be used to create, edit and,
+collection of functions and commands that can be used to create, edit, and
 curate diary/log entries.
 
-the directories and files found recursively under the directory set in the
-global variable `g:calendar_diary` , which is the same variable as that used
-by [calendar-vim](https:///github.com/mattn/calendar-vim). It does not rely on
-any external programs and does not interfere with any external program, such
-as cal, etc.  Nevertheless, the diary functionality provided by calendar-vim
-is not reduplicated by this plugin. this plugin works best when the directory
-structure of `g:calendar_diary` is as follows:
+The diary is defined by the directories and files found recursively under the
+directory set in the global variable |g:calendar_diary|, which is the same
+variable as that used by mattn's calendar-vim
+<https:///github.com/mattn/calendar-vim>. ephemeris does not rely on any
+external programs and does not interfere with any external program, such as
+cal, etc. Nevertheless, the diary functionality provided by calendar-vim is
+not entirely reduplicated by this plugin. This plugin works best when the
+directory structure of |g:calendar_diary| is as follows:
 >
   ├── 2019
-  │   └── 11
-  │       ├── 09.md
+  │   └── 09
+  │       ├── 16.md
+  │   └── 12
   │       └── 20.md
   ├── 2020
   │   └── 05
   │       ├── 01.md
   │       ├── 04.md
 <
-This tree structure is provided by default by the calendar-vim diary
-functions. @plugin(name( will only provide limited functionality if the
-directory structure does not include a date-aligned directory structure as
-outlined above. **Therefore it is recommended to use this plugin together with
-calendar-vim.**
+This tree structure is provided by default by ephemeris as well as the diary
+functions provided by calendar-vim. ephemeris will only provide limited
+functionality if the directory structure does not include a date-aligned
+directory structure as outlined above. This directory structure is provided by
+default by ephemeris functions as well as by calendar-vim's diary functions.
 
 HELP
           see 'README.md' and 'doc/ephemeris.txt'
+
 THANKS
           mattn <https://github.com/mattn/calendar-vim>
+
+==============================================================================
+COMMANDS                                                  *ephemeris-commands*
+
+:EphemerisCreateIndex                                  *:EphemerisCreateIndex*
+  Create '.md' diary index of all '.md' files found under the
+  |g:calendar_diary| directory, and open in a vertical split.
 
 ==============================================================================
 FUNCTIONS                                                *ephemeris-functions*
