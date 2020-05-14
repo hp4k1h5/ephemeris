@@ -18,9 +18,12 @@
 " called from anywhere.
 function! ephemeris#lst#copy_todos()
   " create today's path and .md entry file if necessary
-  let l:today = expand(g:calendar_diary).'/'.strftime('%Y/%m/%d') if !filereadable(l:today.'.md')
-  echom 'creating today's diary entry' call mkdir(g:calendar_diary.'/'.strftime('%Y/%m'), 'p')
-  execute 'badd '.l:today.'.md' endif
+  let l:today = expand(g:calendar_diary).'/'.strftime('%Y/%m/%d') 
+  if !filereadable(l:today.'.md')
+    echom "creating today's diary entry" 
+    call mkdir(g:calendar_diary.'/'.strftime('%Y/%m'), 'p')
+    execute 'badd '.l:today.'.md'
+  endif
 
   " get/set todo regex
   if !exists('g:ephemeris_todos')
@@ -30,7 +33,7 @@ function! ephemeris#lst#copy_todos()
   " look back through a year's worth of potential diary entries
   let l:dp = 1
   while l:dp < 365 * 10
-    let l:prev = substitute(system('date -v -'.l:dp.'d '+%Y/%m/%d''), '\n', '', 'g')
+    let l:prev = substitute(system('date -v -'.l:dp."d '+%Y/%m/%d'"), '\n', '', 'g')
     let l:fn = expand(g:calendar_diary).'/'.l:prev.'.md'
     if filereadable(l:fn)
       " if file contains a todo, extract list and dump in today's entry
