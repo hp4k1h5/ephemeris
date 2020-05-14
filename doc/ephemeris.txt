@@ -3,7 +3,17 @@ HP4k1h5 <robertwalks@gmail.com>                                    *ephemeris*
 
 ==============================================================================
 CONTENTS                                                  *ephemeris-contents*
-  1. Functions...........................................|ephemeris-functions|
+  1. Introduction............................................|ephemeris-intro|
+  2. Functions...........................................|ephemeris-functions|
+
+==============================================================================
+INTRODUCTION                                                 *ephemeris-intro*
+
+ephemeris is a diary and calendar extension plugin for vim.
+HELP
+          see 'README.md' and 'doc/ephemeris.txt'
+THANKS
+          mattn <https://github.com/mattn/calendar-vim>
 
 ==============================================================================
 FUNCTIONS                                                *ephemeris-functions*

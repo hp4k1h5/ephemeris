@@ -1,17 +1,10 @@
 ""
-"=============================================================================
-" What Is This: @plugin(name)
-" File: ephemeris.vim
-" Author: @plugin(author)
-" Last Change: 2020/05/13
-" Version: 0.2
-" Help: see README.md and doc/ephemeris.txt
-" Thanks:
-"     vim-calendar [ mattn/vim-calendar ](https://github.com/mattn/calendar-vim)
-" ChangeLog:
-"     0.2  : fixes (2020/05/13)
-"     0.1  : init (2020/05/08)
-"     0.0  : init (2020/05/06)
+" @section Introduction, intro
+" @plugin(name) is a diary and calendar extension plugin for vim.
+" @subsection help
+"           see 'README.md' and 'doc/ephemeris.txt'
+" @subsection thanks
+"           mattn <https://github.com/mattn/calendar-vim>
 
 if &compatible
   finish
