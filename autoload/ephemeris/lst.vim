@@ -1,12 +1,7 @@
-" vim:tabstop=2:shiftwidth=2:expandtab:textwidth=99
-" ephemeris autoload plugin file
+" vim:tabstop=2:shiftwidth=2:expandtab:textwidth=80
+" Filename: autoload/lst.vim
 " Description: everything concerning lists and checkboxes
-" list manipulators borrowed largely from https://github.com/vimwiki/vimwiki/blob/autoload/vimwiki/lst.vim
 " Home: https://github.com/HP4k1h5/ephemeris/
-
-" ---------------------------------------------------------
-" list, task, todo utility functions
-" ---------------------------------------------------------
 
 ""
 " @public 
@@ -27,7 +22,12 @@ function! ephemeris#lst#copy_todos()
 
   " get/set todo regex
   if !exists('g:ephemeris_todos')
-    let g:ephemeris_todos = '### TODOs'
+    ""
+    " marker to indicate the beginning of the list of task items to be copied
+    " over to current day's diary entry. see @function(ephemeris#lst#copy_todos)
+    "
+    " default: TODOs
+    let g:ephemeris_todos = 'TODOs'
   endif
 
   " look back through a year's worth of potential diary entries
@@ -56,11 +56,20 @@ endfunction
 
 ""
 " @public 
-" Filter out completed tasks and their associated blocks in the current buffer. e.g.
+" Filter out completed tasks and their associated blocks in the current buffer. i.e., if you have a set of tasks like,
 " >
-"   ** todos (before) **
 "   - [ ] ephemeris docs
-"     - [x] `.md`
+"     -[x] `.md`
+"       - more list items but not tasks
+"         and a nested block of text
+"         with a few lines
+"     -[ ] `txt`
+"   - [x] export autocommands
+" <
+" and you run `:EphemerisFilterTasks` in the command-line mode, you will be left with
+" >
+"   - [ ] ephemeris docs
+"     -[ ] `txt`
 " <
 function! ephemeris#lst#filter_tasks()
   let l:i = 1
@@ -86,9 +95,17 @@ function! ephemeris#lst#filter_tasks()
     endif
   endfor
 endfunction
+
+" TODO: move to BACKLOG somewhere
 " multiline pcre for similar `\- \[.].|[\s]+(?=(\- \[.]|\Z))` 
 
-" task helpers
+""
+" @public
+" Toggle state of task on the line under the cursor between
+" >
+"   - [ ] incomplete, and
+"   - [x] complete
+" <
 function! ephemeris#lst#toggle_task()
   let l:n = line('.')
   let l:l = getline('.')

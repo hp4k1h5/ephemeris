@@ -1,3 +1,8 @@
+" vim:tabstop=2:shiftwidth=2:expandtab:textwidth=80
+" Filename: plugin/ephemeris.vim
+" Description: docs and commands
+" Home: https://github.com/HP4k1h5/ephemeris/
+
 ""
 " @section Introduction, intro
 " @plugin(name) is a diary and calendar extension plugin for vim. It provides
