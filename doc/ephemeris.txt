@@ -30,11 +30,10 @@ ephemeris#lst#filter_tasks()                    *ephemeris#lst#filter_tasks()*
   Filter out completed tasks and their associated blocks in the current
   buffer. e.g.
 >
+    ** todos (before) **
+    - [ ] ephemeris docs
+      - [x] `.md`
 <
-  ** todos (before) **
-  [ ] ephemeris docs
-  [x] `.md`
-  <
 
 
 vim:tw=78:ts=8:ft=help:norl:

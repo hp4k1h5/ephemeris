@@ -58,9 +58,9 @@ endfunction
 " @public 
 " Filter out completed tasks and their associated blocks in the current buffer. e.g.
 " >
-" ** todos (before) **
-" - [ ] ephemeris docs
-"   - [x] `.md`
+"   ** todos (before) **
+"   - [ ] ephemeris docs
+"     - [x] `.md`
 " <
 function! ephemeris#lst#filter_tasks()
   let l:i = 1
