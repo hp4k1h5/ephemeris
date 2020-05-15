@@ -1,8 +1,13 @@
 !! a setup vim script is probably necessary to get ephemeris loaded correctly. i'll probably not use maktaba if this fails, and try to find a different vim testing pkg. There are not that many pkgs actually writing vroom files outside of google's internal code-fmt ecosystem.
 
 since vroom seems to be running in a "clean" neovim, i think i have to basically reinstall the ephemeris pkg from scratch. I'll also try to test that Plug works since that will indicate that almost any third party plugin can install this pkg without too much hassle. 
-Does vroom dir env exist and equal "plugin" ?
-  :echomsg $VROOMDIR
-  ~ plugin
 
-Does it contain a setup.vim ?
+Does vroom dir env exist and equal "." ? 
+  :echomsg $VROOMDIR
+  ~ .
+
+  :source ../plugin/ephemeris.vim
+  :echomsg exists("*exists")
+  ~ 1
+  :echomsg exists(":EphemerisCreateIndex")
+  ~ 2
