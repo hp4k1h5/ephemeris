@@ -31,15 +31,17 @@
 " This tree structure is provided by default by @plugin(name) as well as the
 " diary functions provided by calendar-vim. @plugin(name) will only provide
 " limited functionality if the directory structure does not include a
-" date-aligned directory structure as outlined above. This directory structure
-" is provided by default by @plugin(name) functions as well as by
-" calendar-vim's diary functions.
+" date-aligned directory structure as outlined above. "
 "
 " @subsection help
 "           see 'README.md' and 'doc/ephemeris.txt'
 "
 " @subsection thanks
 "           mattn <https://github.com/mattn/calendar-vim>
+"             - for a great plugin and the inspiration to make some helper functions
+"           google 
+"             - for the testing pkg <https://github.com/google/vroom>
+"             - and the docs pkg <https://github.com/google/vimdoc>
 
 if &compatible
   finish
