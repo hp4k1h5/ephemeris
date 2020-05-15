@@ -1,3 +1,20 @@
+!! a setup vim script is probably necessary to get ephemeris loaded correctly. i'll probably not use maktaba if this fails, and try to find a different vim testing pkg. There are not that many pkgs actually writing vroom files outside of google's internal code-fmt ecosystem.
+  :echomsg $MYVROOMDIR
+  ~ "what"
+
+!! WARNING
+I believe the following test should fail, but is currently passing.  These
+echomg calls _should_ imo return 2, which they do when run from command-line
+mode. 
+TODO: fix this test
 Try to prove that this plugin exports the functions we expect it to. 
-  % hello world
-  hello world
+  :echomsg exists(":EphemerisGotoIndex")
+  ~ 0
+  :echomsg exists(":EphemerisCreateIndex")
+  ~ 0
+
+
+Try to call plugin commands
+  :EphemerisGotoIndex  
+  :echomsg bufnr()
+  ~ 2

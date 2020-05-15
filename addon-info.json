@@ -1,7 +1,10 @@
 {
   "name": "ephemeris",
-  "version" : "0.2",
+  "version" : "0.3",
   "description": "a diary plugin for vim",
   "author": "HP4k1h5 <robertwalks@gmail.com>",
-  "upstream": "https://github.com/HP4k1h5/ephemeris"
+  "repository": {
+    "type":"git",
+    "url": "git://github.com/HP4k1h5/ephemeris"
+  }
 }
