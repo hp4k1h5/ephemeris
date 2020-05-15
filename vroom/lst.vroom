@@ -1,0 +1,49 @@
+Test file for ephemeris/autoload/lst.vim
+Demonstrate pkg var availability and list helper method functionality
+
+GLOBAL VARS
+Source ephemeris
+  :source ../plugin/ephemeris.vim
+no global variables should exist yet, no functions have been run that would instatiate any.
+Are global variables undefined ?
+  :echom g:calendar_diary
+  ~ E121: Undefined variable: g:calendar_diary
+  :echom g:ephemeris_todos
+  ~ E121: Undefined variable: g:ephemeris_todos
+
+after running copy todos, we expect g:calendar_diary and g:ephemeris_todos to have been set. TODO:
+
+
+
+
+FILTER
+lst#filter_tasks() should delete completed tasks from the buffer. a completed task is defined as one that starts with the string `- [x]`. lst#filter_tasks() removes lines including a line beginning with the completed task marker
+
+
+
+TOGGLE
+lst#toggle_task() should toggle the state of a task between complete
+`- [x]` and incomplete `- [ ]`. it should not effect other parts of
+the line or subsequent/previous lines.
+Does ephemeris#lst#toggle_task exist incomplete -> complete with and without text?
+  :source ../autoload/ephemeris/lst.vim 
+  % - [ ] 
+  :call ephemeris#lst#toggle_task()
+  - [x] 
+  @clear
+  % - [ ] test text A
+  : call ephemeris#lst#toggle_task()
+  - [x] test text A
+
+
+
+Does ephemeris#lst#toggle_task exist complete -> incomplete ?
+  % - [x] 
+  :call ephemeris#lst#toggle_task()
+  - [ ] 
+  @clear
+  % - [x] test text B
+  : call ephemeris#lst#toggle_task()
+  - [ ] test text B
+
+
