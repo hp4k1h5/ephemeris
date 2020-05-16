@@ -1,5 +1,5 @@
 # ephemeris
-
+! experimental and unstable see [BUGS](#bugs)
 > a diary plugin/Calendar extension for vim
 
 this plugin extends some of the functionality provided by the
@@ -13,6 +13,13 @@ one of it's global variables `g:calendar_diary` without interfering with
 **see [doc/ephemeris.txt](doc/ephemeris.txt) for additional help**
 
 version information available at [vim.org](https://www.vim.org/scripts/script.php?script_id=5879)
+
+## BUGS
+- prior to v0.4 :EphemerisCopyTodos, if called from outside `g:calendar_diary`,
+  when `g:calendar_diary` contained a `~`, created a `g:calendar_diary/~/...`
+  subdirectory, and possibly other things. please accept my apologies. the fix
+  is documented in
+  [85bb3bf59ec379755fd8270994796e7c1fe32c8c](https://github.com/HP4k1h5/ephemeris/commit/85bb3bf59ec379755fd8270994796e7c1fe32c8c)
 
 ---------------------------------------------
 ## contents
