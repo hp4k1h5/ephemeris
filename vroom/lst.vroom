@@ -67,7 +67,57 @@ Check that the incomplete task has been removed
   - a list item with no task below the incomplete task
   @clear
 
-Does ephemeris#lst#filter_tasks also remove subsequent non-task lines ?
+
+By default ephemeris#lst#filter_tasks will try not to delete too many lines of
+possibly non task-related material. Prior to v.05, this was not the case, and
+the function would treat all text after a completed task `- [x]` UNTIL either
+EOF or an incomplete task `- [ ]`.
+
+This was usually not a huge issue if kept your todos at the bottom of your diary
+entries, but the filter had no specified way of halting its line deletion, other
+than not deleting incomplete tasks and their associated material.
+
+In v.05 and up, ephemeris#lst#toggle_task will try to be more careful and still
+delete all sub-blocks associated with complete tasks, but stop deleting on
+muliple line-breaks, and repeating instances of the `g:ephemeris_todos`
+marker.
+
+? Does ephemeris#lst#filter_tasks stop filtering on `g:ephemeris_todos` with no
+? setting ?
+
+If the user provides no string for g:ephemeris_todos then a default will be set
+by the program. Currently this is set by...TODO
+
+SETUP
+
+TEST stop on repeated todos
+Add header
+Add completed task
+Add non task sub
+Add g:ephemeris_todos marker
+Add other NON-task related material
+  % START<CR>
+  % - [x] complete task A, should be removed<CR>
+  % other stuff starting at col 0 <CR>
+  %   indented lines without any task<CR>
+  % - a list item with no task below the completed task<CR>
+  % 
+  % - [ ] incomplete task B<CR>
+  %   indented lines without any task<CR>
+  % - a list item with no task below the incomplete task
+Call the function
+  :call ephemeris#lst#filter_tasks()
+Check that the incomplete task has been removed
+  START
+  - [ ] incomplete task B
+    indented lines without any task
+  - a list item with no task below the incomplete task
+  @clear
+
+
+
+
+
 
 
 
