@@ -1,26 +1,32 @@
 Test file for ephemeris/autoload/lst.vim
 Demonstrate pkg var availability and list helper method functionality
 
-GLOBAL VARS
+SETUP
+Source lst
+  :source ../autoload/ephemeris/lst.vim 
 Source ephemeris
   :source ../plugin/ephemeris.vim
+
+GLOBAL VARS
 no global variables should exist yet, no functions have been run that would
-instatiate any.
-Are global variables undefined ?
-  :echom g:calendar_diary
-  ~ E121: Undefined variable: g:calendar_diary
-  :echom g:ephemeris_todos
-  ~ E121: Undefined variable: g:ephemeris_todos
+instatiate any. after running some functions, like copy todos and filter tasks,
+we should expect these vars to be set. 
+? Are global variables undefined ?
+  :echom exists("g:calendar_diary")
+  ~ 0
+  :echom exists("g:ephemeris_todos")
+  ~ 0
 
-after running copy todos, we expect g:calendar_diary and g:ephemeris_todos to
-have been set. TODO:
+? Does set_get_todos set g: var ?
+  :call ephemeris#lst#filter_tasks()
+  :echom exists("g:calendar_diary")
+  ~ 0
+  :echom exists("g:ephemeris_todos")
+  ~ 0
 
-SETUP
-  :source ../autoload/ephemeris/lst.vim 
 
 
-
-TEST filter
+TEST filter 1
 
 lst#filter_tasks() should delete completed tasks from the buffer. a completed
 task is defined as one that starts with the string `- [x]`. lst#filter_tasks()
@@ -68,6 +74,9 @@ Check that the incomplete task has been removed
   @clear
 
 
+
+TEST filter 2
+
 By default ephemeris#lst#filter_tasks will try not to delete too many lines of
 possibly non task-related material. Prior to v.05, this was not the case, and
 the function would treat all text after a completed task `- [x]` UNTIL either
@@ -86,7 +95,10 @@ marker.
 ? setting ?
 
 If the user provides no string for g:ephemeris_todos then a default will be set
-by the program. Currently this is set by...TODO
+by the program. Currently this is set by functions such as `lst#copy_todos`,
+and will probably continue to be since this program doesnt run at
+instantiation, and ephemeris will have to be able to rebuild state from scratch
+on each invocation.
 
 SETUP
 
@@ -96,27 +108,24 @@ Add completed task
 Add non task sub
 Add g:ephemeris_todos marker
 Add other NON-task related material
-  % START<CR>
-  % - [x] complete task A, should be removed<CR>
-  % other stuff starting at col 0 <CR>
-  %   indented lines without any task<CR>
-  % - a list item with no task below the completed task<CR>
-  % 
-  % - [ ] incomplete task B<CR>
-  %   indented lines without any task<CR>
-  % - a list item with no task below the incomplete task
+% START<CR>
+% - [x] complete task A, should be removed<CR>
+% other stuff starting at col 0 <CR>
+%   indented lines without any task<CR>
+% - a list item with no task below the completed task<CR>
+Add g:ephemeris_todos string 
+This should stop the filter from removing subsequent lines
+% TODOs<CR>
+% text after g:ephemeris_todos marker<CR>
+% - a list item with no task below the g:ephemeris_todos marker
 Call the function
-  :call ephemeris#lst#filter_tasks()
+:call ephemeris#lst#filter_tasks()
 Check that the incomplete task has been removed
-  START
-  - [ ] incomplete task B
-    indented lines without any task
-  - a list item with no task below the incomplete task
-  @clear
-
-
-
-
+START
+text after g:ephemeris_todos marker
+- a list item with no task below the g:ephemeris_todos marker
+@clear
+  
 
 
 
@@ -149,7 +158,6 @@ text ?
   % - [x] test text B
   : call ephemeris#lst#toggle_task()
   - [ ] test text B
-
 
 
 
