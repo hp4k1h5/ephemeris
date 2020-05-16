@@ -4,29 +4,56 @@ Demonstrate pkg var availability and list helper method functionality
 GLOBAL VARS
 Source ephemeris
   :source ../plugin/ephemeris.vim
-no global variables should exist yet, no functions have been run that would instatiate any.
+no global variables should exist yet, no functions have been run that would
+instatiate any.
 Are global variables undefined ?
   :echom g:calendar_diary
   ~ E121: Undefined variable: g:calendar_diary
   :echom g:ephemeris_todos
   ~ E121: Undefined variable: g:ephemeris_todos
 
-after running copy todos, we expect g:calendar_diary and g:ephemeris_todos to have been set. TODO:
+after running copy todos, we expect g:calendar_diary and g:ephemeris_todos to
+have been set. TODO:
+
+SETUP
+  :source ../autoload/ephemeris/lst.vim 
 
 
 
+TEST filter
 
-FILTER
-lst#filter_tasks() should delete completed tasks from the buffer. a completed task is defined as one that starts with the string `- [x]`. lst#filter_tasks() removes lines including a line beginning with the completed task marker
+lst#filter_tasks() should delete completed tasks from the buffer. a completed
+task is defined as one that starts with the string `- [x]`. lst#filter_tasks()
+removes lines including a line beginning with the completed task marker, up to
+the end of the file or an incomplete task. this means, currently if you have a
+completed task, followed 
+
+Does ephemeris#lst#filter_tasks remove completed tasks ?
+  % START<CR>
+  % - [x] incomplete task A, should be removed<CR>
+  % - [ ] complete task A
+  :call ephemeris#lst#filter_tasks()
+  START
+  - [ ] complete task A
+
+% - [ ] incomplete task A, should stay
+% - [ ] incomplete task C, should also stay
+  @clear
+
+Does ephemeris#lst#filter_tasks also remove subsequent non-task lines ?
 
 
 
-TOGGLE
+TEST toggle 
+
+SETUP
+  :source ../autoload/ephemeris/lst.vim 
+
 lst#toggle_task() should toggle the state of a task between complete
 `- [x]` and incomplete `- [ ]`. it should not effect other parts of
 the line or subsequent/previous lines.
-Does ephemeris#lst#toggle_task exist incomplete -> complete with and without text ?
-  :source ../autoload/ephemeris/lst.vim 
+Does ephemeris#lst#toggle_task toggle incomplete -> complete with and without
+text ?
   % - [ ] 
   :call ephemeris#lst#toggle_task()
   - [x] 
@@ -35,7 +62,8 @@ Does ephemeris#lst#toggle_task exist incomplete -> complete with and without tex
   : call ephemeris#lst#toggle_task()
   - [x] test text A
 
-Does ephemeris#lst#toggle_task exist complete -> incomplete with and without text ?
+Does ephemeris#lst#toggle_task toggle complete -> incomplete with and without
+text ?
   @clear
   % - [x] 
   :call ephemeris#lst#toggle_task()
@@ -44,5 +72,7 @@ Does ephemeris#lst#toggle_task exist complete -> incomplete with and without tex
   % - [x] test text B
   : call ephemeris#lst#toggle_task()
   - [ ] test text B
+
+
 
 
