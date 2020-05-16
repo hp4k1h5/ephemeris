@@ -3,6 +3,19 @@
 " Description: everything concerning lists and checkboxes
 " Home: https://github.com/HP4k1h5/ephemeris/
 
+function! ephemeris#lst#get_set_g_todos()
+  " get/set todo regex
+  if !exists('g:ephemeris_todos')
+    ""
+    " marker to indicate the beginning of the list of task items to be copied
+    " over to current day's diary entry. see @function(ephemeris#lst#copy_todos)
+    "
+    " default: TODOs
+    let g:ephemeris_todos = 'TODOs'
+  endif
+  return g:ephemeris_todos
+endfunction
+
 ""
 " @public 
 " Copy TODOs from last set of TODOs going back up to 10 years. Your @setting(g:calendar_diary)
@@ -18,16 +31,6 @@ function! ephemeris#lst#copy_todos()
     echom "creating today's diary entry" 
     call mkdir(expand(g:calendar_diary).'/'.strftime('%Y/%m'), 'p')
     execute 'badd '.l:today.'.md'
-  endif
-
-  " get/set todo regex
-  if !exists('g:ephemeris_todos')
-    ""
-    " marker to indicate the beginning of the list of task items to be copied
-    " over to current day's diary entry. see @function(ephemeris#lst#copy_todos)
-    "
-    " default: TODOs
-    let g:ephemeris_todos = 'TODOs'
   endif
 
   " look back through a year's worth of potential diary entries
@@ -72,6 +75,7 @@ endfunction
 "     -[ ] `txt`
 " <
 function! ephemeris#lst#filter_tasks()
+  call ephemeris#lst#get_set_g_todos()
   let l:i = 1
   let l:skip = 0
   for line in getbufline('%', 1, '$')
@@ -86,7 +90,7 @@ function! ephemeris#lst#filter_tasks()
       call cursor(l:i, 1)
       execute l:i.'d'
       " delete nested items underneath completed blocks
-      while l:i <= line('$') && stridx(getline(l:i), '- [') == -1
+      while l:i <= line('$') && stridx(getline(l:i), '- [') == -1 && stridx(getline(l:i), g:ephemeris_todos) == -1
         execute l:i.'d'
         let l:skip += 1
       endwhile
