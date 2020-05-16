@@ -16,7 +16,7 @@ function! ephemeris#lst#copy_todos()
   let l:today = expand(g:calendar_diary).'/'.strftime('%Y/%m/%d') 
   if !filereadable(l:today.'.md')
     echom "creating today's diary entry" 
-    call mkdir(g:calendar_diary.'/'.strftime('%Y/%m'), 'p')
+    call mkdir(expand(g:calendar_diary).'/'.strftime('%Y/%m'), 'p')
     execute 'badd '.l:today.'.md'
   endif
 
