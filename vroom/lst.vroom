@@ -28,16 +28,43 @@ removes lines including a line beginning with the completed task marker, up to
 the end of the file or an incomplete task. this means, currently if you have a
 completed task, followed 
 
-Does ephemeris#lst#filter_tasks remove completed tasks ?
+? Does ephemeris#lst#filter_tasks remove completed tasks and leave incomplete
+? tasks and everything else ?
+Add three lines of tasks and headers for checking purposes
   % START<CR>
-  % - [x] incomplete task A, should be removed<CR>
-  % - [ ] complete task A
+  % - [x] complete task A, should be removed<CR>
+  % - [ ] incomplete task B
+Call the function
   :call ephemeris#lst#filter_tasks()
+Check that the incomplete task has been removed
   START
-  - [ ] complete task A
+  - [ ] incomplete task B
+  @clear
 
-% - [ ] incomplete task A, should stay
-% - [ ] incomplete task C, should also stay
+? Does ephemeris#lst#filter_tasks and subsequent lines upto an incomplete task
+? or EOF ?
+Add headers for checking purposes
+Add a completed task
+Add several types of lines that should also be filtered when filtering out
+completed tasks.
+Add an incomplete task that should not be removed
+Add several types of lines that should also NOT be filtered out when filtering
+out completed tasks
+  % START<CR>
+  % - [x] complete task A, should be removed<CR>
+  % other stuff starting at col 0 <CR>
+  %   indented lines without any task<CR>
+  % - a list item with no task below the completed task<CR>
+  % - [ ] incomplete task B<CR>
+  %   indented lines without any task<CR>
+  % - a list item with no task below the incomplete task
+Call the function
+  :call ephemeris#lst#filter_tasks()
+Check that the incomplete task has been removed
+  START
+  - [ ] incomplete task B
+    indented lines without any task
+  - a list item with no task below the incomplete task
   @clear
 
 Does ephemeris#lst#filter_tasks also remove subsequent non-task lines ?
