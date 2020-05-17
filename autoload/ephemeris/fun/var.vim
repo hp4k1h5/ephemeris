@@ -7,15 +7,16 @@
 
 ""
 " @public
-" helper function to get state of g:calendar_diary
-" Since there is no default, this function will throw an error that calling
-" functions should handle
+" helper function to get expanded dirpath of g:calendar_diary Since there is no
+" default, if there is no variable set at g:calendar_diary, this function will
+" throw an error that calling functions should handle
 function! ephemeris#fun#var#get_calendar_diary()
   " get calendar_diary directory 
   if !exists('g:calendar_diary')
-    throw 'g:calendar_diary NOT found; please set g:calendar_diary in you vimrc\n `:let g:calendar_diary="~/diary"`'
+    throw 'g:calendar_diary NOT found; please set g:calendar_diary in you vimrc'
+          \ .'\n `:let g:calendar_diary="~/diary"`'
   endif
-  return g:calendar_diary
+  return expand(g:calendar_diary)
 endfunction
 
 

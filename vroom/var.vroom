@@ -21,19 +21,22 @@ no global variables should exist yet, no functions have been run that
 would instatiate any. after running some functions, like copy todos and
 filter tasks, we should expect these vars to be set. 
 
-? Are global variables undefined ?
+? Are global variables undefined to begin ?
   : echom exists("g:calendar_diary")
   ~ 0
   : echom exists("g:ephemeris_todos")
   ~ 0
   @clear
 
-? Does get_calendar_diary set calendar_diary 
+
+
+TEST functions
+? Does get_calendar_diary set calendar_diary ?!
+calling get_calendar_diary should NOT set g:calendar_diary
 Call get_calendar_diary()
   : try
-calling get_calendar_diary should not set g:calendar_diary
   :   call ephemeris#fun#var#get_calendar_diary()
-!can't seem to catch this error
+!can't seem to catch this error, maybe try :echoerr
 E605: Exception not caught: g:calendar_diary NOT found; please set g:calendar_diary in you vimrc\n `:let g:calendar_diary="~/diary"`
 !but it should be caught below and possibly tested
   : catch 
@@ -42,15 +45,23 @@ E605: Exception not caught: g:calendar_diary NOT found; please set g:calendar_di
   ~ 0
   @clear
 
+? Does get_calendar_diary get calendar_diary ?
+Set g:calendar_diary var
+  : let g:calendar_diary = '/tmp/diary'
+  : echom ephemeris#fun#var#get_calendar_diary()
+  ~ /tmp/diary
 
 ? Does set_get_todos set g:ephemeris_todos var ?
 After calling get_set_g_todos g:ephemeris_todos should exist
+By default if no variable is found, the string, 'TODOs'
 Call get_set_g_todos()
-  :call ephemeris#fun#var#get_set_g_todos()
-  :echom exists("g:ephemeris_todos")
+  : call ephemeris#fun#var#get_set_g_todos()
+  : echom exists("g:ephemeris_todos")
   ~ 1
+  : echom g:ephemeris_todos
+  ~ TODOs
 
 
-TEST functions
 
-Expect ephemeris#fun#var#get_calendar_diary to exist at the 2 level
+After calling ephemeris#fun#var#get_calendar_diary,
+Expect g:calendar_diary to exist at the 2 level

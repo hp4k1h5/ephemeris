@@ -4,8 +4,6 @@ Test list, task, checkbox method functionality
 SETUP
 Source lst
   : source ../autoload/ephemeris/lst.vim 
-Source ephemeris
-  : source ../plugin/ephemeris.vim
 
 
 
