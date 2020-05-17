@@ -23,7 +23,7 @@ function! ephemeris#lst#copy_todos()
   endif
 
   " get/set ephemeris_todos
-  call ephemeris#lst#get_set_g_todos()
+  call ephemeris#fun#var#get_set_g_todos()
 
   " look back through a year's worth of potential diary entries
   let l:dp = 1
@@ -68,7 +68,7 @@ endfunction
 " <
 function! ephemeris#lst#filter_tasks()
   " get/set ephemeris_todos
-  call ephemeris#lst#get_set_g_todos()
+  call ephemeris#fun#var#get_set_g_todos()
   let l:i = 1
   let l:skip = 0
   for line in getbufline('%', 1, '$')

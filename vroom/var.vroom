@@ -46,6 +46,7 @@ E605: Exception not caught: g:calendar_diary NOT found; please set g:calendar_di
   @clear
 
 ? Does get_calendar_diary get calendar_diary ?
+Expect get_calendar_diary to return 
 Set g:calendar_diary var
   : let g:calendar_diary = '/tmp/diary'
   : echom ephemeris#fun#var#get_calendar_diary()
@@ -60,8 +61,3 @@ Call get_set_g_todos()
   ~ 1
   : echom g:ephemeris_todos
   ~ TODOs
-
-
-
-After calling ephemeris#fun#var#get_calendar_diary,
-Expect g:calendar_diary to exist at the 2 level
