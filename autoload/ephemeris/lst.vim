@@ -99,7 +99,10 @@ function! ephemeris#lst#filter_tasks()
       call cursor(l:i, 1)
       execute l:i.'d'
       " delete nested items underneath completed blocks
-      while l:i <= line('$') && stridx(getline(l:i), '- [') == -1 && stridx(getline(l:i), g:ephemeris_todos) == -1
+      while l:i <= line('$') 
+            \ && stridx(getline(l:i), '- [') == -1 
+            \ && stridx(getline(l:i), g:ephemeris_todos) == -1
+            \ && join(getline(l:i, l:i+1), '') !~ '^$' 
         execute l:i.'d'
         let l:skip += 1
       endwhile

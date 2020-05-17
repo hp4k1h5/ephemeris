@@ -106,14 +106,13 @@ TEST stop on repeated todos
 Add header
 Add completed task
 Add non task sub
-Add g:ephemeris_todos marker
 Add other NON-task related material
   % START<CR>
   % - [x] complete task A, should be removed<CR>
   % other stuff starting at col 0 <CR>
   %   indented lines without any task<CR>
   % - a list item with no task below the completed task<CR>
-Add g:ephemeris_todos string 
+Add g:ephemeris_todos marker string 
 This should stop the filter from removing subsequent lines
   % end TODOs<CR>
   % text after g:ephemeris_todos marker<CR>
@@ -165,6 +164,31 @@ been kept
 
 
 TEST stop filter on 2 newlines
+Add header
+Add completed task
+Add non task sub
+Add other NON-task related material
+  % START<CR>
+  % - [x] complete task A, should be removed<CR>
+  % other stuff starting at col 0 <CR>
+  %   indented lines without any task<CR>
+  % - a list item with no task below the completed task<CR>
+Add newline
+  % <CR>
+  % <CR>
+  %  - [ ] incomplete task C<CR>
+  %    - list stuff to keep
+Call the function
+  :call ephemeris#lst#filter_tasks()
+Check that the complete task has been removed and that the incomplete tasks
+have been kept
+  START
+  
+  
+   - [ ] incomplete task C
+     - list stuff to keep
+  @clear
+
 
 
 
