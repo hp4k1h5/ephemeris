@@ -1,43 +1,11 @@
 Test file for ephemeris/autoload/lst.vim
-Demonstrate pkg var availability and list helper method functionality
+Test list, task, checkbox method functionality
 
 SETUP
 Source lst
   : source ../autoload/ephemeris/lst.vim 
 Source ephemeris
   : source ../plugin/ephemeris.vim
-
-GLOBAL VARS
-no global variables should exist yet, no functions have been run that would
-instatiate any. after running some functions, like copy todos and filter tasks,
-we should expect these vars to be set. 
-? Are global variables undefined ?
-  : echom exists("g:calendar_diary")
-  ~ 0
-  : echom exists("g:ephemeris_todos")
-  ~ 0
-  @clear
-
-?
-Call ephemeris#lst#get_calendar_diary()
-  : try
-  :   echom ephemeris#lst#get_calendar_diary()
-!can't seem to catch this error
-E605: Exception not caught: g:calendar_diary NOT found; please set g:calendar_diary in you vimrc\n `:let g:calendar_diary="~/diary"`
-!but it should be caught below and possibly tested
-  : catch 
-  : endtry
-  : echom exists("g:ephemeris_todos")
-  ~ 0
-  @clear
-
-
-? Does set_get_todos set g: var ?
-After calling get_set_g_todos g:ephemeris#lst#get_set_g_todos should exist
-Call get_set_g_todos()
-  :call ephemeris#lst#get_set_g_todos()
-  :echom exists("g:ephemeris_todos")
-  ~ 1
 
 
 
