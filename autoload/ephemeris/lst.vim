@@ -3,6 +3,22 @@
 " Description: everything concerning lists and checkboxes
 " Home: https://github.com/HP4k1h5/ephemeris/
 
+
+""
+" @public
+" helper function to get state of g:calendar_diary
+" Since there is no default, this function will throw an error that calling
+" functions should handle
+" TODO: move to ephemeris#var#
+function! ephemeris#lst#get_calendar_diary()
+  " get calendar_diary directory 
+  if !exists('g:calendar_diary')
+    throw 'g:calendar_diary NOT found; please set g:calendar_diary in you vimrc\n `:let g:calendar_diary="~/diary"`'
+  endif
+  return g:calendar_diary
+endfunction
+
+
 ""
 " @public
 " helper function to get/set state of g:ephemeris_todos
@@ -99,6 +115,7 @@ function! ephemeris#lst#filter_tasks()
       call cursor(l:i, 1)
       execute l:i.'d'
       " delete nested items underneath completed blocks
+      " stop on any task item, g:ephemeris_todos, 2 blank lines
       while l:i <= line('$') 
             \ && stridx(getline(l:i), '- [') == -1 
             \ && stridx(getline(l:i), g:ephemeris_todos) == -1
