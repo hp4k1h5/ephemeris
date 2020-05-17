@@ -49,6 +49,7 @@ function! ephemeris#lst#copy_todos()
   endwhile
 endfunction
 
+
 ""
 " @public 
 " Filter out completed tasks and their associated blocks in the current buffer. i.e., if you have a set of tasks like,
@@ -99,6 +100,7 @@ endfunction
 
 " TODO: move to BACKLOG somewhere
 " multiline pcre for similar `\- \[.].|[\s]+(?=(\- \[.]|\Z))` 
+
 
 ""
 " @public

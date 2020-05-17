@@ -251,6 +251,7 @@ Echo get_calendar_diary return to term
   : echom ephemeris#fun#var#get_calendar_diary()
   ~ /tmp/vroom_diary
 Create a file for date prior to current date.
+  : call mkdir(
 
 
 RUN
