@@ -161,16 +161,16 @@ been kept
   - a list item with no task below the g:ephemeris_todos marker
    - [ ] incomplete task C
      - list stuff to keep
-
   @clear
+
+
+TEST stop filter on 2 newlines
+
 
 
 
 
 TEST toggle 
-
-SETUP
-  :source ../autoload/ephemeris/lst.vim 
 
 lst#toggle_task() should toggle the state of a task between complete
 `- [x]` and incomplete `- [ ]`. it should not effect other parts of

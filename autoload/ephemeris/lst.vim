@@ -3,6 +3,9 @@
 " Description: everything concerning lists and checkboxes
 " Home: https://github.com/HP4k1h5/ephemeris/
 
+""
+" @public
+" helper function to get/set state of g:ephemeris_todos
 function! ephemeris#lst#get_set_g_todos()
   " get/set todo regex
   if !exists('g:ephemeris_todos')
@@ -16,14 +19,16 @@ function! ephemeris#lst#get_set_g_todos()
   return g:ephemeris_todos
 endfunction
 
+
 ""
 " @public 
-" Copy TODOs from last set of TODOs going back up to 10 years. Your @setting(g:calendar_diary)
-" directory must  be organized in a `.../YYYY/MM/DD.md` hierarchy, in order for this function to
-" know which set of TODOs are _most recent_. TODOs are defined by the string set in
-" @setting(g:ephemeris_todos). Default is 'TODOs'. **Everything** below that marker is copied to
-" the current day's diary entry. It will open today's diary entry in a split. This function can be
-" called from anywhere.
+" Copy TODOs from last set of TODOs going back up to 10 years. Your
+" @setting(g:calendar_diary) directory must  be organized in a
+" `.../YYYY/MM/DD.md` hierarchy, in order for this function to know which set of
+" TODOs are _most recent_. TODOs are defined by the string set in
+" @setting(g:ephemeris_todos). Default is 'TODOs'. **Everything** below that
+" marker is copied to the current day's diary entry. It will open today's diary
+" entry in a split. This function can be called from anywhere.
 function! ephemeris#lst#copy_todos()
   " create today's path and .md entry file if necessary
   let l:today = expand(g:calendar_diary).'/'.strftime('%Y/%m/%d') 
@@ -32,6 +37,9 @@ function! ephemeris#lst#copy_todos()
     call mkdir(expand(g:calendar_diary).'/'.strftime('%Y/%m'), 'p')
     execute 'badd '.l:today.'.md'
   endif
+
+  " get/set ephemeris_todos
+  call ephemeris#lst#get_set_g_todos()
 
   " look back through a year's worth of potential diary entries
   let l:dp = 1
@@ -75,6 +83,7 @@ endfunction
 "     -[ ] `txt`
 " <
 function! ephemeris#lst#filter_tasks()
+  " get/set ephemeris_todos
   call ephemeris#lst#get_set_g_todos()
   let l:i = 1
   let l:skip = 0
