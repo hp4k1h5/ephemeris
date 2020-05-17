@@ -3,31 +3,31 @@ Demonstrate pkg var availability and list helper method functionality
 
 SETUP
 Source lst
-  :source ../autoload/ephemeris/lst.vim 
+  : source ../autoload/ephemeris/lst.vim 
 Source ephemeris
-  :source ../plugin/ephemeris.vim
+  : source ../plugin/ephemeris.vim
 
 GLOBAL VARS
 no global variables should exist yet, no functions have been run that would
 instatiate any. after running some functions, like copy todos and filter tasks,
 we should expect these vars to be set. 
 ? Are global variables undefined ?
-  :echom exists("g:calendar_diary")
+  : echom exists("g:calendar_diary")
   ~ 0
-  :echom exists("g:ephemeris_todos")
+  : echom exists("g:ephemeris_todos")
   ~ 0
   @clear
 
 ?
 Call ephemeris#lst#get_calendar_diary()
-  :try
-  :  echom ephemeris#lst#get_calendar_diary()
+  : try
+  :   echom ephemeris#lst#get_calendar_diary()
 !can't seem to catch this error
 E605: Exception not caught: g:calendar_diary NOT found; please set g:calendar_diary in you vimrc\n `:let g:calendar_diary="~/diary"`
 !but it should be caught below and possibly tested
-  :catch 
-  :endtry
-  :echom exists("g:ephemeris_todos")
+  : catch 
+  : endtry
+  : echom exists("g:ephemeris_todos")
   ~ 0
   @clear
 
@@ -56,7 +56,7 @@ Add three lines of tasks and headers for checking purposes
   % - [x] complete task A, should be removed<CR>
   % - [ ] incomplete task B
 Call the function
-  :call ephemeris#lst#filter_tasks()
+  : call ephemeris#lst#filter_tasks()
 Check that the incomplete task has been removed
   START
   - [ ] incomplete task B
@@ -80,7 +80,7 @@ out completed tasks
   %   indented lines without any task<CR>
   % - a list item with no task below the incomplete task
 Call the function
-  :call ephemeris#lst#filter_tasks()
+  : call ephemeris#lst#filter_tasks()
 Check that the incomplete task has been removed
   START
   - [ ] incomplete task B
@@ -133,7 +133,7 @@ This should stop the filter from removing subsequent lines
   % text after g:ephemeris_todos marker<CR>
   % - a list item with no task below the g:ephemeris_todos marker
 Call the function
-  :call ephemeris#lst#filter_tasks()
+  : call ephemeris#lst#filter_tasks()
 Check that the complete task has been removed and that text after the g:ephemeris_todos marker has been kept
   START
   end TODOs
@@ -166,7 +166,7 @@ Add incomplete tasks that should be kept
   %  - [ ] incomplete task C<CR>
   %    - list stuff to keep<CR>
 Call the function
-  :call ephemeris#lst#filter_tasks()
+  : call ephemeris#lst#filter_tasks()
 Check that the complete task has been removed and that the incomplete tasks have
 been kept
   START
@@ -210,7 +210,7 @@ TEST filter 3
 Add a nested checkbox marker
   % - [ - [x]]
 Run filter todos
-  :call ephemeris#lst#filter_tasks()
+  : call ephemeris#lst#filter_tasks()
 Expect the whole line to be deleted
   
 ^^Dont delete two blank spaces above!!
@@ -219,7 +219,7 @@ Expect the whole line to be deleted
 Add a nested checkbox marker
   % - [ - [ ]]
 Run filter todos
-  :call ephemeris#lst#filter_tasks()
+  : call ephemeris#lst#filter_tasks()
 Expect the whole line to be preserved
   - [ - [ ]]
   @clear
@@ -234,7 +234,7 @@ the line or subsequent/previous lines.
 Does ephemeris#lst#toggle_task toggle incomplete -> complete with and without
 text ?
   % - [ ] 
-  :call ephemeris#lst#toggle_task()
+  : call ephemeris#lst#toggle_task()
   - [x] 
   @clear
   % - [ ] test text A
@@ -245,7 +245,7 @@ Does ephemeris#lst#toggle_task toggle complete -> incomplete with and without
 text ?
   @clear
   % - [x] 
-  :call ephemeris#lst#toggle_task()
+  : call ephemeris#lst#toggle_task()
   - [ ] 
   @clear
   % - [x] test text B
@@ -256,7 +256,7 @@ text ?
 Add a nested checkbox marker
   % - [ - [ ]]
 Run toggle task
-  :call ephemeris#lst#toggle_task()
+  : call ephemeris#lst#toggle_task()
 Expect the interior checkbox to be toggled
   - [ - [x]]
   @clear
@@ -265,16 +265,27 @@ Expect the interior checkbox to be toggled
 
 TEST copytodos
 
-This test will have to create a fake index with TODOS either a new one with a
-date prior to the date the test is run, or a default one with a recent date
-that will currently be valid for 10 years as of Sun May 17 08:02:54 2020.  the
-test should guarantee that both the prior mock entry and the current day's mock
-entry are deleted
+This test will have to create a fake entry with TODOS either a new one each
+time, with a date prior to the date the test is run, or a default one with a
+recent date that will currently be valid for 10 years as of Sun May 17 08:02:54
+2020. the test should guarantee that both the prior mock entry and the current 
+day'smock entry are deleted prior to exiting the test
 
 SETUP
-
+Set g:ephemeris_todos 
+  : echom exists('g:calendar_diary')
+  ~ 0
+  : let g:calendar_diary = '/tmp/vroom_diary'
+Expect ephemeris#lst#get_calendar_diary to have string
+  : echom exists('g:calendar_diary')
+  ~ 1
+Echo get_calendar_diary return to term
+  : echom ephemeris#lst#get_calendar_diary()
+  ~ /tmp/vroom_diary
 Create a file for date prior to current date.
+
 
 RUN
 
 TEARDOWN
+
