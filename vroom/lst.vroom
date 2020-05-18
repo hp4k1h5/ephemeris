@@ -257,18 +257,23 @@ Create a file for date prior to current date.
   : echom dirpath
 Expect dirpath to be
   ~ /tmp/vroom_diary/2020/05
+Make a tmp dir with test date path
   : call mkdir(dirpath, 'p')
+Expect no buffer with todays path and filename to exist
   : echom bufnr(dirpath.'/16.md')
   ~ -1
+Add buffer with test filename to list
   : execute 'badd '.dirpath.'/16.md'
+Check for buffer to exist
+  : let bn = bufnr(dirpath.'/16.md')
+  : echom (bn > -1)
 Expect buffer to exist
-  : echom (bufnr(dirpath.'/16.md') > -1)
   ~ 1
+Check for file
   : echom filereadable(dirpath.'/16.md') 
 Expect file not to exist
   ~ 0
-
-
+  
 RUN
 
 TEARDOWN
