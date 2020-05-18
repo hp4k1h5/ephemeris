@@ -243,6 +243,8 @@ SETUP
 Set g:ephemeris_todos 
   : echom exists('g:calendar_diary')
   ~ 0
+Create tmp diary directory in /tmp to avoid possibly overwriting any system
+files
   : let g:calendar_diary = '/tmp/vroom_diary'
 Expect ephemeris#lst#get_calendar_diary to have string
   : echom exists('g:calendar_diary')
@@ -251,7 +253,20 @@ Echo get_calendar_diary return to term
   : echom ephemeris#fun#var#get_calendar_diary()
   ~ /tmp/vroom_diary
 Create a file for date prior to current date.
-  : call mkdir(
+  : let dirpath = ephemeris#fun#var#get_calendar_diary().'/2020/05'
+  : echom dirpath
+Expect dirpath to be
+  ~ /tmp/vroom_diary/2020/05
+  : call mkdir(dirpath, 'p')
+  : echom bufnr(dirpath.'/16.md')
+  ~ -1
+  : execute 'badd '.dirpath.'/16.md'
+Expect buffer to exist
+  : echom (bufnr(dirpath.'/16.md') > -1)
+  ~ 1
+  : echom filereadable(dirpath.'/16.md') 
+Expect file not to exist
+  ~ 0
 
 
 RUN
