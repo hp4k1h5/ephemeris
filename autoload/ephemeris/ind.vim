@@ -42,6 +42,9 @@ function! ephemeris#ind#create_index()
   call ephemeris#ind#goto_index()
   " clear buffer 
   execute 'normal! ggdG'
+  " consider `execute 'silent! bufdo! bdelete!'`
+  " see
+  " [vroom](https://github.com/google/vroom/blob/c8d593f10f77ed565df66a91b69cd79bc3e6bddd/examples/basics.vroom#L29)
 
   " add headers 
   call append(0, '# Diary Entries')

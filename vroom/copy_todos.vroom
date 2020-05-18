@@ -1,0 +1,59 @@
+
+
+
+
+TEST copytodos
+
+This test will have to create a fake entry with TODOS either a new one each
+time, with a date prior to the date the test is run, or a default one with a
+recent date that will currently be valid for 10 years as of Sun May 17 08:02:54
+2020. the test should guarantee that both the prior mock entry and the current 
+day'smock entry are deleted prior to exiting the test
+
+SETUP
+Set g:ephemeris_todos 
+  : echom exists('g:calendar_diary')
+  ~ 0
+Create tmp diary directory in /tmp to avoid possibly overwriting any system
+files
+  : let g:calendar_diary = '/tmp/vroom_diary'
+Expect ephemeris#lst#get_calendar_diary to have string
+  : echom exists('g:calendar_diary')
+  ~ 1
+Echo get_calendar_diary return to term
+  : echom ephemeris#fun#var#get_calendar_diary()
+  ~ /tmp/vroom_diary
+Create a file for date prior to current date.
+  : let dirpath = ephemeris#fun#var#get_calendar_diary().'/2020/05'
+  : echom dirpath
+Expect dirpath to be
+  ~ /tmp/vroom_diary/2020/05
+Make a tmp dir with test date path
+  : call mkdir(dirpath, 'p')
+Expect no buffer with todays path and filename to exist
+  : echom bufnr(dirpath.'/16.md')
+  ~ -1
+Before creating new buffer, get bufnr of current buffer
+  : let cur_buf_num = bufnr()
+Create new empty buffer split
+  : vnew
+Add default g:ephemeris_todos marker string to buffer
+  % TODOs
+Add list items
+  % - [ ] incomplete task 1<CR>
+  %   stuff here<CR>
+  %   - list item not a task<CR>
+  % - [x] complete task 1<CR>
+  %   - [ ] subtask<CR>
+  % - [ ] another incomplete task 2
+Write this to the other buffer, Next? , prev?, let's try prev
+Back to last buffer (cur_buf_num)
+  : prev
+  : echom (bufnr() == cur_buf_num)
+  ~ 1
+
+
+RUN
+
+TEARDOWN
+

@@ -22,13 +22,15 @@ function! ephemeris#lst#copy_todos()
     execute 'badd '.l:today.'.md'
   endif
 
-  " get/set ephemeris_todos
+  " get/set g:ephemeris_todos
   call ephemeris#fun#var#get_set_g_todos()
 
   " look back through a year's worth of potential diary entries
   let l:dp = 1
   while l:dp < 365 * 10
-    let l:prev = substitute(system('date -v -'.l:dp."d '+%Y/%m/%d'"), '\n', '', 'g')
+    let l:prev = substitute(
+          \ system('date -v -'.l:dp."d '+%Y/%m/%d'"),
+          \ '\n', '', 'g')
     let l:fn = expand(g:calendar_diary).'/'.l:prev.'.md'
     if filereadable(l:fn)
       " if file contains a todo, extract list and dump in today's entry
@@ -52,7 +54,8 @@ endfunction
 
 ""
 " @public 
-" Filter out completed tasks and their associated blocks in the current buffer. i.e., if you have a set of tasks like,
+" Filter out completed tasks and their associated blocks in the current buffer.
+" i.e., if you have a set of tasks like,
 " >
 "   - [ ] ephemeris docs
 "     -[x] `.md`
@@ -62,7 +65,8 @@ endfunction
 "     -[ ] `txt`
 "   - [x] export autocommands
 " <
-" and you run `:EphemerisFilterTasks` in the command-line mode, you will be left with
+" and you run `:EphemerisFilterTasks` in the command-line mode, you will be left
+" with
 " >
 "   - [ ] ephemeris docs
 "     -[ ] `txt`
@@ -109,6 +113,7 @@ endfunction
 "   - [ ] incomplete, and
 "   - [x] complete
 " <
+" whether or not there is a checkbox return 0
 function! ephemeris#lst#toggle_task()
   let l:n = line('.')
   let l:l = getline('.')
