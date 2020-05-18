@@ -32,6 +32,9 @@ function! ephemeris#lst#copy_todos()
     let l:fn = expand(g:calendar_diary).'/'.l:prev.'.md'
     if filereadable(l:fn)
       " if file contains a todo, extract list and dump in today's entry
+      " TODO: currently TODO lists need to end the file, a smarter function
+      "     : will only grab `-` etc lines up to a natural end, 
+      "     : e.g. 3 consecutive newlines
       let l:todostart = system('grep -n "'.g:ephemeris_todos.'" '.l:fn)
       if len(l:todostart)
         let l:todostart = split(l:todostart, ':')[0]
