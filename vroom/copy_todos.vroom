@@ -1,6 +1,10 @@
+Test file for the ephemeris#lst#copy_todos() function
 
-
-
+SETUP
+Source lst
+  : source ../autoload/ephemeris/lst.vim 
+Source var 
+  :source ../autoload/ephemeris/fun/var.vim
 
 TEST copytodos
 
@@ -11,32 +15,37 @@ recent date that will currently be valid for 10 years as of Sun May 17 08:02:54
 day'smock entry are deleted prior to exiting the test
 
 SETUP
-Set g:ephemeris_todos 
+Expect g:ephemeris_todos not to exist when vim is started
   : echom exists('g:calendar_diary')
   ~ 0
+
 Create tmp diary directory in /tmp to avoid possibly overwriting any system
 files
   : let g:calendar_diary = '/tmp/vroom_diary'
-Expect ephemeris#lst#get_calendar_diary to have string
+
+Expect ephemeris#lst#get_calendar_diary to exist 
   : echom exists('g:calendar_diary')
   ~ 1
-Echo get_calendar_diary return to term
-  : echom ephemeris#fun#var#get_calendar_diary()
+
+Expect get_calendar_diary to return /tmp/vroom_diary
+  : let cal_dir = ephemeris#fun#var#get_calendar_diary()
+  : echom cal_dir
   ~ /tmp/vroom_diary
+
 Create a file for date prior to current date.
-  : let dirpath = ephemeris#fun#var#get_calendar_diary().'/2020/05'
+  : let dirpath = cal_dir.'/2020/05'
   : echom dirpath
-Expect dirpath to be
+
+Expect dirpath to be ...
   ~ /tmp/vroom_diary/2020/05
+
 Make a tmp dir with test date path
   : call mkdir(dirpath, 'p')
+
 Expect no buffer with todays path and filename to exist
   : echom bufnr(dirpath.'/16.md')
   ~ -1
-Before creating new buffer, get bufnr of current buffer
-  : let cur_buf_num = bufnr()
-Create new empty buffer split
-  : vnew
+
 Add default g:ephemeris_todos marker string to buffer
   % TODOs
 Add list items
@@ -46,11 +55,15 @@ Add list items
   % - [x] complete task 1<CR>
   %   - [ ] subtask<CR>
   % - [ ] another incomplete task 2
-Write this to the other buffer, Next? , prev?, let's try prev
-Back to last buffer (cur_buf_num)
-  : prev
-  : echom (bufnr() == cur_buf_num)
+Write to file
+  : w /tmp/vroom_diary/2020/05/16.md
+
+Expect mock prev diary entry to exist and have bufnr 1
+  : echom bufnr(dirpath.'/16.md')
   ~ 1
+
+Call copy_todos
+  : call ephemeris#lst#copy_todos() 
 
 
 RUN
