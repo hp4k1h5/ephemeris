@@ -1,0 +1,14 @@
+# Test lst#toggle_task
+
+- this function should toggle the state of a task
+- from incomplete (unchecked), `- [ ]` to complete, `- [x]`
+
+Given (an unckecked checkbox):
+  - [ ]
+
+Execute (toggle_task):
+  EphemerisToggleTask()
+# ephemeris#lst#toggle_task()
+
+Expect (task to be in a checked state):
+  - [x]
