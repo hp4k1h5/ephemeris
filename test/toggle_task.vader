@@ -1,8 +1,14 @@
-# Test lst#toggle_task
+~ Test lst#toggle_task
 
-- this function should toggle the state of a task
-- from incomplete (unchecked), `- [ ]` to complete, `- [x]`
+" this function should toggle the state of a task
+" from incomplete (unchecked), `- [ ]` to complete (checked), `- [x]`
+" TODO: if the cursor is in the associated block of a task, toggle the parent
+" TODO: task
 
+
+" Test unchecked -> checked
+" calling ephemeris#lst#toggle_task on an unchecked task should switch the
+" state of the task from unchecked to checked
 Given (an unckecked checkbox):
   - [ ]
 
@@ -11,3 +17,15 @@ Execute (toggle_task):
 
 Expect (task to be in a checked state):
   - [x]
+
+" Test checked -> unchecked
+" calling ephemeris#lst#toggle_task on a checked task should switch the
+" state of the task from checked to unckecked
+Given (an ckecked checkbox):
+  - [x]
+
+Execute (toggle_task):
+  call ephemeris#lst#toggle_task()
+
+Expect (task to be in a unchecked state):
+  - [ ]
