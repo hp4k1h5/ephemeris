@@ -7,8 +7,7 @@ Given (an unckecked checkbox):
   - [ ]
 
 Execute (toggle_task):
-  EphemerisToggleTask()
-# ephemeris#lst#toggle_task()
+  call ephemeris#lst#toggle_task()
 
 Expect (task to be in a checked state):
   - [x]
