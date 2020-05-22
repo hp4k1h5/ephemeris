@@ -6,6 +6,24 @@
 " stops copying when it finds `g:ephemeris_todos` marker, two consecutive
 " newlines, or EOF. It should copy all todos blocks. 
 
+Before (provide global variables to tests):
+  let b:tst_dir = './.vader_test'
+  let g:ephemeris_diary = b:tst_dir.'/tmp_diary'
+
 # test copy_todos
-Execute (add a test buffer from a date in the past):
-  badd 
+" setup
+Execute (make test dir and add a test buffer from a date in the past):
+  let b:tst_exp_dir = expand(g:ephemeris_diary.'/2019/01')
+  call mkdir(b:tst_exp_dir, 'p')
+  Assert isdirectory(b:tst_exp_dir)
+
+
+
+" Teardown
+
+" remove test directories and assert that they are deleted
+Execute (rm -rf tmp test dirs):
+  execute '! rm -rf '.expand(b:tst_dir)
+  Assert ! isdirectory(expand(b:tst_dir)),
+  \ 'ephemeris tests Failed to delete test directory: '
+  \ .b:tst_dir
