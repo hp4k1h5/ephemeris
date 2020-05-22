@@ -1,9 +1,20 @@
 ~ Test fs.vim 
 
-" fs.vim contains a collection of wrapper functions for filesystem and variable get/set operations. Most of these functions throw errors that should be handled and tested in the parent scope.
+" fs.vim contains a collection of wrapper functions for filesystem and variable
+" get/set operations. Most of these functions throw errors that should be
+" handled and tested in the parent scope.
 
 " g:ephemeris_diary should not exist, therefore
 Execute (get_g_diary and expect it to throw):
   AssertThrows call ephemeris#fs#get_g_diary()
-  AssertEqual g:vader_exception, 'required global variable `g:ephemeris_diary` has not been set' . '... set with `:let g:ephemeris_diary="~/diary"`'
+  AssertEqual g:vader_exception, 'required global variable `g:ephemeris_diary` has not been set' 
+  \ .'... set with `:let g:ephemeris_diary="~/diary"`'
+
+" get_g_diary must return an expanded path
+Execute (set g:ephemeris_diary):
+  let b:tst_dir = '~/tmp/vader_diary'
+  let g:ephemeris_diary = b:tst_dir
+  AssertEqual g:ephemeris_diary, b:tst_dir
+  AssertEqual ephemeris#fs#get_g_diary(), expand(b:tst_dir)
+
 
