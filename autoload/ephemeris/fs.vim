@@ -6,8 +6,9 @@
 
 ""
 " @public
-" Crates a diary entry buffer for the current day, and, if necessary,
-" the required `g:ephemeris_diary/YYYY/MM/...` directory path.
+" Creates a diary entry buffer for the current day, and, if necessary, the
+" required `g:ephemeris_diary/YYYY/MM/...` directory path. See
+" @setting(g:ephemeris_diary)
 function! ephemeris#fs#get_set_today()
   try
     let s:diary_dir = ephemeris#fs#get_g_diary()
@@ -18,9 +19,11 @@ function! ephemeris#fs#get_set_today()
   let l:today = s:diary_dir.'/'.strftime('%Y/%m/%d').'.md'
   if !filereadable(l:today)
     echom "creating today's diary entry" 
-    call mkdir(l:today)
+    call mkdir(l:today, 'p')
     execute 'badd '.l:today
   endif
+
+  return l:today
 endfunction
 
 

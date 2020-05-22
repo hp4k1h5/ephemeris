@@ -4,17 +4,41 @@
 " get/set operations. Most of these functions throw errors that should be
 " handled and tested in the parent scope.
 
+
+Before (set exception strings):
+  let b:tst_g_diary_exception = 'required global variable `g:ephemeris_diary` has not been set' 
+  \ .'... set with `:let g:ephemeris_diary="~/diary"`'
+  let b:tst_dir = '~/tmp/vader_diary'
+
+# test ephemeris#fs#get_g_diary
+
 " g:ephemeris_diary should not exist, therefore
 Execute (get_g_diary and expect it to throw):
   AssertThrows call ephemeris#fs#get_g_diary()
-  AssertEqual g:vader_exception, 'required global variable `g:ephemeris_diary` has not been set' 
-  \ .'... set with `:let g:ephemeris_diary="~/diary"`'
+  AssertEqual g:vader_exception, b:tst_g_diary_exception
 
 " get_g_diary must return an expanded path
 Execute (set g:ephemeris_diary):
-  let b:tst_dir = '~/tmp/vader_diary'
   let g:ephemeris_diary = b:tst_dir
   AssertEqual g:ephemeris_diary, b:tst_dir
   AssertEqual ephemeris#fs#get_g_diary(), expand(b:tst_dir)
 
+# test ephemeris#fs#get_set_today
+" get_set_today should add today's diary entry to the buffer list or
+" focus it if it exists
 
+" clear global variables
+Execute (unlet g:ephemeris_diary):
+  AssertEqual exists('g:ephemeris_diary'), 1
+  unlet g:ephemeris_diary
+  AssertEqual exists('g:ephemeris_diary'), 0
+
+" get_set_today should bubble up the error from its called function get_g_diary
+Execute (get_set_today should throw an error when g:ephemeris_diary has not been set):
+  AssertThrows call ephemeris#fs#get_set_today()
+  AssertEqual g:vader_exception, b:tst_g_diary_exception
+
+Execute (set g:ephemeris_diary):
+  let g:ephemeris_diary = b:tst_dir
+  AssertEqual 1, exists('g:ephemeris_diary')
+  AssertEqual expand(b:tst_dir).'/'.strftime('%Y/%m/%d').'.md', ephemeris#fs#get_set_today()
