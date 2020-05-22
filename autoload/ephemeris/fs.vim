@@ -9,17 +9,21 @@
 " Creates a diary entry buffer for the current day, and, if necessary, the
 " required `g:ephemeris_diary/YYYY/MM/...` directory path. See
 " @setting(g:ephemeris_diary)
+"
+" Returns a string containing the current day's diary entry filepath
+" TODO: elseif focus l:today
 function! ephemeris#fs#get_set_today()
   try
-    let s:diary_dir = ephemeris#fs#get_g_diary()
+    let l:diary_dir = ephemeris#fs#get_g_diary()
   catch
     throw v:exception
   endtry
 
-  let l:today = s:diary_dir.'/'.strftime('%Y/%m/%d').'.md'
+  let l:month_path = l:diary_dir.'/'.strftime('%Y/%m')
+  let l:today = l:month_path.strftime('/%d').'.md'
   if !filereadable(l:today)
     echom "creating today's diary entry" 
-    call mkdir(l:today, 'p')
+    call mkdir(l:month_path, 'p')
     execute 'badd '.l:today
   endif
 

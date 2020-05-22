@@ -38,7 +38,11 @@ Execute (get_set_today should throw an error when g:ephemeris_diary has not been
   AssertThrows call ephemeris#fs#get_set_today()
   AssertEqual b:tst_g_diary_exception, g:vader_exception
 
-Execute (set g:ephemeris_diary):
+Execute (expect get_set_today to return todays diary entry filepath when g:ephemeris_diary is set):
+  " set g:ephemeris_diary
   let g:ephemeris_diary = b:tst_dir
   AssertEqual 1, exists('g:ephemeris_diary')
-  AssertEqual expand(b:tst_dir).'/'.strftime('%Y/%m/%d').'.md', ephemeris#fs#get_set_today()
+  let b:tst_today = expand(b:tst_dir).'/'.strftime('%Y/%m/%d').'.md'
+  AssertEqual b:tst_today, ephemeris#fs#get_set_today()
+  " at this stage in the test we have created 3 buffers and are expecting the test current diary entry to be in buffer 4
+  AssertEqual bufnr(b:tst_today), 4
