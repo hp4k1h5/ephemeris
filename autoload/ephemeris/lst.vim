@@ -15,13 +15,7 @@
 " entry in a split. This function can be called from anywhere.
 function! ephemeris#lst#copy_todos()
   " create today's path and .md entry file if necessary
-  let l:today = expand(g:calendar_diary).'/'.strftime('%Y/%m/%d') 
-  if !filereadable(l:today.'.md')
-    echom "creating today's diary entry" 
-    call mkdir(expand(g:calendar_diary).'/'.strftime('%Y/%m'), 'p')
-    execute 'badd '.l:today.'.md'
-  endif
-
+  
   " get/set g:ephemeris_todos
   call ephemeris#fun#var#get_set_g_todos()
 

@@ -1,0 +1,9 @@
+~ Test fs.vim 
+
+" fs.vim contains a collection of wrapper functions for filesystem and variable get/set operations. Most of these functions throw errors that should be handled and tested in the parent scope.
+
+" g:ephemeris_diary should not exist, therefore
+Execute (get_g_diary and expect it to throw):
+  AssertThrows call ephemeris#fs#get_g_diary()
+  AssertEqual g:vader_exception, 'required global variable `g:ephemeris_diary` has not been set' . '... set with `:let g:ephemeris_diary="~/diary"`'
+

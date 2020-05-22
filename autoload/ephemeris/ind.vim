@@ -5,19 +5,12 @@
 " Purpose: diary index utility functions 
 
 ""
-" @setting g:calendar_diary
-" diary directory. 
-"   ex .vimrc setting: `let g:calendar_diary = ~/diary`. No default.
-"   @plugin(name) reuses this variable and the contents of the directory without
-"   interfering with mattn/calendar-vim's functionalities.
-
-""
 " @public
 " Find or create, and go to diary index file. Index located at
-" @setting(g:calendar_diary)/index.md
+" @setting(g:ephemeris_diary)/index.md
 function! ephemeris#ind#goto_index()
   " find/create and goto index
-  let l:ifn = expand(g:calendar_diary).'/index.md'
+  let l:ifn = expand(g:ephemeris_diary).'/index.md'
   if expand('%') !=# l:ifn
     let l:wn = bufwinnr(l:ifn)
     if bufexists(l:ifn) && l:wn > -1
@@ -27,14 +20,14 @@ function! ephemeris#ind#goto_index()
     endif
   endif
 
-  " be in calendar_diary dir
-    execute 'cd '.expand(g:calendar_diary)
+  " be in ephemeris_diary dir
+    execute 'cd '.expand(g:ephemeris_diary)
 endfunction
 
 ""
 " @public
 " Create an index of diary entries found recursively under the
-" @setting(g:calendar_diary) directory at @setting(g:calendar_diary)/index.md,
+" @setting(g:ephemeris_diary) directory at @setting(g:ephemeris_diary)/index.md,
 " and open the index in a vertical split. Entries are formatted as markdown
 " links.
 function! ephemeris#ind#create_index()
@@ -48,7 +41,7 @@ function! ephemeris#ind#create_index()
 
   " add headers 
   call append(0, '# Diary Entries')
-  call append('$', '**found in '.expand(g:calendar_diary).'/**')
+  call append('$', '**found in '.expand(g:ephemeris_diary).'/**')
   call append('$', '[toc]')
   " add entries
   " TODO: add custom sort
