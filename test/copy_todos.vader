@@ -17,6 +17,16 @@ Execute (make test dir and add a test buffer from a date in the past):
   call mkdir(b:tst_exp_dir, 'p')
   Assert isdirectory(b:tst_exp_dir)
 
+Execute (add TODOs to buffer):
+  execute 'normal! iTODOs- [ ] task 1'
+
+Expect (the TODOs to be in the buffer):
+  TODOs
+  - [ ] task 1
+
+Execute (save buffer as past date in tst_dir):
+  execute 'w '.b:tst_exp_dir.'/01.md' 
+  Assert filereadable(b:tst_exp_dir.'/01.md')
 
 
 " Teardown
