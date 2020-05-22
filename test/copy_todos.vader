@@ -2,5 +2,10 @@
 
 " ephemeris#lst#copy_todos copies tasks from the last diary entry where the
 " task marker `g:ephemeris_todos` is found. the function finds the most recent
-" `g:ephemeris_todos` marker in the `g:ephemeris_diary` directory. The function stops copying when it finds `g:ephemeris_todos` marker. It should copy all todos blocks. 
+" `g:ephemeris_todos` marker in the `g:ephemeris_diary` directory. The function
+" stops copying when it finds `g:ephemeris_todos` marker, two consecutive
+" newlines, or EOF. It should copy all todos blocks. 
 
+# test copy_todos
+Execute (add a test buffer from a date in the past):
+  badd 
