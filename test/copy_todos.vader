@@ -28,6 +28,16 @@ Execute (save buffer as past date in tst_dir):
   execute 'w '.b:tst_exp_dir.'/01.md' 
   Assert filereadable(b:tst_exp_dir.'/01.md')
 
+Execute (copy_todos):
+  " unlet g:ephemeris_diary to test error handling
+  unlet g:ephemeris_diary
+  let b:copy_return = ephemeris#lst#copy_todos()
+  AssertEqual 0, b:copy_return
+
+
+Expect (the TODOs _NOT_ to be in the newly created buffer):
+  
+" ^ leave two spaces to test blank buffer
 
 " Teardown
 

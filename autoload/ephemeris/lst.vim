@@ -15,6 +15,12 @@
 " entry in a split. This function can be called from anywhere.
 function! ephemeris#lst#copy_todos()
   " create today's path and .md entry file if necessary
+  try
+    call ephemeris#fs#get_set_today()
+  catch 
+    echom v:exception
+    return
+  endtry
   
   " get/set g:ephemeris_todos
   call ephemeris#fun#var#get_set_g_todos()

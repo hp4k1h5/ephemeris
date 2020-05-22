@@ -57,3 +57,11 @@ Execute (expect get_set_today to return todays diary entry filepath when g:ephem
 Execute (rm -rf tmp test dirs):
   execute "! rm -rf ".expand(b:tst_dir)
   Assert ! isdirectory(expand(b:tst_dir)), 'ephemeris tests Failed to delete test directory: '.b:tst_dir
+
+
+
+# Test ephemeris#fs#get_set_g_todos
+Execute (g:ephemeris_todos should not exist prior to calling function):
+  Assert ! exists('g:ephemeris_todos')
+  call ephemeris#fs#get_set_g_todos()
+  Assert exists('g:ephemeris_todos')
