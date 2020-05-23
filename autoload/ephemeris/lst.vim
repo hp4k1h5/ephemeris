@@ -16,6 +16,7 @@
 function! ephemeris#lst#copy_todos()
   " create today's path and .md entry file if necessary
   try
+    " get today's diary entry filepath
     let l:today = ephemeris#fs#get_set_today()
   catch 
     echom v:exception
