@@ -7,7 +7,7 @@
 ""
 " @public 
 " Copy TODOs from last set of TODOs going back up to 10 years. Your
-" @setting(g:calendar_diary) directory must  be organized in a
+" @setting(g:ephemeris_diary) directory must  be organized in a
 " `.../YYYY/MM/DD.md` hierarchy, in order for this function to know which set of
 " TODOs are _most recent_. TODOs are defined by the string set in
 " @setting(g:ephemeris_todos). Default is 'TODOs'. **Everything** below that
@@ -16,22 +16,22 @@
 function! ephemeris#lst#copy_todos()
   " create today's path and .md entry file if necessary
   try
-    call ephemeris#fs#get_set_today()
+    let l:today = ephemeris#fs#get_set_today()
   catch 
     echom v:exception
     return
   endtry
   
   " get/set g:ephemeris_todos
-  call ephemeris#fun#var#get_set_g_todos()
+  call ephemeris#fs#get_set_g_todos()
 
   " look back through a year's worth of potential diary entries
   let l:dp = 1
-  while l:dp < 365 * 10
+  while l:dp < 365 * 2 "10
     let l:prev = substitute(
           \ system('date -v -'.l:dp."d '+%Y/%m/%d'"),
           \ '\n', '', 'g')
-    let l:fn = expand(g:calendar_diary).'/'.l:prev.'.md'
+    let l:fn = expand(g:ephemeris_diary).'/'.l:prev.'.md'
     if filereadable(l:fn)
       " if file contains a todo, extract list and dump in today's entry
       " TODO: currently TODO lists need to end the file, a smarter function
@@ -42,8 +42,8 @@ function! ephemeris#lst#copy_todos()
         let l:todostart = split(l:todostart, ':')[0]
         " add buff, dump todo list, open latest entry, exit loop
         execute 'badd '.l:fn
-        execute 'silent! '.bufnr(l:fn).' bufdo! '.l:todostart.',$ w! >> '.l:today.'.md'
-        execute 'silent! b '.l:today.'.md'
+        execute 'silent! '.bufnr(l:fn).' bufdo! '.l:todostart.',$ w! >> '.l:today
+        execute 'silent! b '.l:today
         break
       endif
     endif
