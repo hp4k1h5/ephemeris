@@ -14,6 +14,7 @@
 " marker is copied to the current day's diary entry. It will open today's diary
 " entry in a split. This function can be called from anywhere.
 function! ephemeris#lst#copy_todos()
+
   " create today's path and .md entry file if necessary
   try
     " get today's diary entry filepath
@@ -33,21 +34,25 @@ function! ephemeris#lst#copy_todos()
           \ system('date -v -'.l:dp."d '+%Y/%m/%d'"),
           \ '\n', '', 'g')
     let l:fn = expand(g:ephemeris_diary).'/'.l:prev.'.md'
+
     if filereadable(l:fn)
       " if file contains a todo, extract list and dump in today's entry
       " TODO: currently TODO lists need to end the file, a smarter function
       "     : will only grab `-` etc lines up to a natural end, 
       "     : e.g. 3 consecutive newlines
-      let l:todostart = system('grep -n "'.g:ephemeris_todos.'" '.l:fn)
-      if len(l:todostart)
-        let l:todostart = split(l:todostart, ':')[0]
+      let l:todo_start = system('grep -n "'.g:ephemeris_todos.'" '.l:fn)
+      if len(l:todo_start)
+        " get line number of g:ephemeris_todos string
+        let l:todo_start = split(l:todo_start, ':')[0]
         " add buff, dump todo list, open latest entry, exit loop
         execute 'badd '.l:fn
-        execute 'silent! '.bufnr(l:fn).' bufdo! '.l:todostart.',$ w! >> '.l:today
+        execute 'silent! '.bufnr(l:fn).' bufdo! '.l:todo_start.',$ w! >> '.l:today
         execute 'silent! b '.l:today
         break
       endif
     endif
+
+    " go back one day further
     let l:dp+=1
   endwhile
 endfunction
@@ -73,31 +78,41 @@ endfunction
 "     -[ ] `txt`
 " <
 function! ephemeris#lst#filter_tasks()
-  " get/set ephemeris_todos
-  call ephemeris#fun#var#get_set_g_todos()
+
+  " get/set ephemeris_todos, if no setting is provided, the default is set
+  call ephemeris#fs#get_set_g_todos()
+  
   let l:i = 1
   let l:skip = 0
+  " getbufline will check '$' on each iteration, and not overrun EOF though
+  " lines may be deleted and final buffer length may be less than original
+  " buffer length
   for line in getbufline('%', 1, '$')
-    " skip deleted nested items
+
+    " skip deleted nested items, skip is accumulated inside while loop
     if l:skip > 0
       let l:skip -= 1
       continue
     endif
 
-    " delete completed items
+    " delete completed items, i.e. lines containing `- [x]` and associated
+    " sub-blocks
     if stridx(line, '- [x]') > -1
       call cursor(l:i, 1)
       execute l:i.'d'
       " delete nested items underneath completed blocks
-      " stop on any task item, g:ephemeris_todos, 2 blank lines
+      " stop on any task item, g:ephemeris_todos, or 2 blank lines
       while l:i <= line('$') 
             \ && stridx(getline(l:i), '- [') == -1 
             \ && stridx(getline(l:i), g:ephemeris_todos) == -1
             \ && join(getline(l:i, l:i+1), '') !~ '^$' 
         execute l:i.'d'
+        " for each line of sub-block, add one to skip counter
         let l:skip += 1
       endwhile
+
     else
+      " continue iterating over the buffer lines
       let l:i += 1
     endif
   endfor
@@ -116,6 +131,7 @@ endfunction
 " <
 " whether or not there is a checkbox return 0
 function! ephemeris#lst#toggle_task()
+
   let l:n = line('.')
   let l:l = getline('.')
   let l:c = '- [x]'

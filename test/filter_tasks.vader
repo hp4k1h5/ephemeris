@@ -1,0 +1,54 @@
+~ Test filter tasks
+
+" lst#filter_tasks() should delete completed tasks from the buffer.
+" a completed task is defined as one that starts with the string `-
+" [x]`.  lst#filter_tasks() removes lines including a line beginning
+" with the completed task marker, up to the end of the file or an
+" incomplete task. this means, currently if you have a completed
+" task, followed by anything other than a `g:ephemeris_todos` marker
+" OR 2 newlines, everything following the function until EOF will be
+" filtered OUT, i.e. deleted.
+
+==========================================
+# test 1
+Given (three lines of tasks):
+  - [x] complete task A, should be removed
+  - [ ] incomplete task B
+  - [x] complete task C
+
+Execute (filter_tasks):
+  : call ephemeris#lst#filter_tasks()
+
+Expect(Check that the incomplete task has been removed):
+  - [ ] incomplete task B
+
+
+==========================================
+# test 2
+" filtering should stop on 2 newlines, newlines should be preserved
+Given (tasks and 2 newlines and list items ensuing):
+  - [x] complete task A, should be removed
+
+
+  - a list item
+Execute (filter_tasks):
+  : call ephemeris#lst#filter_tasks()
+
+Expect(2 newlines to halt task filtering, and the list item to remain):
+  
+
+  - a list item
+
+
+==========================================
+# test 3
+Given (tasks and the default g:ephemeris_todos marker string):
+  - [x] complete task A, should be removed
+  TODOs
+  - a list item
+Execute (filter_tasks):
+  : call ephemeris#lst#filter_tasks()
+
+Expect(the completed task to be removed and the ensuing list item to be preserved):
+  TODOs
+  - a list item
