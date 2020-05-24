@@ -55,7 +55,7 @@ Expect (the TODOs to be in the current test buffer):
 
 " remove test directories and assert that they are deleted
 Execute (rm -rf tmp test dirs):
-  execute '! rm -rf '.expand(b:tst_dir)
+  execute 'silent! ! rm -rf '.expand(b:tst_dir)
   Assert ! isdirectory(expand(b:tst_dir)),
   \ 'ephemeris tests Failed to delete test directory: '
   \ .b:tst_dir

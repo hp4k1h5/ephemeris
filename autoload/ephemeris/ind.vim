@@ -24,20 +24,23 @@ function! ephemeris#ind#goto_index()
     execute 'cd '.expand(g:ephemeris_diary)
 endfunction
 
+" Formatting:
+" {# Index Title}    
+" [toc]
+" {### YYYY}
+" {#### MM}
+" {[DD.md](DD.md)}
+
 ""
 " @public
 " Create an index of diary entries found recursively under the
-" @setting(g:ephemeris_diary) directory at @setting(g:ephemeris_diary)/index.md,
-" and open the index in a vertical split. Entries are formatted as markdown
-" links.
+" @setting(g:ephemeris_diary) directory at `g:ephemeris_diary/index.md`, and
+" open the index in a vertical split. Entries are formatted as markdown links.
 function! ephemeris#ind#create_index()
   " be in diary/index.md
   call ephemeris#ind#goto_index()
   " clear buffer 
   execute 'normal! ggdG'
-  " consider `execute 'silent! bufdo! bdelete!'`
-  " see
-  " [vroom](https://github.com/google/vroom/blob/c8d593f10f77ed565df66a91b69cd79bc3e6bddd/examples/basics.vroom#L29)
 
   " add headers 
   call append(0, '# Diary Entries')
@@ -60,8 +63,6 @@ function! ephemeris#ind#create_index()
       call append('$', item)
   endfor
 
+  " save to disk
   execute 'w'
 endfunction
-
-" simple remap to dump text
-" noremap <leader>dci    ggdGi## Diary Entries<CR><C-r>=glob('**/*')<CR><ESC>:w<CR>

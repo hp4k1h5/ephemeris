@@ -1,0 +1,49 @@
+~ Test create_index
+
+" The index is a markdown file composed of all the `.md` files found
+" recursively under the g:ephemeris_diary directory. It is saved as `index.md`
+" inside the g:ephemeris_diary.
+"
+" TODO: give user choice for index formatting 
+" TODO: add index creation date
+" TODO: add css
+"
+" Formatting:
+" {# Index Title}    
+" [toc]
+" {### YYYY}
+" {#### MM}
+" {[DD.md](DD.md)}
+
+# Setup
+Before (provide global variables to tests):
+  let b:tst_dir = './.vader_test'
+  let g:ephemeris_diary = b:tst_dir.'/tmp_diary'
+
+" create test dir 
+Execute (make test dir):
+  let b:tst_exp_dir = expand(g:ephemeris_diary)
+  call mkdir(b:tst_exp_dir, 'p')
+  Assert isdirectory(b:tst_exp_dir)
+
+Execute (make mock diary directories):
+  execute 'silent! ! mkdir -p '
+  \ .expand(g:ephemeris_diary).'/{1969..1970}/{01..04}'
+
+# test 1
+
+
+
+
+
+
+" Teardown
+
+" remove test directories and assert that they are deleted
+Execute (rm -rf tmp test dirs):
+  execute 'silent! ! rm -rf '.expand(b:tst_dir)
+  Assert ! isdirectory(expand(b:tst_dir)),
+  \ 'ephemeris tests Failed to delete test directory: '
+  \ .b:tst_dir
+
+
