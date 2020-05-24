@@ -27,8 +27,13 @@ Execute (make test dir):
   Assert isdirectory(b:tst_exp_dir)
 
 Execute (make mock diary directories):
+  " create YYYY/MM/ directories inside tst_exp_dir
   execute 'silent! ! mkdir -p '
-  \ .expand(g:ephemeris_diary).'/{1969..1970}/{01..04}'
+  \ .b:tst_exp_dir.'/{1969..1970}/{01..04}'
+  execute 'silent! ! find '.b:tst_exp_dir.
+  \ ' -type d -exec touch {}/{01..04}.md \;'
+  AssertEqual 54, len(glob(b:tst_exp_dir.'/**/*', 0, 1))
+
 
 # test 1
 
