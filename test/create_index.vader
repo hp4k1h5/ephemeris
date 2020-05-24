@@ -42,7 +42,8 @@ Execute (call create_index):
   " unset g:ephemeris_diary
   unlet g:ephemeris_diary
   Assert ! exists('g:ephemeris_diary')
-  call ephemeris#ind#create_index()
+  " will echom the error message, just keep shebanging
+  execute 'silent! ephemeris#ind#create_index()'
   " file count should be same as above
   AssertEqual 54, len(glob(g:tst_exp_dir.'/**/*', 0, 1))
 
@@ -52,7 +53,7 @@ Execute (set g:ephemeris_diary and run create_index):
   " g:ephemeris_diary should be reset by Before block above
   Assert exists('g:ephemeris_diary')
   call ephemeris#ind#create_index()
-  AssertEqual 'index.md', expand('%')
+  AssertEqual './.vader_test/tmp_diary/index.md', expand('%')
   " after calling create_index, the number of files in g:ephemeris_diary
   " should be 1 more than before, see test 1
   AssertEqual 55, len(glob(expand('%:p:h').'/**/*', 0, 1))
@@ -62,9 +63,7 @@ Execute (set g:ephemeris_diary and run create_index):
 
 " remove test directories and assert that they are deleted
 Execute (rm -rf tmp test dirs):
-  " expand from two dirs back ?
-  let b:p = expand('%:p:h:h')
-  execute 'silent! ! rm -rf '.b:p
-  Assert ! isdirectory(b:p),
+  execute 'silent! ! rm -rf '.expand(g:tst_dir)
+  Assert ! isdirectory(g:tst_dir),
   \ 'ephemeris tests Failed to delete test directory: '
-  \ .b:p
+  \ .g:tst_dir

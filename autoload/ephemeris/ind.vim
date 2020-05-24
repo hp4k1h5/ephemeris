@@ -20,9 +20,6 @@ function! ephemeris#ind#goto_index(dir)
         execute 'vsplit '.l:ifn
     endif
   endif
-
-  " be in ephemeris_diary dir
-    execute 'cd '.a:dir
 endfunction
 
 " Formatting:
@@ -75,5 +72,5 @@ function! ephemeris#ind#create_index()
   endfor
 
   " save to disk
-  execute 'w'
+  execute 'w!'
 endfunction
