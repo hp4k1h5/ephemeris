@@ -28,7 +28,9 @@ include a date-aligned directory structure as outlined above.
 
 ![diary index and markdown side-by-side](img/side-by-side.png)
 
-**see [doc/ephemeris.txt](doc/ephemeris.txt) for additional help**
+**see [doc/ephemeris.txt](doc/ephemeris.txt) for additional user help**
+
+**see [CONTRIBUTING](.github/CONTRIBUTING.md) for contributor guidelines**
 
 version information available at [vim.org](https://www.vim.org/scripts/script.php?script_id=5879)
 
@@ -115,6 +117,11 @@ found at |g:ephemeris_diary|/index.md. Calls |ephemeris#ind#goto_index()|
 Look backwards through previous entries for last |g:ephemeris_todos| marker,
 as defined by the tasks found below the string.  Calls
 |ephemeris#lst#copy_todos()|
+
+*:EphemerisFilterTasks*  Delete completed tasks, e.g. list items containing `-
+[x]`, and all associated subblocks until the next incomplete task, e.g. list
+items containing `- [ ]`, a |g:ephemeris_todos| marker, 2 newlines, or EOF.
+See example in |ephemeris#lst#filter_tasks()|.
 ```md
 *------------------------------------*
 | TODOs (before)                     |
@@ -139,12 +146,6 @@ as defined by the tasks found below the string.  Calls
             |  this will get preserved                     |
             *----------------------------------------------*
 ```
-
-*:EphemerisFilterTasks*  
-Delete completed tasks, e.g. list items containing `- [x]`, and all associated
-subblocks until the next incomplete task, e.g. list items containing `- [ ]`,
-a |g:ephemeris_todos| marker, 2 newlines, or EOF. See example in
-|ephemeris#lst#filter_tasks()|.
 
 *:EphemerisToggleTask*  
 Toggles the state of a task found on the same line as the cursor between
