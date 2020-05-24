@@ -1,12 +1,30 @@
 # ephemeris
 ! experimental and unstable see [BUGS](#bugs)
-> a diary plugin/Calendar extension for vim
+> a diary plugin for vim
 
-this plugin extends some of the functionality provided by the
-[mattn/calendar-vim](https://github.com/mattn/calendar-vim) plugin's diary
-function. the calendar plugin itself is not required but this plugin reuses
-one of it's global variables `g:calendar_diary` without interfering with
-`calendar-vim`.
+ephemeris is a diary and calendar extension plugin for vim. It provides a
+collection of functions and commands that can be used to create, edit, and
+curate diary/log entries.
+
+The diary is defined by the directories and files found recursively under the
+directory set in the global variable |g:ephemeris_diary|. ephemeris does not
+rely on any external programs and does not interfere with any external
+program, such as cal, etc. This plugin works best when the directory structure
+of `g:ephemeris_diary` is YYYY/MM/DD.md, as follows:
+```txt
+  ├── 2019
+  │   └── 09
+  │       ├── 16.md
+  │   └── 12
+  │       └── 20.md
+  ├── 2020
+  │   └── 05
+  │       ├── 01.md
+  │       ├── 04.md
+```
+This tree structure is provided by default by ephemeris functions. This plugin
+will only provide limited functionality if the directory structure does not
+include a date-aligned directory structure as outlined above.
 
 ![diary index and markdown side-by-side](img/side-by-side.png)
 
@@ -29,47 +47,42 @@ version information available at [vim.org](https://www.vim.org/scripts/script.ph
 ---------------------------------------------
 #### functionalities
 
-- create **index** of diary entries
-  - index access/refresh
-- smart **checkbox** list item management
-  - filter/sort/aggregate/calculate
-  - copy last set of TODO's `- [ ]` to current day's diary entry
+- create/goto **index** of diary entries
+- **checkbox** list item management
+  - filter/toggle/(...in progress: sort/aggregate/calculate)
+  - copy last set of tasks `- [ ]` to current day's diary entry
 
 ### ! required
 
-set the root directory for your diary entries `g:calendar_diary` in your
-`.vimrc` i.e.
-
+set the root directory for your diary entries `g:ephemeris_diary`, i.e. in your
+`.vimrc`:
 ```vim
-let g:calendar_diary = '~/diary'
+let g:ephemeris_diary = '~/diary'
 ```
 
 ###### optional
 
-set the string for `EphemerisToggleTask` to look for.  default is `TODOs`.
+set the string for `EphemerisCopyTodos`, to look for.  default is `TODOs`.
 Everything below the marker in the most recent diary entry is copied and
-appended into the current day's entry.
-
+appended into the current day's entry. You can change it by setting it, i.e.
+in your `.vimrc`
 ```vim
 let g:ephemeris_todos = '=== TASK LIST ==='
 ```
+See `EphemerisCopyTodos`
 
 ---------------------------------------------
 #### installation
 
 should work with your preferred vim plugin manager. e.g. add
-
 ```vim
 Plug 'HP4k1h5/ephemeris'
 Plug 'mattn/calendar-vim' " recommended
 ```
-
 to your `.vimrc` and run
-
 ```vim
 :source $MYVIMRC | PlugInstall
 ```
-
 in command-line mode (see `:help cmdline`)
 
 ##### optional-but-helpful
@@ -81,46 +94,27 @@ in command-line mode (see `:help cmdline`)
 ---------------------------------------------
 ### usage
 
-Call any of ephemeris' commands from anywhere.  Using `:EphemerisFilterTasks`
-will operate on the currently active buffer. Otherwise all functions are
-buffer agnostic and should work anywhere. see functions below...
+Call any of ephemeris' commands from anywhere. `:EphemerisFilterTasks`
+and `:EphemerisToggleTask` will operate on the currently active buffer.
+Otherwise all functions are buffer agnostic and should work anywhere. see
+functions below...
 
-#### functions
-
+#### commands
 **see [doc/ephemeris.txt](doc/ephemeris.txt) for additional help**
 
-```vim
-:EphemerisCreateIndex
-```
+*:EphemerisCreateIndex*  
+Create markdown diary index of all '.md' files found under the
+|g:ephemeris_diary| directory, and go to vertical split. Calls
+|ephemeris#ind#create_index()|
 
-- creates an index of all diary entries found in `g:calendar_diary`
-    and opens a vertical split with the markdown-compatible index. Be
-    sure to set `g:calendar_diary` as there is no default.
+*:EphemerisGotoIndex*  
+Open diary index in a vertical split or focus diary index buffer. Index is
+found at |g:ephemeris_diary|/index.md. Calls |ephemeris#ind#goto_index()|
 
-```vim
-:EphemerisGotoIndex
-```
-
-- opens the index of all diary entries if it exists.found at
-    `:echom expand(g:calendar_diary)."/index.md"`
-
-```vim
-:EphemerisCopyTodos
-```
-
-- copies the last set of `TODOs:` and appends them to the current
-    day's diary entry; will look through dates in the preceding 365 days, and
-    use the most recent entry containing the `g:ephemeris_todos` string.  
-
-```vim
-:EphemerisFilterTasks
-```
-
-- filters out **completed** tasks and their non-task oriented list
-    items and text blocks
-
-**:EphemerisFilterTasks** diagram
-
+*:EphemerisCopyTodos*  
+Look backwards through previous entries for last |g:ephemeris_todos| marker,
+as defined by the tasks found below the string.  Calls
+|ephemeris#lst#copy_todos()|
 ```md
 *------------------------------------*
 | TODOs (before)                     |
@@ -145,6 +139,22 @@ buffer agnostic and should work anywhere. see functions below...
             |  this will get preserved                     |
             *----------------------------------------------*
 ```
+
+*:EphemerisFilterTasks*  
+Delete completed tasks, e.g. list items containing `- [x]`, and all associated
+subblocks until the next incomplete task, e.g. list items containing `- [ ]`,
+a |g:ephemeris_todos| marker, 2 newlines, or EOF. See example in
+|ephemeris#lst#filter_tasks()|.
+
+*:EphemerisToggleTask*  
+Toggles the state of a task found on the same line as the cursor between
+```txt
+    - [ ] incomplete
+      and
+    - [x] complete
+```
+will not affect the state of any other tasks. Calls
+|ephemeris#lst#toggle_task()|
 
 #### example-mappings
 
