@@ -5,19 +5,13 @@
 " Purpose: diary index utility functions 
 
 ""
-" @setting g:calendar_diary
-" diary directory. 
-"   ex .vimrc setting: `let g:calendar_diary = ~/diary`. No default.
-"   @plugin(name) reuses this variable and the contents of the directory without
-"   interfering with mattn/calendar-vim's functionalities.
-
-""
 " @public
 " Find or create, and go to diary index file. Index located at
-" @setting(g:calendar_diary)/index.md
-function! ephemeris#ind#goto_index()
+" @setting(g:ephemeris_diary)/index.md
+function! ephemeris#ind#goto_index(dir)
+
   " find/create and goto index
-  let l:ifn = expand(g:calendar_diary).'/index.md'
+  let l:ifn = a:dir.'/index.md'
   if expand('%') !=# l:ifn
     let l:wn = bufwinnr(l:ifn)
     if bufexists(l:ifn) && l:wn > -1
@@ -26,29 +20,39 @@ function! ephemeris#ind#goto_index()
         execute 'vsplit '.l:ifn
     endif
   endif
-
-  " be in calendar_diary dir
-    execute 'cd '.expand(g:calendar_diary)
 endfunction
+
+" Formatting:
+" {# Index Title}    
+" [toc]
+" {### YYYY}
+" {#### MM}
+" {[DD.md](DD.md)}
 
 ""
 " @public
 " Create an index of diary entries found recursively under the
-" @setting(g:calendar_diary) directory at @setting(g:calendar_diary)/index.md,
-" and open the index in a vertical split. Entries are formatted as markdown
-" links.
+" @setting(g:ephemeris_diary) directory at `g:ephemeris_diary/index.md`, and
+" open the index in a vertical split. Entries are formatted as markdown links.
 function! ephemeris#ind#create_index()
+
+  " get/error g:ephemeris_diary
+  try
+    let l:diary_dir = ephemeris#fs#get_g_diary()
+  catch
+    echom v:exception
+    return 0
+  endtry
+
   " be in diary/index.md
-  call ephemeris#ind#goto_index()
+  call ephemeris#ind#goto_index(l:diary_dir)
+
   " clear buffer 
   execute 'normal! ggdG'
-  " consider `execute 'silent! bufdo! bdelete!'`
-  " see
-  " [vroom](https://github.com/google/vroom/blob/c8d593f10f77ed565df66a91b69cd79bc3e6bddd/examples/basics.vroom#L29)
 
   " add headers 
   call append(0, '# Diary Entries')
-  call append('$', '**found in '.expand(g:calendar_diary).'/**')
+  call append('$', '**found in '.l:diary_dir.'/**')
   call append('$', '[toc]')
   " add entries
   " TODO: add custom sort
@@ -67,8 +71,6 @@ function! ephemeris#ind#create_index()
       call append('$', item)
   endfor
 
-  execute 'w'
+  " save to disk
+  execute 'w!'
 endfunction
-
-" simple remap to dump text
-" noremap <leader>dci    ggdGi## Diary Entries<CR><C-r>=glob('**/*')<CR><ESC>:w<CR>
