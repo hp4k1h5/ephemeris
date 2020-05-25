@@ -11,17 +11,24 @@
 
 ==========================================
 # test 1
-Given (three lines of tasks):
+Given (three lines of tasks and sub-blocks):
   - [x] complete task A, should be removed
+    - subblock 1
   - [ ] incomplete task B
+    - subblock 2
+    more things
   - [x] complete task C
+    -more things
 
 Execute (filter_tasks):
   : call ephemeris#lst#filter_tasks()
 
-Expect(Check that the incomplete task has been removed):
+" Check that the complete task and subblocks have been removed, and
+" that the incomplete tasks remain
+Expect(filtered tasks):
   - [ ] incomplete task B
-
+    - subblock 2
+    more things
 
 ==========================================
 # test 2
@@ -52,3 +59,18 @@ Execute (filter_tasks):
 Expect(the completed task to be removed and the ensuing list item to be preserved):
   TODOs
   - a list item
+
+
+==========================================
+# test 4
+Given (a valid markdown link following an item marker):
+  - [x](https://test.ok)
+  - [x] (+1) completed task should go
+  - [x](completed task) should stay because it might be a link
+
+Execute (filter_tasks on url):
+  : call ephemeris#lst#filter_tasks()
+
+Expect (the item to remain):
+  - [x](https://test.ok)
+  - [x](completed task) should stay because it might be a link
