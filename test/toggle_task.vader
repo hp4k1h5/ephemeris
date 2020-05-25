@@ -1,4 +1,4 @@
-# Test lst#toggle_task
+~ Test lst#toggle_task
 
 " this function should toggle the state of a task
 " from incomplete (unchecked), `- [ ]` to complete (checked), `- [x]`
