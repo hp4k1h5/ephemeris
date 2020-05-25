@@ -1,0 +1,77 @@
+~ Test fs.vim 
+
+" fs.vim contains a collection of wrapper functions for filesystem and variable
+" get/set operations. Most of these functions throw errors that should be
+" handled and tested in the parent scope.
+
+
+Before (set exception strings):
+  let b:tst_g_diary_exception = 'required global variable `g:ephemeris_diary` has not been set' 
+  \ .'... set with `:let g:ephemeris_diary="~/diary"`'
+
+  let b:tst_dir = './.vader_test'
+  let b:tst_ephemeris_diary = b:tst_dir.'/vader_diary'
+
+# test ephemeris#fs#get_g_diary
+
+" g:ephemeris_diary should not exist, therefore
+Execute (get_g_diary and expect it to throw):
+  AssertThrows call ephemeris#fs#get_g_diary()
+  AssertEqual b:tst_g_diary_exception, g:vader_exception
+
+" get_g_diary must return an expanded path
+Execute (set g:ephemeris_diary):
+  let g:ephemeris_diary = b:tst_ephemeris_diary
+  AssertEqual b:tst_ephemeris_diary, g:ephemeris_diary
+  AssertEqual expand(b:tst_ephemeris_diary), ephemeris#fs#get_g_diary()
+
+# test ephemeris#fs#get_set_today
+" get_set_today should add today's diary entry to the buffer list or
+" focus it if it exists
+
+" clear global variables
+Execute (unlet g:ephemeris_diary):
+  AssertEqual 1, exists('g:ephemeris_diary')
+  unlet g:ephemeris_diary
+  AssertEqual 0, exists('g:ephemeris_diary')
+
+" get_set_today should bubble up the error from its called function get_g_diary
+Execute (get_set_today should throw an error when g:ephemeris_diary has not been set):
+  AssertThrows call ephemeris#fs#get_set_today()
+  AssertEqual b:tst_g_diary_exception, g:vader_exception
+
+Execute (expect get_set_today to return todays diary entry filepath when g:ephemeris_diary is set):
+  " set g:ephemeris_diary
+  let g:ephemeris_diary = b:tst_ephemeris_diary
+  AssertEqual 1, exists('g:ephemeris_diary')
+  let b:tst_today = expand(b:tst_ephemeris_diary).'/'.strftime('%Y/%m/%d').'.md'
+  AssertEqual b:tst_today, ephemeris#fs#get_set_today()
+  " at this stage in the test we have created 3 buffers and are expecting the
+  " test current diary entry to be in buffer 4
+  AssertEqual bufnr(b:tst_today), 4
+
+
+" Teardown
+
+" remove tst directories and assert that they are deleted
+Execute (rm -rf tmp test dirs):
+  execute "! rm -rf ".expand(b:tst_dir)
+  Assert ! isdirectory(expand(b:tst_dir)), 'ephemeris tests Failed to delete test directory: '.b:tst_dir
+
+
+
+# Test ephemeris#fs#get_set_g_todos
+" test with no g:ephemeris_todos var set
+Execute (g:ephemeris_todos should not exist prior to calling function):
+  Assert ! exists('g:ephemeris_todos')
+  let b:tst_todos = ephemeris#fs#get_set_g_todos()
+  Assert exists('g:ephemeris_todos')
+  AssertEqual 'TODOs', b:tst_todos
+
+" test with no g:ephemeris_todos var set
+Execute (g:ephemeris_todos should return what the user sets):
+  unlet g:ephemeris_todos
+  Assert ! exists('g:ephemeris_todos')
+  let g:ephemeris_todos = '=== TASK LIST ==='
+  let b:tst_todos = ephemeris#fs#get_set_g_todos()
+  AssertEqual  '=== TASK LIST ===', b:tst_todos

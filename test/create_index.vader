@@ -1,0 +1,69 @@
+~ Test create_index
+
+" The index is a markdown file composed of all the `.md` files found
+" recursively under the g:ephemeris_diary directory. It is saved as `index.md`
+" inside the g:ephemeris_diary.
+"
+" TODO: give user choice for index formatting 
+" TODO: add index creation date
+" TODO: add css
+"
+" Formatting:
+" {# Index Title}    
+" [toc]
+" {### YYYY}
+" {#### MM}
+" {[DD.md](DD.md)}
+
+# Setup
+Before (provide global variables to tests):
+  let g:tst_dir = './.vader_test'
+  let g:ephemeris_diary = g:tst_dir.'/tmp_diary'
+  let g:tst_exp_dir = expand(g:ephemeris_diary)
+
+" create test dir 
+Execute (make test dir):
+  call mkdir(g:tst_exp_dir, 'p')
+  Assert isdirectory(g:tst_exp_dir)
+
+Execute (make mock diary directories):
+  " create YYYY/MM/ directories inside tst_exp_dir
+  execute 'silent! ! mkdir -p '
+  \ .g:tst_exp_dir.'/{1969..1970}/{01..04}'
+  execute 'silent! ! find '.g:tst_exp_dir.
+  \ ' -type d -exec touch {}/{01..04}.md \;'
+  AssertEqual 54, len(glob(g:tst_exp_dir.'/**/*', 0, 1))
+
+
+# test 1
+" run create_index without setting g:ephemeris_diary; test should pass and the
+" error message should be checked
+Execute (call create_index): 
+  " unset g:ephemeris_diary
+  unlet g:ephemeris_diary
+  Assert ! exists('g:ephemeris_diary')
+  " will echom the error message, just keep shebanging
+  execute 'silent! ephemeris#ind#create_index()'
+  " file count should be same as above
+  AssertEqual 54, len(glob(g:tst_exp_dir.'/**/*', 0, 1))
+
+
+# test 2
+Execute (set g:ephemeris_diary and run create_index):
+  " g:ephemeris_diary should be reset by Before block above
+  Assert exists('g:ephemeris_diary')
+  call ephemeris#ind#create_index()
+  AssertEqual './.vader_test/tmp_diary/index.md', expand('%')
+  " after calling create_index, the number of files in g:ephemeris_diary
+  " should be 1 more than before, see test 1
+  AssertEqual 55, len(glob(expand('%:p:h').'/**/*', 0, 1))
+
+
+" Teardown
+
+" remove test directories and assert that they are deleted
+Execute (rm -rf tmp test dirs):
+  execute 'silent! ! rm -rf '.expand(g:tst_dir)
+  Assert ! isdirectory(g:tst_dir),
+  \ 'ephemeris tests Failed to delete test directory: '
+  \ .g:tst_dir
