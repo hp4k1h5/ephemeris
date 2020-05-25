@@ -22,7 +22,7 @@ function! ephemeris#fs#get_set_today()
   let l:month_path = l:diary_dir.'/'.strftime('%Y/%m')
   let l:today = l:month_path.strftime('/%d').'.md'
   if !filereadable(l:today)
-    echom "creating today's diary entry" 
+    execute 'silent! echom "creating today s diary entry"'
     call mkdir(l:month_path, 'p')
     execute 'badd '.l:today
   endif
@@ -33,12 +33,13 @@ endfunction
 
 ""
 " @public
-" helper function to get/set state of @setting(g:ephemeris_diary)
-" if g:ephemeris_diary is not found an error is thrown
-" errors should be handled by calling functions
+" helper function to get/set state of @setting(g:ephemeris_diary) if
+" g:ephemeris_diary is not found an error is thrown errors should be handled by
+" calling functions
 "
-" returns a string containing the expanded g:ephemeris_diary directory path
+" Returns a string containing the expanded g:ephemeris_diary directory path
 function! ephemeris#fs#get_g_diary()
+
   " if g:ephemeris_diary does not exist, throw an error message indicating that
   " the global variable must be set
   if !exists('g:ephemeris_diary')

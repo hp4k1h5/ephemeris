@@ -5,18 +5,24 @@
 " Purpose: diary index utility functions 
 
 ""
-" @public
-" Find or create, and go to diary index file. Index located at
-" @setting(g:ephemeris_diary)/index.md
+" @public Find or create, and go to diary index file. {dir} is the directory
+" path of the diary whose index you wish to access. This is typically the same
+" path as 'g:ephemeris_diary'. ephemeris index located at
+" 'g:ephemeris_diary'/index.md
+"
+" Returns 0
 function! ephemeris#ind#goto_index(dir)
-
+ 
   " find/create and goto index
-  let l:ifn = a:dir.'/index.md'
+  let l:ifn = expand(a:dir).'/index.md'
   if expand('%') !=# l:ifn
+    " find
     let l:wn = bufwinnr(l:ifn)
     if bufexists(l:ifn) && l:wn > -1
-        execute l:wn.'wincmd w'
+      " goto
+      execute l:wn.'wincmd w'
       else
+        " create/goto
         execute 'vsplit '.l:ifn
     endif
   endif
