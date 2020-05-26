@@ -14,7 +14,7 @@ Execute (goto index base case):
   let g:tst_buf_nr = bufnr('%')
   call ephemeris#ind#goto_index('.tst_dir')
   " verify we are in next buffer
-  AssertEqual g:tst_buf_nr + 1, bufnr('%')
+  Assert g:tst_buf_nr < bufnr('%')
 
 
 ============================

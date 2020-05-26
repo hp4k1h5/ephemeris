@@ -29,7 +29,7 @@ Execute (get_set_date(today)):
   let g:tst_buf_nr = bufnr('%')
   AssertEqual b:tst_date, ephemeris#fs#get_set_date(0)
   " verify that the current buffer is one greater than before
-  AssertEqual g:tst_buf_nr+1, bufnr(b:tst_date)
+  Assert g:tst_buf_nr < bufnr(b:tst_date)
 
 
 ============================

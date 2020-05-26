@@ -11,6 +11,7 @@ Before (set exception strings and buffer vars):
 
 " g:ephemeris_diary should not exist, therefore
 Execute (get_g_diary and expect it to throw):
+  unlet g:ephemeris_diary
   AssertThrows call ephemeris#var#get_g_diary()
   AssertEqual b:tst_g_diary_exception, g:vader_exception
 
@@ -22,8 +23,9 @@ Execute (set g:ephemeris_diary):
 
 # Test ephemeris#var#get_set_g_todos
 
-" test with no g:ephemeris_todos var set
-Execute (g:ephemeris_todos should not exist prior to calling function):
+" g:ephemeris_todos should not exist prior to calling function
+Execute (" test with no g:ephemeris_todos var set):
+  unlet g:ephemeris_todos
   Assert ! exists('g:ephemeris_todos')
   let b:tst_todos = ephemeris#var#get_set_g_todos()
   Assert exists('g:ephemeris_todos')
