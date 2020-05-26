@@ -13,16 +13,47 @@ Before (set exception strings):
   let b:tst_ephemeris_diary = b:tst_dir.'/vader_diary'
 
 
+# Test create_dir 
+
+" passing a filepath that ends in '/' should result in a directory being
+" created
+Execute (create dir):
+  let b:tst_dir = '.tst_dir/tst_dir/'
+  Assert ! isdirectory(b:tst_dir)
+
+  call ephemeris#fs#create_fp(b:tst_dir)
+  Assert isdirectory(b:tst_dir)
+
+  " delete tst_dir
+  execute 'silent! ! rm -rf '.b:tst_dir
+  Assert ! isdirectory(b:tst_dir)
+
+" passing a filepath that doesn't end in '/' should result in a filepath and
+" file being created
+Execute (create file):
+  let b:tst_file = '.tst_dir/tst_dir/file.file'
+  Assert ! filereadable(b:tst_file)
+
+  call ephemeris#fs#create_fp(b:tst_file)
+  Assert filereadable(b:tst_file)
+
+  " delete tst_file
+  execute 'silent! ! rm -rf '.b:tst_file
+  Assert ! filereadable(b:tst_file)
+
+
 # test ephemeris#ind#goto_index 
 
-Execute (test errors):
+Execute (goto index test errors):
    " call with no params
   AssertThrows ephemeris#ind#goto_index()
   AssertEqual g:vader_exception, 'Vim:E492: Not an editor command: ephemeris#ind#goto_index()'
 
-Execute (test base):
+Execute (goto index base case):
+  " get current buffer #
   let g:tst_buf_nr = bufnr('%')
   call ephemeris#ind#goto_index(expand(b:tst_ephemeris_diary))
+  " verify we are in next buffer
   AssertEqual g:tst_buf_nr + 1, bufnr('%')
   
 

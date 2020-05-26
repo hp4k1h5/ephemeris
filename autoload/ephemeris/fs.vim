@@ -6,6 +6,29 @@
 
 ""
 " @public
+" Creates a dirpath and/or file at the expanded {filepath}. If the filepath
+" ends in a '/', only the dirpath is created. Can be used idempotently.
+function! ephemeris#fs#create_fp(filepath)
+
+  " check if dir or file terminator
+  if a:filepath[-1:] !=# '/'
+    let l:split_path = split(a:filepath, '/')
+    let l:filename = l:split_path[-1:][0] 
+    let l:dirpath = join(l:split_path[:-2], '/')
+  else
+    let l:dirpath = a:filepath
+  endif
+
+  call mkdir(expand(l:dirpath), 'p')
+
+  if exists('l:filename')
+    execute 'silent! ! touch '.expand(a:filepath)
+  endif
+endfunction
+
+
+""
+" @public
 " Creates a diary entry buffer for the current day, and, if necessary, the
 " required `g:ephemeris_diary/YYYY/MM/...` directory path. See
 " @setting(g:ephemeris_diary)
