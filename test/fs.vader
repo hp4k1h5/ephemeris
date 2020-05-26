@@ -57,19 +57,6 @@ Execute (goto index base case):
   AssertEqual g:tst_buf_nr + 1, bufnr('%')
   
 
-# test ephemeris#fs#get_g_diary
-
-" g:ephemeris_diary should not exist, therefore
-Execute (get_g_diary and expect it to throw):
-  AssertThrows call ephemeris#fs#get_g_diary()
-  AssertEqual b:tst_g_diary_exception, g:vader_exception
-
-" get_g_diary must return an expanded path
-Execute (set g:ephemeris_diary):
-  let g:ephemeris_diary = b:tst_ephemeris_diary
-  AssertEqual b:tst_ephemeris_diary, g:ephemeris_diary
-  AssertEqual expand(b:tst_ephemeris_diary), ephemeris#fs#get_g_diary()
-
 # test ephemeris#fs#get_set_today
 " get_set_today should add today's diary entry to the buffer list or
 " focus it if it exists
@@ -99,23 +86,6 @@ Execute (expect get_set_today to return todays diary entry filepath when g:ephem
 
 " remove tst directories and assert that they are deleted
 Execute (rm -rf tmp test dirs):
-  execute "silent! ! rm -rf ".expand(b:tst_dir)
-  Assert ! isdirectory(expand(b:tst_dir)), 'ephemeris tests Failed to delete test directory: '.b:tst_dir
-
-
-
-# Test ephemeris#fs#get_set_g_todos
-" test with no g:ephemeris_todos var set
-Execute (g:ephemeris_todos should not exist prior to calling function):
-  Assert ! exists('g:ephemeris_todos')
-  let b:tst_todos = ephemeris#fs#get_set_g_todos()
-  Assert exists('g:ephemeris_todos')
-  AssertEqual 'TODOs', b:tst_todos
-
-" test with no g:ephemeris_todos var set
-Execute (g:ephemeris_todos should return what the user sets):
-  unlet g:ephemeris_todos
-  Assert ! exists('g:ephemeris_todos')
-  let g:ephemeris_todos = '=== TASK LIST ==='
-  let b:tst_todos = ephemeris#fs#get_set_g_todos()
-  AssertEqual  '=== TASK LIST ===', b:tst_todos
+  execute "silent! ! rm -rf ".expand(b:tst_dir) Assert !
+  isdirectory(expand(b:tst_dir)), 'ephemeris tests Failed to delete test
+  directory: '.b:tst_dir
