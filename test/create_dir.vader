@@ -1,4 +1,4 @@
-~ Test fs.vim 
+~ Test create_dir
 
 " fs.vim contains a collection of wrapper functions for filesystem and variable
 " get/set operations. Most of these functions throw errors that should be

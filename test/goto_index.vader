@@ -1,4 +1,4 @@
-~ Test ind.vim
+~ Test goto_index
 
 
 ============================
@@ -12,8 +12,13 @@ Execute (goto index test errors):
 Execute (goto index base case):
   " get current buffer #
   let g:tst_buf_nr = bufnr('%')
-  call ephemeris#ind#goto_index(expand(b:tst_ephemeris_diary))
+  call ephemeris#ind#goto_index('.tst_dir')
   " verify we are in next buffer
   AssertEqual g:tst_buf_nr + 1, bufnr('%')
 
- 
+
+============================
+" clean up
+Execute (rm tst_dir):
+  execute 'silent! ! rm -rf .tst_dir'
+  Assert ! isdirectory('.tst_dir')

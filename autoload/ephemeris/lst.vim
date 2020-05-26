@@ -18,14 +18,14 @@ function! ephemeris#lst#copy_todos()
   " create today's path and .md entry file if necessary
   try
     " get today's diary entry filepath
-    let l:today = ephemeris#fs#get_set_today()
+    let l:today = ephemeris#fs#get_set_date(0)
   catch 
-    echom v:exception
+    execute 'silent! echom v:exception'
     return
   endtry
   
   " get/set g:ephemeris_todos
-  call ephemeris#fs#get_set_g_todos()
+  call ephemeris#var#get_set_g_todos()
 
   " look back through a year's worth of potential diary entries
   let l:dp = 1
