@@ -1,0 +1,40 @@
+~ Test get_set_date
+
+# Test get_set_date
+" clear global variables
+Execute (unlet g:ephemeris_diary):
+  if exists('g:ephemeris_diary')
+    unlet g:ephemeris_diary
+  endif
+  AssertEqual 0, exists('g:ephemeris_diary')
+
+
+============================
+
+" get_set_date should bubble up the error from its called function get_g_diary
+Execute (get_set_date throws an error when g:ephemeris_diary has not been set):
+  AssertThrows call ephemeris#fs#get_set_date(0)
+  AssertEqual g:vader_exception, 'required global variable `g:ephemeris_diary` has not been set... set with `:let g:ephemeris_diary="~/diary"`'
+  
+
+============================
+
+" expect get_set_date to return dates diary entry filepath when g:ephemeris_diary is set
+Execute (get_set_date(today)):
+  " set g:ephemeris_diary
+  let g:ephemeris_diary = '.tst_dir'
+  AssertEqual 1, exists('g:ephemeris_diary')
+
+  let b:tst_date = expand(g:ephemeris_diary).'/'.strftime('%Y/%m/%d').'.md'
+  let g:tst_buf_nr = bufnr('%')
+  AssertEqual b:tst_date, ephemeris#fs#get_set_date(0)
+  " verify that the current buffer is one greater than before
+  AssertEqual g:tst_buf_nr+1, bufnr(b:tst_date)
+
+
+============================
+
+" remove tst directories and assert that they are deleted
+Execute (rm -rf tmp test dirs):
+  execute 'silent! ! rm -rf .tst_dir'
+  Assert ! isdirectory('.tst_dir')

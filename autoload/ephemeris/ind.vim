@@ -44,7 +44,7 @@ function! ephemeris#ind#create_index()
 
   " get/error g:ephemeris_diary
   try
-    let l:diary_dir = ephemeris#fs#get_g_diary()
+    let l:diary_dir = ephemeris#var#get_g_diary()
   catch
     echom v:exception
     return 0

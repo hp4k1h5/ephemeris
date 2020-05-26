@@ -9,24 +9,25 @@ Before (set exception strings):
   let b:tst_g_diary_exception = 'required global variable `g:ephemeris_diary` has not been set' 
   \ .'... set with `:let g:ephemeris_diary="~/diary"`'
 
-  let b:tst_dir = './.vader_test'
-  let b:tst_ephemeris_diary = b:tst_dir.'/vader_diary'
 
-
+============================
 # Test create_dir 
 
 " passing a filepath that ends in '/' should result in a directory being
 " created
-Execute (create dir):
+Execute (verify dir does not exist):
   let b:tst_dir = '.tst_dir/tst_dir/'
   Assert ! isdirectory(b:tst_dir)
 
+Execute (create dir):
   call ephemeris#fs#create_fp(b:tst_dir)
   Assert isdirectory(b:tst_dir)
 
+Execute (delete dir):
   " delete tst_dir
-  execute 'silent! ! rm -rf '.b:tst_dir
+  execute 'silent! ! rm -rf .tst_dir'
   Assert ! isdirectory(b:tst_dir)
+
 
 " passing a filepath that doesn't end in '/' should result in a filepath and
 " file being created
@@ -37,55 +38,6 @@ Execute (create file):
   call ephemeris#fs#create_fp(b:tst_file)
   Assert filereadable(b:tst_file)
 
-  " delete tst_file
-  execute 'silent! ! rm -rf '.b:tst_file
+  " delete tst_dir
+  execute 'silent! ! rm -rf .tst_dir'
   Assert ! filereadable(b:tst_file)
-
-
-# test ephemeris#ind#goto_index 
-
-Execute (goto index test errors):
-   " call with no params
-  AssertThrows ephemeris#ind#goto_index()
-  AssertEqual g:vader_exception, 'Vim:E492: Not an editor command: ephemeris#ind#goto_index()'
-
-Execute (goto index base case):
-  " get current buffer #
-  let g:tst_buf_nr = bufnr('%')
-  call ephemeris#ind#goto_index(expand(b:tst_ephemeris_diary))
-  " verify we are in next buffer
-  AssertEqual g:tst_buf_nr + 1, bufnr('%')
-  
-
-# test ephemeris#fs#get_set_today
-" get_set_today should add today's diary entry to the buffer list or
-" focus it if it exists
-
-" clear global variables
-Execute (unlet g:ephemeris_diary):
-  AssertEqual 1, exists('g:ephemeris_diary')
-  unlet g:ephemeris_diary
-  AssertEqual 0, exists('g:ephemeris_diary')
-
-" get_set_today should bubble up the error from its called function get_g_diary
-Execute (get_set_today should throw an error when g:ephemeris_diary has not been set):
-  AssertThrows call ephemeris#fs#get_set_today()
-  AssertEqual b:tst_g_diary_exception, g:vader_exception
-
-Execute (expect get_set_today to return todays diary entry filepath when g:ephemeris_diary is set):
-  " set g:ephemeris_diary
-  let g:ephemeris_diary = b:tst_ephemeris_diary
-  AssertEqual 1, exists('g:ephemeris_diary')
-  let b:tst_today = expand(b:tst_ephemeris_diary).'/'.strftime('%Y/%m/%d').'.md'
-  let g:tst_buf_nr = bufnr('%')
-  AssertEqual b:tst_today, ephemeris#fs#get_set_today()
-  AssertEqual g:tst_buf_nr+2, bufnr(b:tst_today)
-
-
-" Teardown
-
-" remove tst directories and assert that they are deleted
-Execute (rm -rf tmp test dirs):
-  execute "silent! ! rm -rf ".expand(b:tst_dir) Assert !
-  isdirectory(expand(b:tst_dir)), 'ephemeris tests Failed to delete test
-  directory: '.b:tst_dir
