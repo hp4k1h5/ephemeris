@@ -80,7 +80,7 @@ endfunction
 function! ephemeris#lst#filter_tasks()
 
   " get/set ephemeris_todos, if no setting is provided, the default is set
-  call ephemeris#fs#get_set_g_todos()
+  call ephemeris#var#get_set_g_todos()
   
   let l:i = 1
   let l:skip = 0
