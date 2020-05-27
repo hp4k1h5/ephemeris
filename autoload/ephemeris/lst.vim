@@ -15,7 +15,7 @@ function! ephemeris#lst#find_task()
   let l:i = l:cp[1]
   while l:i >= 0
     let line = getline(l:i)
-    if stridx(line, '- [') > -1 && line !~ '- [\(x\| \)\](.*)'
+        if stridx(line, '- [') > -1 && line !~ '- [\(x\| \)\](.*)'
       return l:i
     endif
     let l:i -= 1
@@ -118,7 +118,7 @@ function! ephemeris#lst#filter_tasks()
     " delete completed items, i.e. lines containing `- [x]` and associated
     " sub-blocks. on stridx >-1, check again for url after list item see
     " https://github.com/HP4k1h5/ephemeris/issues/13
-    if stridx(line, '- [x]') > -1 && line !~ '- [x\](.*)'
+    if stridx(line, '- [x]') > -1 && line !~ '- [\(x\| \)\](.*)'
       call cursor(l:i, 1)
       execute l:i.'d'
       " delete nested items underneath completed blocks
