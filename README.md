@@ -32,9 +32,12 @@ include a date-aligned directory structure as outlined above.
 
 **see [CONTRIBUTING](.github/CONTRIBUTING.md) for contributor guidelines**
 
+**see [vader tests](.github/CONTRIBUTING.md#vader-tests) for testing
+documentation**
+
 version information available at [vim.org](https://www.vim.org/scripts/script.php?script_id=5879)
 
-## BUGS
+### BUGS
 - prior to v0.4 :EphemerisCopyTodos, if called from outside `g:calendar_diary`,
   when `g:calendar_diary` contained a `~`, created a `g:calendar_diary/~/...`
   subdirectory, and possibly other things. please accept my apologies. the fix
