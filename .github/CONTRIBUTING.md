@@ -1,4 +1,4 @@
-# contributing 
+# contributing
 [toc]
 
 thanks for using ephemeris. all contributions are welcome. whether or not you
@@ -41,8 +41,20 @@ latest HP4k1h5/ephemeris `v.X.X` branch.
 > many thanks to [junegunn](https://github.com/junegunn)
  for the [Vader](https://github.com/junegunn/vader.vim) testing plugin
 
-To run the full set of Vader tests or a single test, I recommend using a
-script like the following, mostly borrowed from the Vader readme [testing
+To run the full set of Vader tests or a single test, I recommend using the
+[cleanish_vader](test/cleanish_vader.bash) set of scripts.
+run e.g.
+```bash
+cd ephemeris
+source test/cleanish_vader.bash
+clean_vader ./ test/* # to run all tests
+# or e.g.
+clean_vader ./ test/fs* # to run test globs
+# or e.g.
+clean_vader ./ test/filter_tasks.vader # to run a single test
+```
+
+or a script like the following, mostly borrowed from the Vader readme [testing
 section](https://github.com/junegunn/vader.vim#setting-up-isolated-testing-environment):
 #### testing locally
 ```bash
@@ -72,7 +84,8 @@ EOF
   ) $vader_cmd
 }
 ```
-#### ci/cd
+
+### ci/ci test script
 ```bash
 # vader cleanish vim +vader ci/cd test script
 # {$1} first arg (required) is the dirpath of the plugin you are testing. if
@@ -80,13 +93,13 @@ EOF
 # open with a relatively clean `.vimrc`
 # Returns a 0 or 1 status code depending on test success
 function clean_vader_ci {
-vim -Nu <(cat <<EOF
-filetype off  
-set rtp+=~/.vim/plugged/vader.vim
-set rtp+=$1
-filetype plugin indent on
-syntax enable
+  vim -Nu <(cat <<EOF
+    filetype off  
+    set rtp+=~/.vim/plugged/vader.vim
+    set rtp+=$1
+    filetype plugin indent on
+    syntax enable
 EOF
-) '+Vader! test/*'
+) '+Vader! '$1'/test/*'
 }
 ```
