@@ -3,6 +3,26 @@
 " Description: everything concerning lists and checkboxes
 " Home: https://github.com/HP4k1h5/ephemeris/
 
+""
+" @public
+"
+" will find the nearest associated task looking back up the buffer 
+"
+" Returns the line number of the associated task or -1 if no such task is found
+function! ephemeris#lst#find_task()
+  let l:cp = getcurpos()
+
+  let l:i = l:cp[1]
+  while l:i >= 0
+    let line = getline(l:i)
+    if stridx(line, '- [') > -1 && line !~ '- [\(x\| \)\](.*)'
+      return l:i
+    endif
+    let l:i -= 1
+  endwhile
+  return -1
+endfunction
+
 
 ""
 " @public 
