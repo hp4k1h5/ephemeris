@@ -64,8 +64,9 @@ command! -nargs=* EphemerisCopyTodos call ephemeris#lst#copy_todos(<f-args>)
 " Delete completed tasks, e.g. list items containing `- [x]`, and all associated
 " subblocks until the next incomplete task, e.g. list items containing `- [ ]`,
 " a @setting(g:ephemeris_todos) marker, 2 newlines, or EOF. See example in
-" @function(ephemeris#lst#filter_tasks).
-command! -nargs=* EphemerisFilterTasks call ephemeris#lst#filter_tasks(<f-args>)
+" @function(ephemeris#lst#filter_tasks). {archive} is a boolean which determines
+" whether the filtered tasks are moved to 'g:ephemeris_diary'/.cache/archive.md
+command! -nargs=* EphemerisFilterTasks 1 call ephemeris#lst#filter_tasks(<f-args>)
 
 ""
 " Toggles the state of a task between 
