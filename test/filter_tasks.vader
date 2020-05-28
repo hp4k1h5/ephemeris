@@ -1,13 +1,15 @@
 ~ Test filter tasks
 
-" lst#filter_tasks() should delete completed tasks from the buffer.
-" a completed task is defined as one that starts with the string `-
-" [x]`.  lst#filter_tasks() removes lines including a line beginning
-" with the completed task marker, up to the end of the file or an
-" incomplete task. this means, currently if you have a completed
-" task, followed by anything other than a `g:ephemeris_todos` marker
-" OR 2 newlines, everything following the function until EOF will be
-" filtered OUT, i.e. deleted.
+" filter_tasks(archive) should delete completed tasks from the buffer.  a
+" completed task is defined as one that starts with the string `- [x]`.
+" filter_tasks() removes lines including a line beginning with the completed
+" task marker, up to the end of the file a subsequent 'g:ephephemeris_todos'
+" marker or an incomplete task. this means, currently if you have a completed
+" task, followed by anything other than a `g:ephemeris_todos` marker OR 2
+" newlines, everything following the function until EOF will be filtered OUT,
+" i.e. deleted. if {archive} is true, filtered tasks will be moved to a dated
+" archive at 'g:ephemeris_diary'/.cache/archive.md
+
 
 ==========================================
 # test 1
@@ -77,7 +79,8 @@ Expect (the item to remain):
 
 
 ==========================================
-# test 5
+# test filter to archive
+
 Given (a list of tasks):
   - [x] complete task A, should be removed
     - subblock 1
@@ -87,7 +90,7 @@ Given (a list of tasks):
   - [x] complete task C
     -more things
 
-Execute (filter with archive arg = true):
+Execute (filter_tasks with archive = true):
   let g:ephemeris_diary = '.tst_dir'
   let b:cache = g:ephemeris_diary.'/.cache'
   call ephemeris#lst#filter_tasks(1)

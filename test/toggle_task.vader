@@ -13,6 +13,8 @@ Given (an unckecked checkbox):
   - [ ]
 
 Execute (toggle_task):
+  " ensure that toggle_block is off
+  let g:ephemeris_toggle_block = 0
   call ephemeris#lst#toggle_task()
 
 Expect (task to be in a checked state):
@@ -29,3 +31,55 @@ Execute (toggle_task):
 
 Expect (task to be in an unchecked state):
   - [ ]
+
+======================
+
+# test toggle_block
+
+Given (a block of tasks): 
+  1     - [ ]
+  2       sub block
+  3   
+  4       more block
+  5     - [ ]
+  6       - [x] sub task
+  7         associated sub-block
+  8         - list item
+  9     - [ ]
+  10    - [x] completed
+  11    stuff 
+  12  
+  13      - [ ] incomplete subtask 
+  14  
+  15    - [ ] last one
+
+Execute (filter_tasks with g:ephemeris_toggle_block = 1):
+  let g:ephemeris_toggle_block = 1
+  call cursor(2, 1)
+  call ephemeris#lst#toggle_task()
+
+  call cursor(8,1)
+  call ephemeris#lst#toggle_task()
+
+  call cursor(14,1)
+  call ephemeris#lst#toggle_task()
+
+  call cursor(15,1)
+  call ephemeris#lst#toggle_task()
+
+Expect ():
+  1     - [x]
+  2       sub block
+  3   
+  4       more block
+  5     - [ ]
+  6       - [ ] sub task
+  7         associated sub-block
+  8         - list item
+  9     - [ ]
+  10    - [x] completed
+  11    stuff 
+  12  
+  13      - [x] incomplete subtask 
+  14  
+  15    - [x] last one

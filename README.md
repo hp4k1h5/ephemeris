@@ -166,8 +166,10 @@ will not affect the state of any other tasks. Calls
 nmap <leader>eci :EphemerisCreateIndex<CR>
 nmap <leader>egi :EphemerisGotoIndex<CR>
 nmap <leader>ect :EphemerisCopyTodos<CR>
-nmap <leader>eft :EphemerisFilterTasks<CR>
+nmap <leader>eft :EphemerisFilterTasks 1 <CR>
+" 1 to move to archive, 0 to delete ---^
 nmap <leader>et  :EphemerisToggleTask<CR>
+" set `let g:ephemeris_toggle_block = 1` to toggle by block
 ```
 
 ##### consider
