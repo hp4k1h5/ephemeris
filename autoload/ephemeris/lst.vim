@@ -81,6 +81,8 @@ endfunction
 ""
 " @public 
 " Filter out completed tasks and their associated blocks in the current buffer.
+" If {archive} is true, filtered tasks will be moved to
+" 'g:ephemeris_diary'/.cache/archive.md
 " i.e., if you have a set of tasks like,
 " >
 "   - [ ] ephemeris docs
@@ -97,7 +99,19 @@ endfunction
 "   - [ ] ephemeris docs
 "     -[ ] `txt`
 " <
-function! ephemeris#lst#filter_tasks()
+function! ephemeris#lst#filter_tasks(archive)
+
+  if a:archive
+    try 
+      let l:diary = ephemeris#var#get_g_diary()
+      let l:archive = l:diary.'/.cache/archive.md'
+    catch
+      execute 'silent! echoerr '.v:exception
+      return
+    endtry
+    call ephemeris#fs#create_fp(l:archive)
+    execute 'badd '.l:archive
+  endif
 
   " get/set ephemeris_todos, if no setting is provided, the default is set
   call ephemeris#var#get_set_g_todos()
@@ -120,6 +134,10 @@ function! ephemeris#lst#filter_tasks()
     " https://github.com/HP4k1h5/ephemeris/issues/13
     if stridx(line, '- [x]') > -1 && line !~ '- [\(x\| \)\](.*)'
       call cursor(l:i, 1)
+      " add to archive
+      if a:archive
+          execute 'silent! '.l:i.'w >> '.l:archive
+      endif
       execute l:i.'d'
       " delete nested items underneath completed blocks
       " stop on any task item, g:ephemeris_todos, or 2 blank lines
@@ -127,6 +145,10 @@ function! ephemeris#lst#filter_tasks()
             \ && stridx(getline(l:i), '- [') == -1 
             \ && stridx(getline(l:i), g:ephemeris_todos) == -1
             \ && join(getline(l:i, l:i+1), '') !~ '^$' 
+        " add to archive
+        if a:archive
+          execute 'silent! '.l:i.'w >> '.l:archive
+        endif
         execute l:i.'d'
         " for each line of sub-block, add one to skip counter
         let l:skip += 1
