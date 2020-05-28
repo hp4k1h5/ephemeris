@@ -5,10 +5,10 @@
 " Purpose: diary index utility functions 
 
 ""
-" @public Find or create, and go to diary index file. {dir} is the directory
-" path of the diary whose index you wish to access. This is typically the same
-" path as 'g:ephemeris_diary'. ephemeris index located at
-" 'g:ephemeris_diary'/index.md
+" @public 
+" Find or create, and go to diary index file. {dir} is the directory path of the
+" diary whose index you wish to access. This is typically the same path as
+" 'g:ephemeris_diary'. ephemeris index located at 'g:ephemeris_diary'/index.md
 "
 " Returns 0
 function! ephemeris#ind#goto_index(dir)

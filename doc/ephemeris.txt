@@ -73,9 +73,12 @@ Example:  :let g:ephemeris_diary = '~/diary'
 
                                                            *g:ephemeris_todos*
 marker to indicate the beginning of the list of task items to be copied over
-to current day's diary entry. see |ephemeris#lst#copy_todos()|
+to current day's diary entry. see |ephemeris#lst#copy_todos()|. Also serves as
+a delimiter for |ephemeris#lst#filter_tasks()|
 
-default: TODOs
+Default: TODOs
+
+Example:  :let g:ephemeris_diary = '~/diary'
 
 ==============================================================================
 COMMANDS                                                  *ephemeris-commands*
@@ -94,11 +97,13 @@ COMMANDS                                                  *ephemeris-commands*
   as defined by the tasks found below the string.  Calls
   |ephemeris#lst#copy_todos()|
 
-:EphemerisFilterTasks [x]                              *:EphemerisFilterTasks*
+:EphemerisFilterTasks {archive} [x]                    *:EphemerisFilterTasks*
   Delete completed tasks, e.g. list items containing `- [x]`, and all
   associated subblocks until the next incomplete task, e.g. list items
   containing `- [ ]`, a |g:ephemeris_todos| marker, 2 newlines, or EOF. See
-  example in |ephemeris#lst#filter_tasks()|.
+  example in |ephemeris#lst#filter_tasks()|. The argument {archive} is a
+  boolean which determines whether the filtered tasks are moved to
+  'g:ephemeris_diary'/.cache/archive.md
 
 :EphemerisToggleTask                                    *:EphemerisToggleTask*
   Toggles the state of a task between
@@ -113,32 +118,37 @@ COMMANDS                                                  *ephemeris-commands*
 ==============================================================================
 FUNCTIONS                                                *ephemeris-functions*
 
-ephemeris#fs#get_set_today()                    *ephemeris#fs#get_set_today()*
-  Creates a diary entry buffer for the current day, and, if necessary, the
-  required `g:ephemeris_diary/YYYY/MM/...` directory path. See
-  |g:ephemeris_diary|
+ephemeris#fs#create_fp({filepath})                  *ephemeris#fs#create_fp()*
+  Creates a dirpath and/or file at the expanded {filepath}. If the filepath
+  ends in a '/', only the dirpath is created. Can be used idempotently.
 
-  Returns a string containing the current day's diary entry filepath TODO:
-  elseif focus l:today
+ephemeris#fs#get_set_date({date})                *ephemeris#fs#get_set_date()*
+  Creates a diary entry buffer for {date} and, if necessary, the intermediate
+  `g:ephemeris_diary/YYYY/MM/...` directory path. Date must be in YYYY/MM/DD
+  format in order to work with other ephemeris functions. If {date} is 0, it
+  will return today's date. See |g:ephemeris_diary|
 
-ephemeris#fs#get_g_diary()                        *ephemeris#fs#get_g_diary()*
-  helper function to get/set state of |g:ephemeris_diary| if g:ephemeris_diary
-  is not found an error is thrown errors should be handled by calling
-  functions
-
-  returns a string containing the expanded g:ephemeris_diary directory path
-
-ephemeris#fs#get_set_g_todos()                *ephemeris#fs#get_set_g_todos()*
-  helper function to get/set state of g:ephemeris_todos
+  Returns a string containing the date's diary entry filepath TODO: elseif
+  focus l:date_path
 
 ephemeris#ind#goto_index({dir})                   *ephemeris#ind#goto_index()*
-  Find or create, and go to diary index file. Index located at
-  |g:ephemeris_diary|/index.md
+  Find or create, and go to diary index file. {dir} is the directory path of
+  the diary whose index you wish to access. This is typically the same path as
+  'g:ephemeris_diary'. ephemeris index located at 'g:ephemeris_diary'/index.md
+
+  Returns 0
 
 ephemeris#ind#create_index()                    *ephemeris#ind#create_index()*
   Create an index of diary entries found recursively under the
   |g:ephemeris_diary| directory at `g:ephemeris_diary/index.md`, and open the
   index in a vertical split. Entries are formatted as markdown links.
+
+ephemeris#lst#find_task()                          *ephemeris#lst#find_task()*
+
+  will find the nearest associated task looking back up the buffer
+
+  Returns the line number of the associated task or -1 if no such task is
+  found
 
 ephemeris#lst#copy_todos()                        *ephemeris#lst#copy_todos()*
   Copy TODOs from last set of TODOs going back up to 10 years. Your
@@ -149,9 +159,10 @@ ephemeris#lst#copy_todos()                        *ephemeris#lst#copy_todos()*
   diary entry. It will open today's diary entry in a split. This function can
   be called from anywhere.
 
-ephemeris#lst#filter_tasks()                    *ephemeris#lst#filter_tasks()*
+ephemeris#lst#filter_tasks({archive})           *ephemeris#lst#filter_tasks()*
   Filter out completed tasks and their associated blocks in the current
-  buffer. i.e., if you have a set of tasks like,
+  buffer. If {archive} is true, filtered tasks will be moved to
+  'g:ephemeris_diary'/.cache/archive.md i.e., if you have a set of tasks like,
 >
     - [ ] ephemeris docs
       -[x] `.md`
@@ -175,6 +186,19 @@ ephemeris#lst#toggle_task()                      *ephemeris#lst#toggle_task()*
     - [x] complete
 <
   whether or not there is a checkbox return 0
+
+ephemeris#var#get_g_diary()                      *ephemeris#var#get_g_diary()*
+  helper function to get/set state of 'g:ephemeris_diary' if g:ephemeris_diary
+  is not found an error is thrown errors should be handled by calling
+  functions
+
+  Returns a string containing the expanded g:ephemeris_diary directory path
+
+ephemeris#var#get_set_g_todos()              *ephemeris#var#get_set_g_todos()*
+  helper function to get/set state of 'g:ephemeris_todos'
+
+ephemeris#var#get_g_toggle_block()        *ephemeris#var#get_g_toggle_block()*
+  helper function to get/set state of 'g:ephemeris_toggle_block'
 
 
 vim:tw=78:ts=8:ft=help:norl:
