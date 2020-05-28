@@ -99,7 +99,12 @@ endfunction
 "   - [ ] ephemeris docs
 "     -[ ] `txt`
 " <
+" TODO: set (archive = 0) default argument when
+" https://github.com/vim/vim/commit/42ae78cfff171fbd7412306083fe200245d7a7a6
+" goes to master in neovim
 function! ephemeris#lst#filter_tasks(archive)
+  echom a:archive
+  return
 
   if a:archive
     try 
