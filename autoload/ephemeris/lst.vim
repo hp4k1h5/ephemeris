@@ -197,6 +197,8 @@ endfunction
 "   - [ ] incomplete, and
 "   - [x] complete
 " <
+" if 'g:ephemeris_toggle_block' is true, the function will toggle the parent
+" task of the current block
 " whether or not there is a checkbox return 0
 function! ephemeris#lst#toggle_task()
   if ephemeris#var#get_g_toggle_block()

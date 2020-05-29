@@ -159,9 +159,9 @@ ephemeris#lst#copy_todos()                        *ephemeris#lst#copy_todos()*
   diary entry. It will open today's diary entry in a split. This function can
   be called from anywhere.
 
-ephemeris#lst#filter_tasks({archive})           *ephemeris#lst#filter_tasks()*
+ephemeris#lst#filter_tasks()                    *ephemeris#lst#filter_tasks()*
   Filter out completed tasks and their associated blocks in the current
-  buffer. If {archive} is true, filtered tasks will be moved to
+  buffer. If [a:0] is not false, filtered tasks will be moved to
   'g:ephemeris_diary'/.cache/archive.md i.e., if you have a set of tasks like,
 >
     - [ ] ephemeris docs
@@ -178,6 +178,9 @@ ephemeris#lst#filter_tasks({archive})           *ephemeris#lst#filter_tasks()*
     - [ ] ephemeris docs
       -[ ] `txt`
 <
+  TODO: set (archive = 0) default argument when
+  https://github.com/vim/vim/commit/42ae78cfff171fbd7412306083fe200245d7a7a6
+  goes to master in neovim
 
 ephemeris#lst#toggle_task()                      *ephemeris#lst#toggle_task()*
   Toggle state of task on the line under the cursor between
@@ -185,7 +188,8 @@ ephemeris#lst#toggle_task()                      *ephemeris#lst#toggle_task()*
     - [ ] incomplete, and
     - [x] complete
 <
-  whether or not there is a checkbox return 0
+  if 'g:ephemeris_toggle_block' is true, the function will toggle the parent
+  task of the current block whether or not there is a checkbox return 0
 
 ephemeris#var#get_g_diary()                      *ephemeris#var#get_g_diary()*
   helper function to get/set state of 'g:ephemeris_diary' if g:ephemeris_diary

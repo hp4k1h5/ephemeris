@@ -67,6 +67,11 @@ endfunction
 " @public
 " helper function to get/set state of 'g:ephemeris_toggle_block'
 function! ephemeris#var#get_g_toggle_block()
+  ""
+  " @setting g:ephemeris_toggle_block accepts a boolean. If true, the user can
+  " toggle tasks from anywhere inside a task block.
+  "
+  " Default 0
   if exists('g:ephemeris_toggle_block') && g:ephemeris_toggle_block
     return 1
   endif
