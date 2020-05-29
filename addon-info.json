@@ -1,6 +1,6 @@
 {
   "name": "ephemeris",
-  "version": "0.6",
+  "version": "0.7",
   "description": "a diary plugin for vim",
   "author": "HP4k1h5 <robertwalks@gmail.com>",
   "repository": {
