@@ -12,17 +12,18 @@ function! ephemeris#fs#create_fp(filepath)
 
   " check if dir or file terminator
   if a:filepath[-1:] !=# '/'
-    let l:split_path = split(a:filepath, '/')
-    let l:filename = l:split_path[-1:][0] 
+    " path, pattern, keepempty true for leading /
+    let l:split_path = split(a:filepath, '/', 1)
+    let l:filename = expand(l:split_path[-1:][0])
     let l:dirpath = join(l:split_path[:-2], '/')
   else
-    let l:dirpath = a:filepath
+    let l:dirpath = expand(a:filepath)
   endif
 
-  call mkdir(expand(l:dirpath), 'p')
+  call mkdir(l:dirpath, 'p')
 
   if exists('l:filename')
-    execute 'silent! ! touch '.expand(a:filepath)
+    execute 'silent! ! touch '.a:filepath
   endif
 endfunction
 

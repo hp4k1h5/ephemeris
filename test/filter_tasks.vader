@@ -89,24 +89,32 @@ Given (a list of tasks):
     more things
   - [x] complete task C
     -more things
-
 Execute (filter_tasks with archive = true):
   let g:ephemeris_diary = '.tst_dir'
   let b:cache = g:ephemeris_diary.'/.cache'
-  call ephemeris#lst#filter_tasks(1)
-  Assert isdirectory(b:cache)
-  Assert filereadable(b:cache.'/archive.md')
-  Assert bufnr(b:cache.'/archive.md')
+  let b:archive_path = b:cache.'/archive.md'
 
-  execute 'b '.b:cache.'/archive.md'
+  let g:tst_bufnr = bufnr('%')
+  call ephemeris#lst#filter_tasks(1)
+
+  Assert isdirectory(b:cache)
+  Assert filereadable(b:archive_path)
+  AssertEqual g:tst_bufnr + 4, bufnr(b:archive_path)
+  " go to cache
+  execute 'b '.bufnr(b:archive_path)
+  " check date on first line
+  AssertEqual '## ::'.strftime('%Y/%m/%d').'::', getline(1)
+  " until we can interpret a var in expect blocks ...
+  execute 'd1 | w!'
+
 Expect (expect completed blocks to be in archive):
   - [x] complete task A, should be removed
     - subblock 1
   - [x] complete task C
     -more things
+  
+" ^^ leave 2 spaces for blank line check
 
-
-==========================================
 " Teardown
 Execute (delete test dirs):
   execute 'silent! ! rm -rf .tst_dir'

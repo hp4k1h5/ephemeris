@@ -83,3 +83,33 @@ Expect ():
   13      - [x] incomplete subtask 
   14  
   15    - [x] last one
+
+
+==========================================
+
+# test EphemerisToggleTask
+
+Given (a set of tasks): 
+  - [ ] incomplete task
+   stuff
+  - [x] completed task
+
+Execute (EphemerisToggleTask with toggle_block off):
+  let g:ephemeris_toggle_block = 0
+  call cursor(2,1)
+  EphemerisToggleTask
+
+Expect (1st task to NOT have been toggled):
+  - [ ] incomplete task
+   stuff
+  - [x] completed task
+
+Execute (EphemerisToggleTask with toggle_block on):
+  let g:ephemeris_toggle_block = 1
+  call cursor(2,1)
+  EphemerisToggleTask
+
+Expect (1st task to have been toggled):
+  - [x] incomplete task
+   stuff
+  - [x] completed task
