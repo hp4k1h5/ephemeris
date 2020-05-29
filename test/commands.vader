@@ -1,0 +1,23 @@
+~ Test commands
+==========================================
+# test 1
+Given (three lines of tasks and sub-blocks):
+  - [x] complete task A, should be removed
+    - subblock 1
+  - [ ] incomplete task B
+    - subblock 2
+    more things
+  - [x] complete task C
+    -more things
+
+Execute (EphemerisFilterTasks with no params):
+  EphemerisFilterTasks
+
+" Check that the complete task and subblocks have been removed, and
+" that the incomplete tasks remain
+Expect(filtered tasks):
+  - [ ] incomplete task B
+    - subblock 2
+    more things
+
+

@@ -97,11 +97,11 @@ COMMANDS                                                  *ephemeris-commands*
   as defined by the tasks found below the string.  Calls
   |ephemeris#lst#copy_todos()|
 
-:EphemerisFilterTasks {archive} [x]                    *:EphemerisFilterTasks*
+:EphemerisFilterTasks [x] [archive]                    *:EphemerisFilterTasks*
   Delete completed tasks, e.g. list items containing `- [x]`, and all
   associated subblocks until the next incomplete task, e.g. list items
   containing `- [ ]`, a |g:ephemeris_todos| marker, 2 newlines, or EOF. See
-  example in |ephemeris#lst#filter_tasks()|. The argument {archive} is a
+  example in |ephemeris#lst#filter_tasks()|. The argument [archive] is a
   boolean which determines whether the filtered tasks are moved to
   'g:ephemeris_diary'/.cache/archive.md
 
