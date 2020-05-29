@@ -32,9 +32,12 @@ include a date-aligned directory structure as outlined above.
 
 **see [CONTRIBUTING](.github/CONTRIBUTING.md) for contributor guidelines**
 
+**see [vader tests](.github/CONTRIBUTING.md#vader-tests) for testing
+documentation**
+
 version information available at [vim.org](https://www.vim.org/scripts/script.php?script_id=5879)
 
-## BUGS
+### BUGS
 - prior to v0.4 :EphemerisCopyTodos, if called from outside `g:calendar_diary`,
   when `g:calendar_diary` contained a `~`, created a `g:calendar_diary/~/...`
   subdirectory, and possibly other things. please accept my apologies. the fix
@@ -163,8 +166,14 @@ will not affect the state of any other tasks. Calls
 nmap <leader>eci :EphemerisCreateIndex<CR>
 nmap <leader>egi :EphemerisGotoIndex<CR>
 nmap <leader>ect :EphemerisCopyTodos<CR>
-nmap <leader>eft :EphemerisFilterTasks<CR>
+
+nmap <leader>eft :EphemerisFilterTasks 1 <CR>
+" 1 to move to archive, 0 to delete ---^
+
 nmap <leader>et  :EphemerisToggleTask<CR>
+" set `let g:ephemeris_toggle_block = 1` to toggle by block
+" i.e. if your cursor is anywhere inside a task block, the immediate parent
+" task will be toggled.
 ```
 
 ##### consider

@@ -1,0 +1,43 @@
+~ Test create_dir
+
+" fs.vim contains a collection of wrapper functions for filesystem and variable
+" get/set operations. Most of these functions throw errors that should be
+" handled and tested in the parent scope.
+
+
+Before (set exception strings):
+  let b:tst_g_diary_exception = 'required global variable `g:ephemeris_diary` has not been set' 
+  \ .'... set with `:let g:ephemeris_diary="~/diary"`'
+
+
+============================
+# Test create_dir 
+
+" passing a filepath that ends in '/' should result in a directory being
+" created
+Execute (verify dir does not exist):
+  let b:tst_dir = '.tst_dir/tst_dir/'
+  Assert ! isdirectory(b:tst_dir)
+
+Execute (create dir):
+  call ephemeris#fs#create_fp(b:tst_dir)
+  Assert isdirectory(b:tst_dir)
+
+Execute (delete dir):
+  " delete tst_dir
+  execute 'silent! ! rm -rf .tst_dir'
+  Assert ! isdirectory(b:tst_dir)
+
+
+" passing a filepath that doesn't end in '/' should result in a filepath and
+" file being created
+Execute (create file):
+  let b:tst_file = '.tst_dir/tst_dir/file.file'
+  Assert ! filereadable(b:tst_file)
+
+  call ephemeris#fs#create_fp(b:tst_file)
+  Assert filereadable(b:tst_file)
+
+  " delete tst_dir
+  execute 'silent! ! rm -rf .tst_dir'
+  Assert ! filereadable(b:tst_file)

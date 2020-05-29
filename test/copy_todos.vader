@@ -1,37 +1,33 @@
-~ Test copy todos
+~ Test copy_todos
 
-" ephemeris#lst#copy_todos copies tasks from the last diary entry where the
-" task marker `g:ephemeris_todos` is found. the function finds the most recent
+" copy_todos copies tasks from the last diary entry where the
+" task marker 'g:ephemeris_todos' is found. the function finds the most recent
 " `g:ephemeris_todos` marker in the `g:ephemeris_diary` directory. The function
 " stops copying when it finds `g:ephemeris_todos` marker, two consecutive
 " newlines, or EOF. It should copy all todos blocks. 
 
-Before (provide global variables to tests):
-  let b:tst_dir = './.vader_test'
-  let g:ephemeris_diary = b:tst_dir.'/tmp_diary'
-
+=====================
 # test copy_todos
 " setup
 Execute (make test dir and add a test buffer from a date in the past):
-  let b:tst_exp_dir = expand(g:ephemeris_diary.'/2019/01')
-  call mkdir(b:tst_exp_dir, 'p')
-  Assert isdirectory(b:tst_exp_dir)
+  let g:ephemeris_diary = '.tst_dir'
+  let g:cur_buf = bufnr('%')
+  " create dir
+  call ephemeris#fs#create_fp(g:ephemeris_diary.'/2020/01/')
+  Assert isdirectory(g:ephemeris_diary)
+  AssertEqual g:cur_buf, bufnr('%')
 
 Execute (add TODOs to buffer):
   execute 'normal! ipre marker#TODOs- [ ] task 1'
-  execute 'w '.b:tst_exp_dir.'/01.md' 
+  execute 'silent! w '.g:ephemeris_diary.'/2020/01/01.md' 
+  Assert filereadable(g:ephemeris_diary.'/2020/01/01.md')
 
 Expect (the TODOs to be in the buffer):
   pre marker
   #TODOs
   - [ ] task 1
 
-Execute (save buffer as past date in tst_dir):
-  Assert filereadable(b:tst_exp_dir.'/01.md')
-
 Execute (copy_todos without a g:ephemeris_diary):
-  " save g:ephemeris_diary
-  let g:tmp_ephemeris_diary = g:ephemeris_diary
   " unlet g:ephemeris_diary to test error handling
   unlet g:ephemeris_diary
   let b:copy_return = ephemeris#lst#copy_todos()
@@ -39,23 +35,25 @@ Execute (copy_todos without a g:ephemeris_diary):
 
 Expect (the TODOs _NOT_ to be in the newly created buffer):
   
-" ^ leave two spaces to test blank buffer !
+" " ^ leave two spaces to test blank buffer !
 
-Execute (copy_todos to copy_todos after setting g:ephemeris_todos):
-  let g:ephemeris_diary = g:tmp_ephemeris_diary
+
+=====================
+" does today exist
+Execute (copy_todos to todays date after setting g:ephemeris_todos):
+  let g:ephemeris_diary = '.tst_dir'
   call ephemeris#lst#copy_todos()
-  Assert filereadable(ephemeris#fs#get_set_today())
+  Assert filereadable(ephemeris#fs#get_set_date(0))
 
 Expect (the TODOs to be in the current test buffer):
   #TODOs
   - [ ] task 1
 
 
+=====================
 " Teardown
 
 " remove test directories and assert that they are deleted
 Execute (rm -rf tmp test dirs):
-  execute 'silent! ! rm -rf '.expand(b:tst_dir)
-  Assert ! isdirectory(expand(b:tst_dir)),
-  \ 'ephemeris tests Failed to delete test directory: '
-  \ .b:tst_dir
+  execute 'silent! ! rm -rf .tst_dir'
+  Assert ! isdirectory('.tst_dir')

@@ -3,6 +3,26 @@
 " Description: everything concerning lists and checkboxes
 " Home: https://github.com/HP4k1h5/ephemeris/
 
+""
+" @public
+"
+" will find the nearest associated task looking back up the buffer 
+"
+" Returns the line number of the associated task or -1 if no such task is found
+function! ephemeris#lst#find_task()
+  let l:cp = getcurpos()
+
+  let l:i = l:cp[1]
+  while l:i >= 0
+    let line = getline(l:i)
+        if stridx(line, '- [') > -1 && line !~ '- [\(x\| \)\](.*)'
+      return l:i
+    endif
+    let l:i -= 1
+  endwhile
+  return -1
+endfunction
+
 
 ""
 " @public 
@@ -18,14 +38,14 @@ function! ephemeris#lst#copy_todos()
   " create today's path and .md entry file if necessary
   try
     " get today's diary entry filepath
-    let l:today = ephemeris#fs#get_set_today()
+    let l:today = ephemeris#fs#get_set_date(0)
   catch 
-    echom v:exception
+    execute 'silent! echom v:exception'
     return
   endtry
   
   " get/set g:ephemeris_todos
-  call ephemeris#fs#get_set_g_todos()
+  call ephemeris#var#get_set_g_todos()
 
   " look back through a year's worth of potential diary entries
   let l:dp = 1
@@ -33,7 +53,7 @@ function! ephemeris#lst#copy_todos()
     let l:prev = substitute(
           \ system('date -v -'.l:dp."d '+%Y/%m/%d'"),
           \ '\n', '', 'g')
-    let l:fn = expand(g:ephemeris_diary).'/'.l:prev.'.md'
+    let l:fn = g:ephemeris_diary.'/'.l:prev.'.md'
 
     if filereadable(l:fn)
       " if file contains a todo, extract list and dump in today's entry
@@ -61,6 +81,8 @@ endfunction
 ""
 " @public 
 " Filter out completed tasks and their associated blocks in the current buffer.
+" If [a:0] is not false, filtered tasks will be moved to
+" 'g:ephemeris_diary'/.cache/archive.md
 " i.e., if you have a set of tasks like,
 " >
 "   - [ ] ephemeris docs
@@ -77,10 +99,32 @@ endfunction
 "   - [ ] ephemeris docs
 "     -[ ] `txt`
 " <
-function! ephemeris#lst#filter_tasks()
+" TODO: set (archive = 0) default argument when
+" https://github.com/vim/vim/commit/42ae78cfff171fbd7412306083fe200245d7a7a6
+" goes to master in neovim
+function! ephemeris#lst#filter_tasks(...)
+
+  " handle optional archive param
+  let l:a1 = get(a:, '1')
+  if l:a1
+    try 
+      let l:diary = ephemeris#var#get_g_diary()
+      let l:archive = l:diary.'/.cache/archive.md'
+    catch
+      execute 'silent! echoerr '.v:exception
+      return
+    endtry
+
+    " create file if not exists
+    call ephemeris#fs#create_fp(l:archive)
+    " echo date to archive
+    call system('echo "## ::"$(date +"%Y/%m/%d")"::" >> '.l:archive)
+    " add to buffers
+    execute 'badd '.l:archive
+  endif
 
   " get/set ephemeris_todos, if no setting is provided, the default is set
-  call ephemeris#fs#get_set_g_todos()
+  call ephemeris#var#get_set_g_todos()
   
   let l:i = 1
   let l:skip = 0
@@ -96,17 +140,34 @@ function! ephemeris#lst#filter_tasks()
     endif
 
     " delete completed items, i.e. lines containing `- [x]` and associated
-    " sub-blocks
-    if stridx(line, '- [x]') > -1
+    " sub-blocks. on stridx >-1, check again for url after list item see
+    " https://github.com/HP4k1h5/ephemeris/issues/13
+    if stridx(line, '- [x]') > -1 && line !~ '- [\(x\| \)\](.*)'
       call cursor(l:i, 1)
+
+      " add completed task to archive
+      if l:a1
+          execute 'silent! '.l:i.'w! >> '.l:archive
+      endif
+
+      " delete task line
       execute l:i.'d'
-      " delete nested items underneath completed blocks
+
+      " delete nested items underneath completed tasks
       " stop on any task item, g:ephemeris_todos, or 2 blank lines
       while l:i <= line('$') 
             \ && stridx(getline(l:i), '- [') == -1 
             \ && stridx(getline(l:i), g:ephemeris_todos) == -1
             \ && join(getline(l:i, l:i+1), '') !~ '^$' 
+
+        " add subblock to archive
+        if l:a1
+          execute l:i.'w! >> '.l:archive
+        endif
+
+        " delete line
         execute l:i.'d'
+
         " for each line of sub-block, add one to skip counter
         let l:skip += 1
       endwhile
@@ -116,6 +177,13 @@ function! ephemeris#lst#filter_tasks()
       let l:i += 1
     endif
   endfor
+
+  if l:a1
+    " add newline
+    call system('echo "" >> '.l:archive)
+    " save all
+    execute 'silent! wa!'
+  endif 
 endfunction
 
 " TODO: move to BACKLOG somewhere
@@ -129,11 +197,17 @@ endfunction
 "   - [ ] incomplete, and
 "   - [x] complete
 " <
+" if 'g:ephemeris_toggle_block' is true, the function will toggle the parent
+" task of the current block
 " whether or not there is a checkbox return 0
 function! ephemeris#lst#toggle_task()
+  if ephemeris#var#get_g_toggle_block()
+    let l:n = ephemeris#lst#find_task()
+  else
+    let l:n = line('.')
+  endif
 
-  let l:n = line('.')
-  let l:l = getline('.')
+  let l:l = getline(l:n)
   let l:c = '- [x]'
   let l:u = '- [ ]'
   if stridx(l:l, l:u) > -1

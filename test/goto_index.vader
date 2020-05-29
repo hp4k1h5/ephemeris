@@ -1,0 +1,24 @@
+~ Test goto_index
+
+
+============================
+# test ephemeris#ind#goto_index 
+
+Execute (goto index test errors):
+   " call with no params
+  AssertThrows ephemeris#ind#goto_index()
+  AssertEqual g:vader_exception, 'Vim:E492: Not an editor command: ephemeris#ind#goto_index()'
+
+Execute (goto index base case):
+  " get current buffer #
+  let g:tst_buf_nr = bufnr('%')
+  call ephemeris#ind#goto_index('.tst_dir')
+  " verify we are in next buffer
+  Assert g:tst_buf_nr < bufnr('%')
+
+
+============================
+" clean up
+Execute (rm tst_dir):
+  execute 'silent! ! rm -rf .tst_dir'
+  Assert ! isdirectory('.tst_dir')

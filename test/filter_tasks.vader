@@ -1,27 +1,36 @@
 ~ Test filter tasks
 
-" lst#filter_tasks() should delete completed tasks from the buffer.
-" a completed task is defined as one that starts with the string `-
-" [x]`.  lst#filter_tasks() removes lines including a line beginning
-" with the completed task marker, up to the end of the file or an
-" incomplete task. this means, currently if you have a completed
-" task, followed by anything other than a `g:ephemeris_todos` marker
-" OR 2 newlines, everything following the function until EOF will be
-" filtered OUT, i.e. deleted.
+" filter_tasks(archive) should delete completed tasks from the buffer.  a
+" completed task is defined as one that starts with the string `- [x]`.
+" filter_tasks() removes lines including a line beginning with the completed
+" task marker, up to the end of the file a subsequent 'g:ephephemeris_todos'
+" marker or an incomplete task. this means, currently if you have a completed
+" task, followed by anything other than a `g:ephemeris_todos` marker OR 2
+" newlines, everything following the function until EOF will be filtered OUT,
+" i.e. deleted. if {archive} is true, filtered tasks will be moved to a dated
+" archive at 'g:ephemeris_diary'/.cache/archive.md
+
 
 ==========================================
 # test 1
-Given (three lines of tasks):
+Given (three lines of tasks and sub-blocks):
   - [x] complete task A, should be removed
+    - subblock 1
   - [ ] incomplete task B
+    - subblock 2
+    more things
   - [x] complete task C
+    -more things
 
 Execute (filter_tasks):
-  : call ephemeris#lst#filter_tasks()
+  : call ephemeris#lst#filter_tasks(0)
 
-Expect(Check that the incomplete task has been removed):
+" Check that the complete task and subblocks have been removed, and
+" that the incomplete tasks remain
+Expect(filtered tasks):
   - [ ] incomplete task B
-
+    - subblock 2
+    more things
 
 ==========================================
 # test 2
@@ -32,7 +41,7 @@ Given (tasks and 2 newlines and list items ensuing):
 
   - a list item
 Execute (filter_tasks):
-  : call ephemeris#lst#filter_tasks()
+  : call ephemeris#lst#filter_tasks(0)
 
 Expect(2 newlines to halt task filtering, and the list item to remain):
   
@@ -47,8 +56,66 @@ Given (tasks and the default g:ephemeris_todos marker string):
   TODOs
   - a list item
 Execute (filter_tasks):
-  : call ephemeris#lst#filter_tasks()
+  : call ephemeris#lst#filter_tasks(0)
 
 Expect(the completed task to be removed and the ensuing list item to be preserved):
   TODOs
   - a list item
+
+
+==========================================
+# test 4
+Given (a valid markdown link following an item marker):
+  - [x](https://test.ok)
+  - [x] (+1) completed task should go
+  - [x](completed task) should stay because it might be a link
+
+Execute (filter_tasks on url):
+  : call ephemeris#lst#filter_tasks(0)
+
+Expect (the item to remain):
+  - [x](https://test.ok)
+  - [x](completed task) should stay because it might be a link
+
+
+==========================================
+# test filter to archive
+
+Given (a list of tasks):
+  - [x] complete task A, should be removed
+    - subblock 1
+  - [ ] incomplete task B
+    - subblock 2
+    more things
+  - [x] complete task C
+    -more things
+Execute (filter_tasks with archive = true):
+  let g:ephemeris_diary = '.tst_dir'
+  let b:cache = g:ephemeris_diary.'/.cache'
+  let b:archive_path = b:cache.'/archive.md'
+
+  let g:tst_bufnr = bufnr('%')
+  call ephemeris#lst#filter_tasks(1)
+
+  Assert isdirectory(b:cache)
+  Assert filereadable(b:archive_path)
+  AssertEqual g:tst_bufnr + 4, bufnr(b:archive_path)
+  " go to cache
+  execute 'b '.bufnr(b:archive_path)
+  " check date on first line
+  AssertEqual '## ::'.strftime('%Y/%m/%d').'::', getline(1)
+  " until we can interpret a var in expect blocks ...
+  execute 'd1 | w!'
+
+Expect (expect completed blocks to be in archive):
+  - [x] complete task A, should be removed
+    - subblock 1
+  - [x] complete task C
+    -more things
+  
+" ^^ leave 2 spaces for blank line check
+
+" Teardown
+Execute (delete test dirs):
+  execute 'silent! ! rm -rf .tst_dir'
+  Assert ! isdirectory('.tst_dir')
