@@ -55,18 +55,23 @@ command! -nargs=* EphemerisCreateIndex call ephemeris#ind#create_index(<f-args>)
 command! -nargs=* EphemerisGotoIndex call ephemeris#ind#goto_index(g:ephemeris_diary)
 
 ""
-" Look backwards through previous entries for last @setting(g:ephemeris_todos)
-" marker, as defined by the tasks found below the string.  Calls
-" @function(ephemeris#lst#copy_todos) 
+" Copy TODOs from last set of TODOs going back up to 10 years. Your
+" @setting(g:ephemeris_diary) directory must  be organized in a
+" `.../YYYY/MM/DD.md` hierarchy, in order for this function to know which set of
+" TODOs are _most recent_. TODOs are defined by the string set in
+" @setting(g:ephemeris_todos). Default is 'TODOs'. **Everything** below that
+" marker is copied to the current day's diary entry. It will open today's diary
+" entry in a split. Calls @function(ephemeris#lst#copy_todos) 
 command! -nargs=* EphemerisCopyTodos call ephemeris#lst#copy_todos(<f-args>)
 
 ""
+" @usage [archive]
 " Delete completed tasks, e.g. list items containing `- [x]`, and all associated
 " subblocks until the next incomplete task, e.g. list items containing `- [ ]`,
 " a @setting(g:ephemeris_todos) marker, 2 newlines, or EOF. See example in
 " @function(ephemeris#lst#filter_tasks). The argument [archive] is a boolean
 " which determines whether the filtered tasks are moved to
-" 'g:ephemeris_diary'/.cache/archive.md
+" 'g:ephemeris_diary'/.cache/archive.md. Default is 0.
 command! -nargs=* EphemerisFilterTasks call ephemeris#lst#filter_tasks(<f-args>)
 
 ""
@@ -76,6 +81,7 @@ command! -nargs=* EphemerisFilterTasks call ephemeris#lst#filter_tasks(<f-args>)
 "     and
 "   - [x] complete 
 " <
-" when the cursor is on a line containing a task. will not affect the state of
-" any other tasks. Calls @function(ephemeris#lst#toggle_task)
+" when the cursor is on a line containing a task. Calls
+" @function(ephemeris#lst#toggle_task). If @setting(g:ephemeris_toggle_block) is
+" true, activating the command will affect parent task items.
 command! -nargs=* EphemerisToggleTask call ephemeris#lst#toggle_task(<f-args>)

@@ -202,9 +202,12 @@ endfunction
 "   - [x] complete
 " <
 " if 'g:ephemeris_toggle_block' is true, the function will toggle the parent
-" task of the current block
-" whether or not there is a checkbox return 0
+" task of the current block. 
+"
+" Returns 0
 function! ephemeris#lst#toggle_task()
+
+  " check for toggle_block
   if ephemeris#var#get_g_toggle_block()
     let l:n = ephemeris#lst#find_task()
   else

@@ -101,17 +101,21 @@ COMMANDS                                                  *ephemeris-commands*
   found at |g:ephemeris_diary|/index.md. Calls |ephemeris#ind#goto_index()|
 
 :EphemerisCopyTodos                                      *:EphemerisCopyTodos*
-  Look backwards through previous entries for last |g:ephemeris_todos| marker,
-  as defined by the tasks found below the string.  Calls
+  Copy TODOs from last set of TODOs going back up to 10 years. Your
+  |g:ephemeris_diary| directory must  be organized in a `.../YYYY/MM/DD.md`
+  hierarchy, in order for this function to know which set of TODOs are _most
+  recent_. TODOs are defined by the string set in |g:ephemeris_todos|. Default
+  is 'TODOs'. **Everything** below that marker is copied to the current day's
+  diary entry. It will open today's diary entry in a split. Calls
   |ephemeris#lst#copy_todos()|
 
-:EphemerisFilterTasks [x] [archive]                    *:EphemerisFilterTasks*
+:EphemerisFilterTasks [archive]                        *:EphemerisFilterTasks*
   Delete completed tasks, e.g. list items containing `- [x]`, and all
   associated subblocks until the next incomplete task, e.g. list items
   containing `- [ ]`, a |g:ephemeris_todos| marker, 2 newlines, or EOF. See
   example in |ephemeris#lst#filter_tasks()|. The argument [archive] is a
   boolean which determines whether the filtered tasks are moved to
-  'g:ephemeris_diary'/.cache/archive.md
+  'g:ephemeris_diary'/.cache/archive.md. Default is 0.
 
 :EphemerisToggleTask                                    *:EphemerisToggleTask*
   Toggles the state of a task between
@@ -120,8 +124,9 @@ COMMANDS                                                  *ephemeris-commands*
       and
     - [x] complete
 <
-  when the cursor is on a line containing a task. will not affect the state of
-  any other tasks. Calls |ephemeris#lst#toggle_task()|
+  when the cursor is on a line containing a task. Calls
+  |ephemeris#lst#toggle_task()|. If |g:ephemeris_toggle_block| is true,
+  activating the command will affect parent task items.
 
 ==============================================================================
 FUNCTIONS                                                *ephemeris-functions*

@@ -1,4 +1,4 @@
-~ Test create_dir
+~ Test create_fp
 
 " fs.vim contains a collection of wrapper functions for filesystem and variable
 " get/set operations. Most of these functions throw errors that should be
@@ -11,7 +11,7 @@ Before (set exception strings):
 
 
 ============================
-# Test create_dir 
+# Test create dir 
 
 " passing a filepath that ends in '/' should result in a directory being
 " created
@@ -29,6 +29,8 @@ Execute (delete dir):
   Assert ! isdirectory(b:tst_dir)
 
 
+============================
+# Test create filepath
 " passing a filepath that doesn't end in '/' should result in a filepath and
 " file being created
 Execute (create file):
