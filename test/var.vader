@@ -11,30 +11,30 @@ Before (set exception strings and buffer vars):
 
 " g:ephemeris_diary should not exist, therefore
 Execute (get_g_diary and expect it to throw):
-  unlet g:ephemeris_diary
+  if exists('g:ephemeris_diary')
+    unlet g:ephemeris_diary
+  endif
   AssertThrows call ephemeris#var#get_g_diary()
   AssertEqual b:tst_g_diary_exception, g:vader_exception
 
 " get_g_diary must return an expanded path
-Execute (set g:ephemeris_diary):
+Execute (set g:ephemeris_diary and get):
   let g:ephemeris_diary = b:tst_ephemeris_diary
   AssertEqual b:tst_ephemeris_diary, g:ephemeris_diary
   AssertEqual expand(b:tst_ephemeris_diary), ephemeris#var#get_g_diary()
 
 # Test ephemeris#var#get_set_g_todos
 
-" g:ephemeris_todos should not exist prior to calling function
-Execute (" test with no g:ephemeris_todos var set):
-  unlet g:ephemeris_todos
-  Assert ! exists('g:ephemeris_todos')
+Execute ("test with no g:ephemeris_todos var set):
+  if exists('g:ephemeris_todos')
+    unlet g:ephemeris_todos
+  endif
   let b:tst_todos = ephemeris#var#get_set_g_todos()
   Assert exists('g:ephemeris_todos')
   AssertEqual 'TODOs', b:tst_todos
 
 " test with no g:ephemeris_todos var set
 Execute (g:ephemeris_todos should return what the user sets):
-  unlet g:ephemeris_todos
-  Assert ! exists('g:ephemeris_todos')
   let g:ephemeris_todos = '=== TASK LIST ==='
   let b:tst_todos = ephemeris#var#get_set_g_todos()
   AssertEqual  '=== TASK LIST ===', b:tst_todos
