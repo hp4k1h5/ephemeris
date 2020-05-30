@@ -52,7 +52,7 @@ command! -nargs=* EphemerisCreateIndex call ephemeris#ind#create_index(<f-args>)
 " Open diary index in a vertical split or focus diary index buffer. Index is
 " found at @setting(g:ephemeris_diary)/index.md. Calls
 " @function(ephemeris#ind#goto_index)
-command! -nargs=* EphemerisGotoIndex call ephemeris#ind#goto_index(<f-args>)
+command! -nargs=* EphemerisGotoIndex call ephemeris#ind#goto_index(g:ephemeris_diary)
 
 ""
 " Look backwards through previous entries for last @setting(g:ephemeris_todos)

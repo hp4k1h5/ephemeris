@@ -25,8 +25,7 @@ endfunction
 
 
 ""
-" @public 
-" Copy TODOs from last set of TODOs going back up to 10 years. Your
+" @public Copy TODOs from last set of TODOs going back up to 10 years. Your
 " @setting(g:ephemeris_diary) directory must  be organized in a
 " `.../YYYY/MM/DD.md` hierarchy, in order for this function to know which set of
 " TODOs are _most recent_. TODOs are defined by the string set in
@@ -37,10 +36,12 @@ function! ephemeris#lst#copy_todos()
 
   " create today's path and .md entry file if necessary
   try
+    " get diary_dir
+    let l:diary_dir = ephemeris#var#get_g_diary()
     " get today's diary entry filepath
     let l:today = ephemeris#fs#get_set_date(0)
   catch 
-    execute 'silent! echom v:exception'
+    execute 'silent! echoerr v:exception'
     return
   endtry
   
@@ -53,7 +54,7 @@ function! ephemeris#lst#copy_todos()
     let l:prev = substitute(
           \ system('date -v -'.l:dp."d '+%Y/%m/%d'"),
           \ '\n', '', 'g')
-    let l:fn = g:ephemeris_diary.'/'.l:prev.'.md'
+    let l:fn = l:diary_dir.'/'.l:prev.'.md'
 
     if filereadable(l:fn)
       " if file contains a todo, extract list and dump in today's entry
