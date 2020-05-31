@@ -110,8 +110,8 @@ COMMANDS                                                  *ephemeris-commands*
   |ephemeris#lst#copy_todos()|
 
 :EphemerisFilterTasks [archive]                        *:EphemerisFilterTasks*
-  Delete completed tasks, i.e. list items containing `- [x]`, and all
-  associated subblocks until the next delimiter, e.g. list items
+  Delete completed tasks, e.g. list items containing `- [x]`, and all
+  associated subblocks until the next incomplete task, e.g. list items
   containing `- [ ]`, a |g:ephemeris_todos| marker, 2 newlines, or EOF. See
   example in |ephemeris#lst#filter_tasks()|. The argument [archive] is a
   boolean which determines whether the filtered tasks are moved to
