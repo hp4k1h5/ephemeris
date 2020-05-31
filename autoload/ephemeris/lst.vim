@@ -83,7 +83,7 @@ endfunction
 ""
 " @public 
 " Filter out completed tasks and their associated blocks in the current buffer.
-" If [a:0] is not false, filtered tasks will be moved to
+" If [a:1] is not false, filtered tasks will be moved to
 " 'g:ephemeris_diary'/.cache/archive.md. i.e., if you have a set of tasks like,
 " >
 "   - [ ] ephemeris docs
@@ -136,6 +136,8 @@ function! ephemeris#lst#filter_tasks(...)
   
   let l:i = 1
   let l:skip = 0
+  let l:completed_count = 0
+  let l:incomplete_count = 0
   " getbufline will check '$' on each iteration, and not overrun EOF though
   " lines may be deleted and final buffer length may be less than original
   " buffer length
@@ -151,7 +153,8 @@ function! ephemeris#lst#filter_tasks(...)
     " sub-blocks. on stridx >-1, check again for url after list item see
     " https://github.com/HP4k1h5/ephemeris/issues/13
     if stridx(line, '- [x]') > -1 && line !~ '- [\(x\| \)\](.*)'
-      call cursor(l:i, 1)
+      " add to count
+      let l:completed_count += 1
 
       " add completed task to archive
       if l:a1
@@ -181,6 +184,10 @@ function! ephemeris#lst#filter_tasks(...)
       endwhile
 
     else
+      " count incomplete tasks
+      if stridx(line, '- [ ]') > -1 && line !~ '- [ \](.*)'
+        let l:incomplete_count += 1
+      endif
       " continue iterating over the buffer lines
       let l:i += 1
     endif
@@ -192,6 +199,12 @@ function! ephemeris#lst#filter_tasks(...)
     " save all
     execute 'silent! wa!'
   endif 
+
+  " append the todos marker to prevent copy_todos from grabbing counts
+  call append('$', '##### filter summary: '.g:ephemeris_todos)
+  let l:out_message = l:a1 ? 'moved to archive' : 'deleted'
+  call append('$', '<< '.l:completed_count.' tasks '.l:out_message)
+  call append('$', '>> '.l:incomplete_count. ' tasks remaining')
 endfunction
 
 ""
