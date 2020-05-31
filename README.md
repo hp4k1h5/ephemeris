@@ -109,7 +109,7 @@ functions below...
 
 *:EphemerisCreateIndex*  
 Create markdown diary index of all '.md' files found under the
-|g:ephemeris_diary| directory, and go to vertical split. Calls
+|g:ephemeris_diary| directory, and go to vertical split.  Calls
 |ephemeris#ind#create_index()|
 
 *:EphemerisGotoIndex*  
@@ -117,14 +117,22 @@ Open diary index in a vertical split or focus diary index buffer. Index is
 found at |g:ephemeris_diary|/index.md. Calls |ephemeris#ind#goto_index()|
 
 *:EphemerisCopyTodos*  
-Look backwards through previous entries for last |g:ephemeris_todos| marker,
-as defined by the tasks found below the string.  Calls
+Copy TODOs from last set of TODOs going back up to 10 years. Your
+|g:ephemeris_diary| directory must  be organized in a `.../YYYY/MM/DD.md`
+hierarchy, in order for this function to know which set of TODOs are _most
+recent_. TODOs are defined by the string set in |g:ephemeris_todos|. Default
+is 'TODOs'. **Everything** below that marker is copied to the current day's
+diary entry. It will open today's diary entry in a split. Calls
 |ephemeris#lst#copy_todos()|
 
-*:EphemerisFilterTasks*  Delete completed tasks, e.g. list items containing `-
-[x]`, and all associated subblocks until the next incomplete task, e.g. list
-items containing `- [ ]`, a |g:ephemeris_todos| marker, 2 newlines, or EOF.
-See example in |ephemeris#lst#filter_tasks()|.
+*:EphemerisFilterTasks*  
+Delete completed tasks, i.e. list items containing `- [x]`, and all
+associated subblocks until the next delimiter; e.g. list items
+containing `- [ ]`, a |g:ephemeris_todos| marker, 2 newlines, or EOF. See
+example in |ephemeris#lst#filter_tasks()|. The argument [archive] is a
+boolean which determines whether the filtered tasks are moved to
+'g:ephemeris_diary'/.cache/archive.md. Default is 0.
+
 ```md
 *------------------------------------*
 | TODOs (before)                     |
@@ -144,9 +152,9 @@ See example in |ephemeris#lst#filter_tasks()|.
             *----------------------------------------------*
             | TODOs  (after)                               |
             |- [ ] incomplete task 2                       |
-            |- [ ] incomplete task 3a                      |
-            |- [ ] incomplete task 4a also                 |
-            |  this will get preserved                     |
+            |  - [ ] incomplete task 3a                    |
+            |  - [ ] incomplete task 4a also               |
+            |   this will get preserved                    |
             *----------------------------------------------*
 ```
 

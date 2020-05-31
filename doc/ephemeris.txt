@@ -110,8 +110,8 @@ COMMANDS                                                  *ephemeris-commands*
   |ephemeris#lst#copy_todos()|
 
 :EphemerisFilterTasks [archive]                        *:EphemerisFilterTasks*
-  Delete completed tasks, e.g. list items containing `- [x]`, and all
-  associated subblocks until the next incomplete task, e.g. list items
+  Delete completed tasks, i.e. list items containing `- [x]`, and all
+  associated subblocks until the next delimiter, e.g. list items
   containing `- [ ]`, a |g:ephemeris_todos| marker, 2 newlines, or EOF. See
   example in |ephemeris#lst#filter_tasks()|. The argument [archive] is a
   boolean which determines whether the filtered tasks are moved to
@@ -209,7 +209,9 @@ ephemeris#lst#toggle_task()                      *ephemeris#lst#toggle_task()*
     - [x] complete
 <
   if 'g:ephemeris_toggle_block' is true, the function will toggle the parent
-  task of the current block whether or not there is a checkbox return 0
+  task of the current block.
+
+  Returns 0
 
 ephemeris#var#get_g_diary()                      *ephemeris#var#get_g_diary()*
   helper function to get/set state of |g:ephemeris_diary|. If
