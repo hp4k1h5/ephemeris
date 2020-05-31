@@ -25,7 +25,8 @@ endfunction
 
 
 ""
-" @public Copy TODOs from last set of TODOs going back up to 10 years. Your
+" @public 
+" Copy TODOs from last set of TODOs going back up to 10 years. Your
 " @setting(g:ephemeris_diary) directory must  be organized in a
 " `.../YYYY/MM/DD.md` hierarchy, in order for this function to know which set of
 " TODOs are _most recent_. TODOs are defined by the string set in
@@ -83,8 +84,7 @@ endfunction
 " @public 
 " Filter out completed tasks and their associated blocks in the current buffer.
 " If [a:0] is not false, filtered tasks will be moved to
-" 'g:ephemeris_diary'/.cache/archive.md
-" i.e., if you have a set of tasks like,
+" 'g:ephemeris_diary'/.cache/archive.md. i.e., if you have a set of tasks like,
 " >
 "   - [ ] ephemeris docs
 "     -[x] `.md`
@@ -92,6 +92,11 @@ endfunction
 "         and a nested block of text
 "         with a few lines
 "     -[ ] `txt`
+"       more text
+"       up to two blank lines
+"       
+"
+"       - and more items etc. 
 "   - [x] export autocommands
 " <
 " and you run `:EphemerisFilterTasks` in the command-line mode, you will be left
@@ -99,10 +104,12 @@ endfunction
 " >
 "   - [ ] ephemeris docs
 "     -[ ] `txt`
+"       more text
+"       up to two blank lines
+"       
+"
+"       - and more items etc. 
 " <
-" TODO: set (archive = 0) default argument when
-" https://github.com/vim/vim/commit/42ae78cfff171fbd7412306083fe200245d7a7a6
-" goes to master in neovim
 function! ephemeris#lst#filter_tasks(...)
 
   " handle optional archive param
@@ -187,10 +194,6 @@ function! ephemeris#lst#filter_tasks(...)
   endif 
 endfunction
 
-" TODO: move to BACKLOG somewhere
-" multiline pcre for similar `\- \[.].|[\s]+(?=(\- \[.]|\Z))` 
-
-
 ""
 " @public
 " Toggle state of task on the line under the cursor between
@@ -199,9 +202,12 @@ endfunction
 "   - [x] complete
 " <
 " if 'g:ephemeris_toggle_block' is true, the function will toggle the parent
-" task of the current block
-" whether or not there is a checkbox return 0
+" task of the current block. 
+"
+" Returns 0
 function! ephemeris#lst#toggle_task()
+
+  " check for toggle_block
   if ephemeris#var#get_g_toggle_block()
     let l:n = ephemeris#lst#find_task()
   else

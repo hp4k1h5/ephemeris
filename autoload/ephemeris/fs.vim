@@ -36,7 +36,6 @@ endfunction
 " is 0, it will return today's date. See @setting(g:ephemeris_diary)
 "
 " Returns a string containing the date's diary entry filepath
-" TODO: elseif focus l:date_path
 function! ephemeris#fs#get_set_date(date)
 
   if a:date == 0

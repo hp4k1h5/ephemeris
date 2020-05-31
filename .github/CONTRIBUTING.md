@@ -42,7 +42,7 @@ latest HP4k1h5/ephemeris `v.X.X` branch.
  for the [Vader](https://github.com/junegunn/vader.vim) testing plugin
 
 To run the full set of Vader tests or a single test, I recommend using the
-[cleanish_vader](test/cleanish_vader.bash) set of scripts.
+[cleanish_vader](../test/cleanish_vader.bash) set of scripts.
 run e.g.
 ```bash
 cd ephemeris
@@ -85,7 +85,7 @@ EOF
 }
 ```
 
-### ci/ci test script
+### ci/cd test script
 ```bash
 # vader cleanish vim +vader ci/cd test script
 # {$1} first arg (required) is the dirpath of the plugin you are testing. if
