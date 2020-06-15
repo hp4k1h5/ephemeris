@@ -82,9 +82,7 @@ endfunction
 
 ""
 " @public 
-" Filter out completed tasks and their associated blocks in the current buffer.
-" If [a:1] is not false, filtered tasks will be moved to
-" 'g:ephemeris_diary'/.cache/archive.md. i.e., if you have a set of tasks like,
+" Filter out completed tasks and their associated blocks in the current buffer. i.e., if you have a set of tasks like,
 " >
 "   - [ ] ephemeris docs
 "     -[x] `.md`
@@ -110,10 +108,16 @@ endfunction
 "
 "       - and more items etc. 
 " <
+" If [a:1] is not false, filtered tasks will be moved to
+" 'g:ephemeris_diary'/.cache/archive.md. If [a:2] is not false, a task summary
+" will be printed a the bottom of the current buffer. This summary will not be
+" copied over by EphemerisCopyTodos
 function! ephemeris#lst#filter_tasks(...)
 
   " handle optional archive param
   let l:a1 = get(a:, '1')
+  let l:a2 = get(a:, '2')
+
   if l:a1
     try 
       let l:diary = ephemeris#var#get_g_diary()
@@ -167,7 +171,7 @@ function! ephemeris#lst#filter_tasks(...)
       " delete nested items underneath completed tasks
       " stop on any task item, g:ephemeris_todos, or 2 blank lines
       while l:i <= line('$') 
-            \ && stridx(getline(l:i), '- [') == -1 
+            \ && getline(l:i) !~ '^- \['
             \ && stridx(getline(l:i), g:ephemeris_todos) == -1
             \ && join(getline(l:i, l:i+1), '') !~ '^$' 
 
@@ -201,10 +205,12 @@ function! ephemeris#lst#filter_tasks(...)
   endif 
 
   " append the todos marker to prevent copy_todos from grabbing counts
-  call append('$', '##### filter summary: '.g:ephemeris_todos)
-  let l:out_message = l:a1 ? 'moved to archive' : 'deleted'
-  call append('$', '<< '.l:completed_count.' tasks '.l:out_message)
-  call append('$', '>> '.l:incomplete_count. ' tasks remaining')
+  if l:a2
+    call append('$', '##### filter summary: '.g:ephemeris_todos)
+    let l:out_message = l:a1 ? 'moved to archive' : 'deleted'
+    call append('$', '<< '.l:completed_count.' tasks '.l:out_message)
+    call append('$', '>> '.l:incomplete_count. ' tasks remaining')
+  endif
 endfunction
 
 ""

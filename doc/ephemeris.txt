@@ -173,7 +173,7 @@ ephemeris#lst#copy_todos()                        *ephemeris#lst#copy_todos()*
 
 ephemeris#lst#filter_tasks()                    *ephemeris#lst#filter_tasks()*
   Filter out completed tasks and their associated blocks in the current
-  buffer. If [a:0] is not false, filtered tasks will be moved to
+  buffer. If [a:1] is not false, filtered tasks will be moved to
   'g:ephemeris_diary'/.cache/archive.md. i.e., if you have a set of tasks
   like,
 >
