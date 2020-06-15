@@ -108,10 +108,10 @@ endfunction
 "
 "       - and more items etc. 
 " <
-" If [a:1] is not false, filtered tasks will be moved to
-" 'g:ephemeris_diary'/.cache/archive.md. If [a:2] is not false, a task summary
-" will be printed a the bottom of the current buffer. This summary will not be
-" copied over by EphemerisCopyTodos
+" If [a:1], the first parameter passed to this function, is not false, filtered
+" tasks will be moved to 'g:ephemeris_diary'/.cache/archive.md. If [a:2], the
+" second parameter, is not false, a task summary will be printed a the bottom of
+" the current buffer. This summary will not be copied over by EphemerisCopyTodos
 function! ephemeris#lst#filter_tasks(...)
 
   " handle optional archive param

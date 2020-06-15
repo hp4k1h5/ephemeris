@@ -84,7 +84,7 @@ Example: `:let g:ephemeris_todos = '===TASK LIST==='`
 Accepts a boolean. If true, the user can toggle tasks from anywhere inside a
 task block.
 
-Default: 0
+Default: 1
 
 Example: `:let g:ephemeris_toggle_block = 1`
 
@@ -105,17 +105,20 @@ COMMANDS                                                  *ephemeris-commands*
   |g:ephemeris_diary| directory must  be organized in a `.../YYYY/MM/DD.md`
   hierarchy, in order for this function to know which set of TODOs are _most
   recent_. TODOs are defined by the string set in |g:ephemeris_todos|. Default
-  is 'TODOs'. **Everything** below that marker is copied to the current day's
-  diary entry. It will open today's diary entry in a split. Calls
-  |ephemeris#lst#copy_todos()|
+  is 'TODOs'. Everything below that marker, until 2 consecutive newlines, an
+  incomplete task, or a subsequent g:ephemeris_todos marker, is copied to the
+  current day's diary entry. It will open today's diary entry in a split.
+  Calls |ephemeris#lst#copy_todos()|
 
-:EphemerisFilterTasks [archive]                        *:EphemerisFilterTasks*
+:EphemerisFilterTasks [archive] [summary]              *:EphemerisFilterTasks*
   Delete completed tasks, e.g. list items containing `- [x]`, and all
   associated subblocks until the next incomplete task, e.g. list items
   containing `- [ ]`, a |g:ephemeris_todos| marker, 2 newlines, or EOF. See
-  example in |ephemeris#lst#filter_tasks()|. The argument [archive] is a
+  example in |ephemeris#lst#filter_tasks()|. The first argument [archive] is a
   boolean which determines whether the filtered tasks are moved to
-  'g:ephemeris_diary'/.cache/archive.md. Default is 0.
+  'g:ephemeris_diary'/.cache/archive.md. Default is 0. The second argument
+  [summary] is a boolean. If true this function will print a summary of
+  filtered/remaining tasks at the bottom of the buffer. Default is 0.
 
 :EphemerisToggleTask                                    *:EphemerisToggleTask*
   Toggles the state of a task between
@@ -173,9 +176,7 @@ ephemeris#lst#copy_todos()                        *ephemeris#lst#copy_todos()*
 
 ephemeris#lst#filter_tasks()                    *ephemeris#lst#filter_tasks()*
   Filter out completed tasks and their associated blocks in the current
-  buffer. If [a:1] is not false, filtered tasks will be moved to
-  'g:ephemeris_diary'/.cache/archive.md. i.e., if you have a set of tasks
-  like,
+  buffer. i.e., if you have a set of tasks like,
 >
     - [ ] ephemeris docs
       -[x] `.md`
@@ -201,6 +202,11 @@ ephemeris#lst#filter_tasks()                    *ephemeris#lst#filter_tasks()*
 
         - and more items etc.
 <
+  If [a:1], the first parameter passed to this function, is not false,
+  filtered tasks will be moved to 'g:ephemeris_diary'/.cache/archive.md. If
+  [a:2], the second parameter, is not false, a task summary will be printed a
+  the bottom of the current buffer. This summary will not be copied over by
+  EphemerisCopyTodos
 
 ephemeris#lst#toggle_task()                      *ephemeris#lst#toggle_task()*
   Toggle state of task on the line under the cursor between
