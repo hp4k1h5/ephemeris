@@ -30,9 +30,10 @@ endfunction
 " @setting(g:ephemeris_diary) directory must  be organized in a
 " `.../YYYY/MM/DD.md` hierarchy, in order for this function to know which set of
 " TODOs are _most recent_. TODOs are defined by the string set in
-" @setting(g:ephemeris_todos). Default is 'TODOs'. **Everything** below that
-" marker is copied to the current day's diary entry. It will open today's diary
-" entry in a split. This function can be called from anywhere.
+" @setting(g:ephemeris_todos). Default is 'TODOs'. Everything below that marker,
+" until 2 consecutive newlines, an incomplete task, or a subsequent
+" g:ephemeris_todos marker, is copied to the current day's diary entry. It will
+" open today's diary entry in a split.
 function! ephemeris#lst#copy_todos()
 
   " create today's path and .md entry file if necessary

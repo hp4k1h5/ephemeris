@@ -170,9 +170,9 @@ ephemeris#lst#copy_todos()                        *ephemeris#lst#copy_todos()*
   |g:ephemeris_diary| directory must  be organized in a `.../YYYY/MM/DD.md`
   hierarchy, in order for this function to know which set of TODOs are _most
   recent_. TODOs are defined by the string set in |g:ephemeris_todos|. Default
-  is 'TODOs'. **Everything** below that marker is copied to the current day's
-  diary entry. It will open today's diary entry in a split. This function can
-  be called from anywhere.
+  is 'TODOs'. Everything below that marker, until 2 consecutive newlines, an
+  incomplete task, or a subsequent g:ephemeris_todos marker, is copied to the
+  current day's diary entry. It will open today's diary entry in a split.
 
 ephemeris#lst#filter_tasks()                    *ephemeris#lst#filter_tasks()*
   Filter out completed tasks and their associated blocks in the current

@@ -117,21 +117,28 @@ Open diary index in a vertical split or focus diary index buffer. Index is
 found at |g:ephemeris_diary|/index.md. Calls |ephemeris#ind#goto_index()|
 
 *:EphemerisCopyTodos*  
-Copy TODOs from last set of TODOs going back up to 10 years. Your
-|g:ephemeris_diary| directory must  be organized in a `.../YYYY/MM/DD.md`
-hierarchy, in order for this function to know which set of TODOs are _most
-recent_. TODOs are defined by the string set in |g:ephemeris_todos|. Default
-is 'TODOs'. **Everything** below that marker is copied to the current day's
-diary entry. It will open today's diary entry in a split. Calls
-|ephemeris#lst#copy_todos()|
+ Copy TODOs from last set of TODOs going back up to 10 years. Your
+ @setting(g:ephemeris_diary) directory must  be organized in a
+ `.../YYYY/MM/DD.md` hierarchy, in order for this function to know which set
+ of TODOs are _most recent_. TODOs are defined by the string set in
+ @setting(g:ephemeris_todos). Default is 'TODOs'. Everything below that
+ marker, until 2 consecutive newlines, an incomplete task, or a subsequent
+ g:ephemeris_todos marker, is copied to the current day's diary entry. It will
+ open today's diary entry in a split. Calls
+ @function(ephemeris#lst#copy_todos) 
 
 *:EphemerisFilterTasks*  
-Delete completed tasks, i.e. list items containing `- [x]`, and all
-associated subblocks until the next delimiter; e.g. list items
-containing `- [ ]`, a |g:ephemeris_todos| marker, 2 newlines, or EOF. See
-example in |ephemeris#lst#filter_tasks()|. The argument [archive] is a
-boolean which determines whether the filtered tasks are moved to
-'g:ephemeris_diary'/.cache/archive.md. Default is 0.
+ @usage [archive] [summary]  
+ Delete completed tasks, e.g. list items containing `- [x]`, and all associated
+ subblocks until the next incomplete task, e.g.  list items containing `- [ ]`,
+ a @setting(g:ephemeris_todos) marker, 2 newlines, or EOF. See example in
+ @function(ephemeris#lst#filter_tasks). The first argument [archive] is a
+ boolean which determines whether the filtered tasks are moved to
+ 'g:ephemeris_diary'/.cache/archive.md. Default is 0. The second argument
+ [summary] is a boolean. If true this function will print a summary of
+ filtered/remaining tasks at the bottom of the buffer. Default is 0.  
+ Ex: `:EphemerisFilterTasks 1 1` " filters tasks, moves completed tasks to
+
 
 ```md
 *------------------------------------*
@@ -175,13 +182,13 @@ nmap <leader>eci :EphemerisCreateIndex<CR>
 nmap <leader>egi :EphemerisGotoIndex<CR>
 nmap <leader>ect :EphemerisCopyTodos<CR>
 
-nmap <leader>eft :EphemerisFilterTasks 1 <CR>
-" 1 to move to archive, 0 to delete ---^
+nmap <leader>eft :EphemerisFilterTasks 1 1<CR>
+" 1 to move to archive, 0 to delete ---^ ^---- 1 to print summary, 0 for no
+" summary
 
 nmap <leader>et  :EphemerisToggleTask<CR>
-" set `let g:ephemeris_toggle_block = 1` to toggle by block
-" i.e. if your cursor is anywhere inside a task block, the immediate parent
-" task will be toggled.
+" set `let g:ephemeris_toggle_block = 0` to disable toggle by block, see docs
+for `g:ephemeris_toggle_block`
 ```
 
 ##### consider
