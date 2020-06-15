@@ -87,19 +87,6 @@ task block.
 Default: 1
 
 Example: `:let g:ephemeris_toggle_block = 1`
-||||||| 9c93f5f
-Example:  :let g:ephemeris_diary = '~/diary'
-=======
-Example: `:let g:ephemeris_todos = '===TASK LIST==='`
-
-                                                    *g:ephemeris_toggle_block*
-Accepts a boolean. If true, the user can toggle tasks from anywhere inside a
-task block.
-
-Default: 0
-
-Example: `:let g:ephemeris_toggle_block = 1`
->>>>>>> 96f3653c354dd8952887fe63001ab7e8394134d0
 
 ==============================================================================
 COMMANDS                                                  *ephemeris-commands*
@@ -114,7 +101,6 @@ COMMANDS                                                  *ephemeris-commands*
   found at |g:ephemeris_diary|/index.md. Calls |ephemeris#ind#goto_index()|
 
 :EphemerisCopyTodos                                      *:EphemerisCopyTodos*
-<<<<<<< HEAD
   Copy TODOs from last set of TODOs going back up to 10 years. Your
   |g:ephemeris_diary| directory must  be organized in a `.../YYYY/MM/DD.md`
   hierarchy, in order for this function to know which set of TODOs are _most
@@ -123,19 +109,6 @@ COMMANDS                                                  *ephemeris-commands*
   incomplete task, or a subsequent g:ephemeris_todos marker, is copied to the
   current day's diary entry. It will open today's diary entry in a split.
   Calls |ephemeris#lst#copy_todos()|
-||||||| 9c93f5f
-  Look backwards through previous entries for last |g:ephemeris_todos| marker,
-  as defined by the tasks found below the string.  Calls
-  |ephemeris#lst#copy_todos()|
-=======
-  Copy TODOs from last set of TODOs going back up to 10 years. Your
-  |g:ephemeris_diary| directory must  be organized in a `.../YYYY/MM/DD.md`
-  hierarchy, in order for this function to know which set of TODOs are _most
-  recent_. TODOs are defined by the string set in |g:ephemeris_todos|. Default
-  is 'TODOs'. **Everything** below that marker is copied to the current day's
-  diary entry. It will open today's diary entry in a split. Calls
-  |ephemeris#lst#copy_todos()|
->>>>>>> 96f3653c354dd8952887fe63001ab7e8394134d0
 
 :EphemerisFilterTasks [archive] [summary]              *:EphemerisFilterTasks*
   Delete completed tasks, e.g. list items containing `- [x]`, and all
