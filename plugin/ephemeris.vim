@@ -59,19 +59,22 @@ command! -nargs=* EphemerisGotoIndex call ephemeris#ind#goto_index(g:ephemeris_d
 " @setting(g:ephemeris_diary) directory must  be organized in a
 " `.../YYYY/MM/DD.md` hierarchy, in order for this function to know which set of
 " TODOs are _most recent_. TODOs are defined by the string set in
-" @setting(g:ephemeris_todos). Default is 'TODOs'. **Everything** below that
-" marker is copied to the current day's diary entry. It will open today's diary
-" entry in a split. Calls @function(ephemeris#lst#copy_todos) 
+" @setting(g:ephemeris_todos). Default is 'TODOs'. Everything below that marker,
+" until 2 consecutive newlines, an incomplete task, or a subsequent
+" g:ephemeris_todos marker, is copied to the current day's diary entry. It will
+" open today's diary entry in a split. Calls @function(ephemeris#lst#copy_todos) 
 command! -nargs=* EphemerisCopyTodos call ephemeris#lst#copy_todos(<f-args>)
 
 ""
-" @usage [archive]
+" @usage [archive] [summary]
 " Delete completed tasks, e.g. list items containing `- [x]`, and all associated
 " subblocks until the next incomplete task, e.g. list items containing `- [ ]`,
 " a @setting(g:ephemeris_todos) marker, 2 newlines, or EOF. See example in
-" @function(ephemeris#lst#filter_tasks). The argument [archive] is a boolean
-" which determines whether the filtered tasks are moved to
-" 'g:ephemeris_diary'/.cache/archive.md. Default is 0.
+" @function(ephemeris#lst#filter_tasks). The first argument [archive] is a
+" boolean which determines whether the filtered tasks are moved to
+" 'g:ephemeris_diary'/.cache/archive.md. Default is 0. The second argument
+" [summary] is a boolean. If true this function will print a summary of
+" filtered/remaining tasks at the bottom of the buffer. Default is 0.
 command! -nargs=* EphemerisFilterTasks call ephemeris#lst#filter_tasks(<f-args>)
 
 ""

@@ -38,3 +38,14 @@ Execute (g:ephemeris_todos should return what the user sets):
   let g:ephemeris_todos = '=== TASK LIST ==='
   let b:tst_todos = ephemeris#var#get_set_g_todos()
   AssertEqual  '=== TASK LIST ===', b:tst_todos
+
+==============================================
+
+# test get_g_toggle_block
+
+Execute (toggle_block default should be 1):
+  AssertEqual 1, ephemeris#var#get_g_toggle_block()
+
+Execute (reacts to g:vars):
+  let g:ephemeris_toggle_block = 0
+  AssertEqual 0, ephemeris#var#get_g_toggle_block()

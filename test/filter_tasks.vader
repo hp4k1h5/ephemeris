@@ -22,8 +22,8 @@ Given (three lines of tasks and sub-blocks):
   - [x] complete task C
     -more things
 
-Execute (filter_tasks):
-  : call ephemeris#lst#filter_tasks(0)
+Execute (filter_tasks with no params):
+  call ephemeris#lst#filter_tasks()
 
 " Check that the complete task and subblocks have been removed, and
 " that the incomplete tasks remain
@@ -41,7 +41,7 @@ Given (tasks and 2 newlines and list items ensuing):
 
   - a list item
 Execute (filter_tasks):
-  : call ephemeris#lst#filter_tasks(0)
+  call ephemeris#lst#filter_tasks(0)
 
 Expect(2 newlines to halt task filtering, and the list item to remain):
   
@@ -99,19 +99,16 @@ Execute (filter_tasks with archive = true):
 
   Assert isdirectory(b:cache)
   Assert filereadable(b:archive_path)
-  AssertEqual g:tst_bufnr + 4, bufnr(b:archive_path)
+  AssertEqual g:tst_bufnr + 1, bufnr(b:archive_path)
   " go to cache
   execute 'b '.bufnr(b:archive_path)
   " check date on first line
   AssertEqual '## ::'.strftime('%Y/%m/%d').'::', getline(1)
-  " until we can interpret a var in expect blocks ...
-  execute 'd1 | w!'
-
-Expect (expect completed blocks to be in archive):
-  - [x] complete task A, should be removed
-    - subblock 1
-  - [x] complete task C
-    -more things
+  " check task on next line
+  AssertEqual '- [x] complete task A, should be removed', getline(2)
+  " check task on last line
+  AssertEqual '  -more things', getline(5)
+  AssertEqual '', getline('$')
   
 " ^^ leave 2 spaces for blank line check
 

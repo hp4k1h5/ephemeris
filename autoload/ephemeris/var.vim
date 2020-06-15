@@ -76,9 +76,9 @@ function! ephemeris#var#get_g_toggle_block()
   " Accepts a boolean. If true, the user can toggle tasks from anywhere inside
   " a task block.
   "
-  " Default: 0
+  " Default: 1
   "
   " Example: `:let g:ephemeris_toggle_block = 1`
 
-  return get(g:, 'ephemeris_toggle_block')
+  return get(g:, 'ephemeris_toggle_block', 1)
 endfunction
