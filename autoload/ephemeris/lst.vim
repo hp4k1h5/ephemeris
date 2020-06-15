@@ -82,7 +82,8 @@ endfunction
 
 ""
 " @public 
-" Filter out completed tasks and their associated blocks in the current buffer. i.e., if you have a set of tasks like,
+" Filter out completed tasks and their associated blocks in the current buffer.
+" i.e., if you have a set of tasks like,
 " >
 "   - [ ] ephemeris docs
 "     -[x] `.md`
