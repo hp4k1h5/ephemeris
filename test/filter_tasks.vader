@@ -21,6 +21,7 @@ Given (three lines of tasks and sub-blocks):
     more things
   - [x] complete task C
     -more things
+    - [ ] should remain
 
 Execute (filter_tasks with no params):
   call ephemeris#lst#filter_tasks()
@@ -31,6 +32,7 @@ Expect(filtered tasks):
   - [ ] incomplete task B
     - subblock 2
     more things
+    - [ ] should remain
 
 ==========================================
 # test 2
@@ -99,7 +101,7 @@ Execute (filter_tasks with archive = true):
 
   Assert isdirectory(b:cache)
   Assert filereadable(b:archive_path)
-  AssertEqual g:tst_bufnr + 1, bufnr(b:archive_path)
+  Assert g:tst_bufnr < bufnr(b:archive_path)
   " go to cache
   execute 'b '.bufnr(b:archive_path)
   " check date on first line

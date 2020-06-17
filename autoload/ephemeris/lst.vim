@@ -173,7 +173,7 @@ function! ephemeris#lst#filter_tasks(...)
       " delete nested items underneath completed tasks
       " stop on any task item, g:ephemeris_todos, or 2 blank lines
       while l:i <= line('$') 
-            \ && getline(l:i) !~ '^- \['
+            \ && getline(l:i) !~ '^ *- \['
             \ && stridx(getline(l:i), g:ephemeris_todos) == -1
             \ && join(getline(l:i, l:i+1), '') !~ '^$' 
 
