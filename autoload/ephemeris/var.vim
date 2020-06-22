@@ -82,3 +82,19 @@ function! ephemeris#var#get_g_toggle_block()
 
   return get(g:, 'ephemeris_toggle_block', 1)
 endfunction
+
+function! ephemeris#var#get_g_ephemeris_cb_types()
+
+  "" 
+  " @setting g:ephemeris_cb_types
+  " Accepts a list of strings that g:ephemeris_toggle_block will iterate over.
+  " Mind that not all of these will be properly interpreted by standard
+  " markdown interpreters, which will only accept, if it accepts them, the
+  " default values.
+  " Example: let g:ephemeris_cb_types = [ '🌑', '🌘', '🌓', '🌖', '🌕' ]
+  " Example: :let g:ephemeris_cb_types = ['', '- [ ]', '- [x]', '-']
+  " Example: :let g:ephemeris_cb_types = ['.', 'o', 'O']
+  " The default value is  ['- [ ]', '- [x]']
+  return get(g:, 'get_g_ephemeris_cb_types', 
+        \ ['- [ ]', '- [x]'])
+endfunction

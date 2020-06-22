@@ -6,8 +6,9 @@
 
 ""
 " @public
-" Creates a dirpath and/or file at the expanded {filepath}. If the filepath
-" ends in a '/', only the dirpath is created. Can be used idempotently.
+" Creates a dirpath and/or file at the expanded {filepath}. If the filepath ends
+" in a '/', only the dirpath is created. Will not overwrite existing files or
+" directories.
 function! ephemeris#fs#create_fp(filepath)
 
   " check if dir or file terminator
@@ -30,10 +31,10 @@ endfunction
 
 ""
 " @public
-" Creates a diary entry buffer for {date} and, if necessary, the
-" intermediate `g:ephemeris_diary/YYYY/MM/...` directory path. Date must be in
-" YYYY/MM/DD format in order to work with other ephemeris functions. If {date}
-" is 0, it will return today's date. See @setting(g:ephemeris_diary)
+" Creates a diary entry buffer for {date} and, if necessary, the intermediate
+" `g:ephemeris_diary/YYYY/MM/...` directory path. Date must be in YYYY/MM/DD
+" format in order to work with other ephemeris functions. If {date} is 0, it
+" will return today's date. See @setting(g:ephemeris_diary)
 "
 " Returns a string containing the date's diary entry filepath
 function! ephemeris#fs#get_set_date(date)

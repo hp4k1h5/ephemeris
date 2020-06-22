@@ -136,7 +136,8 @@ FUNCTIONS                                                *ephemeris-functions*
 
 ephemeris#fs#create_fp({filepath})                  *ephemeris#fs#create_fp()*
   Creates a dirpath and/or file at the expanded {filepath}. If the filepath
-  ends in a '/', only the dirpath is created. Can be used idempotently.
+  ends in a '/', only the dirpath is created. Will not overwrite existing
+  files or directories.
 
 ephemeris#fs#get_set_date({date})                *ephemeris#fs#get_set_date()*
   Creates a diary entry buffer for {date} and, if necessary, the intermediate
@@ -209,13 +210,9 @@ ephemeris#lst#filter_tasks()                    *ephemeris#lst#filter_tasks()*
   EphemerisCopyTodos
 
 ephemeris#lst#toggle_task()                      *ephemeris#lst#toggle_task()*
-  Toggle state of task on the line under the cursor between
->
-    - [ ] incomplete, and
-    - [x] complete
-<
-  if 'g:ephemeris_toggle_block' is true, the function will toggle the parent
-  task of the current block.
+  Toggle state of task on the line under the cursor through
+  @public(g:ephemeris_cb_types). If 'g:ephemeris_toggle_block' is true, the
+  function will toggle the parent task of the current block.
 
   Returns 0
 
