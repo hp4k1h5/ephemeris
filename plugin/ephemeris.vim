@@ -88,3 +88,9 @@ command! -nargs=* EphemerisFilterTasks call ephemeris#lst#filter_tasks(<f-args>)
 " @function(ephemeris#lst#toggle_task). If @setting(g:ephemeris_toggle_block) is
 " true, activating the command will affect parent task items.
 command! -nargs=* EphemerisToggleTask call ephemeris#lst#toggle_task(<f-args>)
+
+
+""
+" Fold file by line-separated paragraphs, works well with lists if you leave a
+" space between list blocks.
+command! -nargs=* EphemerisFold call ephemeris#fold#list()

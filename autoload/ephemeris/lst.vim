@@ -235,7 +235,7 @@ function! ephemeris#lst#toggle_task()
 
   let box_type = ''
   let box_i = 0
-  let box_options = ephemeris#var#get_g_ephemeris_cb_types()
+  let box_options = ephemeris#var#get_g_ephemeris_toggle_list()
   for o in box_options
     if stridx(getline('.'), o) > -1
       let box_type = o
@@ -247,7 +247,7 @@ function! ephemeris#lst#toggle_task()
   if box_i == ''
     let next_box = '- [ ]'
   else
-    let box_to_replace = box_options[float2nr(fmod(box_i+1, len(box_options)))]
+    let next_box = box_options[float2nr(fmod(box_i+1, len(box_options)))]
   endif
-  call setline(n, substitute(l, escape(box_type, '['), box_to_replace, ''))
+  call setline(n, substitute(l, escape(box_type, '['), next_box, ''))
 endfunction
