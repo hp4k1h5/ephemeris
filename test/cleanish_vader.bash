@@ -30,7 +30,7 @@ EOF
 # open with a relatively clean `.vimrc` 
 # Returns a 0 or 1 status code depending on test success
 function clean_vader_ci {
-  vim -Nu <(cat <<EOF
+  vim -es -Nu <(cat <<EOF
     filetype off  
     set rtp+=~/.vim/plugged/vader.vim
     set rtp+=$1

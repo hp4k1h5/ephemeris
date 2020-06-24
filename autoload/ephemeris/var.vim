@@ -64,25 +64,6 @@ function! ephemeris#var#get_set_g_todos()
   return g:ephemeris_todos
 endfunction
 
-""
-" @public
-" helper function to get state of @setting(g:ephemeris_toggle_block)
-" 
-" Returns a boolean indicating whether blocks can toggle parent tasks
-function! ephemeris#var#get_g_toggle_block()
-
-  ""
-  " @setting g:ephemeris_toggle_block
-  " Accepts a boolean. If true, the user can toggle tasks from anywhere inside
-  " a task block.
-  "
-  " Default: 1
-  "
-  " Example: `:let g:ephemeris_toggle_block = 1`
-
-  return get(g:, 'ephemeris_toggle_block', 1)
-endfunction
-
 function! ephemeris#var#get_g_toggle_list()
 
   "" 
@@ -92,7 +73,7 @@ function! ephemeris#var#get_g_toggle_list()
   " markdown interpreters, which will only accept, if it accepts them, the
   " default values.
   " Example: :let g:ephemeris_toggle_list = [ '🌑', '🌘', '🌓', '🌖', '🌕' ]
-  " Example: :let g:ephemeris_toggle_list = ['', '- [ ]', '- [x]', '-']
+  " Example: :let g:ephemeris_toggle_list = ['- [ ]', '- [x]', '-']
   " Example: :let g:ephemeris_toggle_list = ['.', 'o', 'O']
   " The default value is  ['- [ ]', '- [x]']
   return get(g:, 'ephemeris_toggle_list', 

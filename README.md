@@ -195,6 +195,3 @@ for `g:ephemeris_toggle_block`
 " keeps index properly sized
 au BufEnter g:calendar_diary :vertical resize 38
 ```
-
-
-

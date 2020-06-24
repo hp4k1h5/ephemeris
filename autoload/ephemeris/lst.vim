@@ -13,13 +13,16 @@ function! ephemeris#lst#find_task()
   let cp = getcurpos()
 
   let i = cp[1]
-  while i >= 0
+  while i > 0
     let line = getline(i)
-        if match(line, '^ *-') > -1 && line !~ '- [\(x\| \)\](.*)'
+    if line =~ '^ *-'
       return i
     endif
+
+    " previous line
     let i -= 1
   endwhile
+
   return -1
 endfunction
 
@@ -158,7 +161,7 @@ function! ephemeris#lst#filter_tasks(...)
     " delete completed items, i.e. lines containing `- [x]` and associated
     " sub-blocks. on stridx >-1, check again for url after list item see
     " https://github.com/HP4k1h5/ephemeris/issues/13
-    if stridx(line, '- [x]') > -1 && line !~ '- [\(x\| \)\](.*)'
+    if line =~ '- \[x\|-]' && line !~ '- [\(x\| \)\](.*)'
       " add to count
       let completed_count += 1
 
@@ -218,25 +221,14 @@ endfunction
 ""
 " @public
 " Toggle state of task on the line under the cursor through
-" @public(g:ephemeris_cb_types).
-" If 'g:ephemeris_toggle_block' is true, the function will toggle the parent
-" task of the current block.
+" @public(g:ephemeris_cb_types). If a cursor has no list item, will create a new
+" one.
 "
 " Returns 0
 function! ephemeris#lst#toggle_task()
 
-  " check for toggle_block
-  if ephemeris#var#get_g_toggle_block()
-    let n = ephemeris#lst#find_task()
-    if n == -1
-      let n = line('.')
-    endif
-  else
-    let n = line('.')
-  endif
-  let l = getline(n)
-
-  let current_box = ''
+  let l = getline('.')
+  let current_box = matchstr(l, '^\s*')
   let box_i = 0
   let box_options = ephemeris#var#get_g_toggle_list()
   for o in box_options
@@ -247,8 +239,11 @@ function! ephemeris#lst#toggle_task()
     endif
      let box_i += 1
   endfor
- 
+
   let next_box = box_options[float2nr(fmod(box_i, len(box_options)))]
-  echom next_box.'NB'
-  call setline(n, substitute(l, escape(current_box, '['), next_box, ''))
+  if current_box =~ '^\s*$'
+    let next_box = current_box.next_box.' '
+  endif
+ 
+  call setline(line('.'), substitute(l, escape(current_box, '['), next_box, ''))
 endfunction
