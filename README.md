@@ -83,11 +83,15 @@ let g:ephemeris_todos = '=== TASK LIST ==='
 ```
 
 **g:ephemeris_todo_list**  
-Set the list of string that will be counted as checkbox items.
-Example:  
+String list of characters to be used in checkbox items.  
+Default: `' x'`, rendering as `- [ ]` and `- [x]`
+Example:
 ```vim
-let g:ephemeris_toggle_list = [ '- 🌑', '- 🌘', '- 🌓', '- 🌖', '- 🌕' ]
+let g:ephemeris_toggle_list = '🌑🌘🌓🌖🌕'
 ```
+and a checkbox will look like `- [🌖]`
+
+---------------------------------------------
 
 optional-but-helpful
 - [mattn/vim-calendar
