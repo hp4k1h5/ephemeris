@@ -1,11 +1,9 @@
 " vim:tabstop=2:shiftwidth=2:expandtab:textwidth=80
-" Filename: autoload/fun/var.vim
+" Filename: autoload/ephemeris/fs.vim
 " Description: filesystem and var helper functions
 " Home: https://github.com/HP4k1h5/ephemeris/
 
 
-""
-" @public
 " Creates a dirpath and/or file at the expanded {filepath}. If the filepath ends
 " in a '/', only the dirpath is created. Will not overwrite existing files or
 " directories.
@@ -28,9 +26,6 @@ function! ephemeris#fs#create_fp(filepath)
   endif
 endfunction
 
-
-""
-" @public
 " Creates a diary entry buffer for {date} and, if necessary, the intermediate
 " `g:ephemeris_diary/YYYY/MM/...` directory path. Date must be in YYYY/MM/DD
 " format in order to work with other ephemeris functions. If {date} is 0, it
@@ -59,6 +54,7 @@ function! ephemeris#fs#get_set_date(date)
   return l:date_path
 endfunction
 
+" Open today's diary entry in a split
 function! ephemeris#fs#goto_today()
   let today_fp = ephemeris#fs#get_set_date(0)
   execute  'vs '.today_fp
