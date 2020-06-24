@@ -17,8 +17,14 @@ Execute (make test dir and add a test buffer from a date in the past):
   Assert isdirectory(g:ephemeris_diary)
   AssertEqual g:cur_buf, bufnr('%')
 
+Given (todos):
+  pre marker
+  #TODOs
+  - [ ] task 1
+  #TODOs
+  <<filter
+
 Execute (add TODOs to buffer):
-  execute 'normal! ipre marker#TODOs- [ ] task 1'
   execute 'silent! w '.g:ephemeris_diary.'/2020/01/01.md' 
   Assert filereadable(g:ephemeris_diary.'/2020/01/01.md')
 
@@ -26,16 +32,8 @@ Expect (the TODOs to be in the buffer):
   pre marker
   #TODOs
   - [ ] task 1
-
-Execute (copy_todos without a g:ephemeris_diary):
-  " unlet g:ephemeris_diary to test error handling
-  unlet g:ephemeris_diary
-  let b:copy_return = ephemeris#lst#copy_todos()
-  AssertEqual 0, b:copy_return
-
-Expect (the TODOs _NOT_ to be in the newly created buffer):
-  
-" " ^ leave two spaces to test blank buffer !
+  #TODOs
+  <<filter
 
 
 =====================

@@ -55,6 +55,10 @@ command! -nargs=* EphemerisCreateIndex call ephemeris#ind#create_index(<f-args>)
 command! -nargs=* EphemerisGotoIndex call ephemeris#ind#goto_index(g:ephemeris_diary)
 
 ""
+"
+command! -nargs=0 EphemerisGotoToday call ephemeris#fs#goto_today(<f-args>)
+
+""
 " Copy TODOs from last set of TODOs going back up to 10 years. Your
 " @setting(g:ephemeris_diary) directory must  be organized in a
 " `.../YYYY/MM/DD.md` hierarchy, in order for this function to know which set of

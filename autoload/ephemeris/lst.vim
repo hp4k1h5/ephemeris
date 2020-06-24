@@ -66,13 +66,24 @@ function! ephemeris#lst#copy_todos()
       " TODO: currently TODO lists need to end the file, a smarter function
       "     : will only grab `-` etc lines up to a natural end, 
       "     : e.g. 3 consecutive newlines
-      let todo_start = system('grep -n "'.g:ephemeris_todos.'" '.fn)
-      if len(todo_start)
+      let todos = split(system('grep -n "'.g:ephemeris_todos.'" '.fn), '\n')
+      if len(todos)
+        let todos = map(todos, 'split(v:val, ":")')
+
         " get line number of g:ephemeris_todos string
-        let todo_start = split(todo_start, ':')[0]
+        let todo_start = todos[0][0]
+        if len(todos) > 1
+          let todo_end = todos[1][0]-1
+        else 
+          let todo_end = '$'
+        endif 
+
+        let ex_str = 'silent! '.bufnr(fn).' bufdo! '.todo_start.','.todo_end.' w! >> '.today
+        echom  ex_str
+
         " add buff, dump todo list, open latest entry, exit loop
         execute 'badd '.fn
-        execute 'silent! '.bufnr(fn).' bufdo! '.todo_start.',$ w! >> '.today
+        execute ex_str
         execute 'silent! b '.today
         break
       endif

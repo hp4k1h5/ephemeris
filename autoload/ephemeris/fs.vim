@@ -58,3 +58,8 @@ function! ephemeris#fs#get_set_date(date)
 
   return l:date_path
 endfunction
+
+function! ephemeris#fs#goto_today()
+  let today_fp = ephemeris#fs#get_set_date(0)
+  execute  'vs '.today_fp
+endfunction
