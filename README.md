@@ -35,46 +35,71 @@ documentation**
 
 version information available at [vim.org](https://www.vim.org/scripts/script.php?script_id=5879)
 
-### BUGS
-- prior to v0.4 :EphemerisCopyTodos, if called from outside `g:calendar_diary`,
-  when `g:calendar_diary` contained a `~`, created a `g:calendar_diary/~/...`
-  subdirectory, and possibly other things. please accept my apologies. the fix
-  is documented in
-  [85bb3bf59ec379755fd8270994796e7c1fe32c8c](https://github.com/HP4k1h5/ephemeris/commit/85bb3bf59ec379755fd8270994796e7c1fe32c8c)
-
 ---------------------------------------------
+
 ## contents
 
-[toc]
+- [functionalities](#functionalities)
+- [options](#options)
+    - [! required](#!-required)
+- [installation](#installation)
+- [usage](#usage)
+- [commands](#commands)
+  - [code folding](#code-folding)
+- [example-mappings](#example-mappings)
+- [CHANGELOG](#changelog)
 
 ---------------------------------------------
+
 #### functionalities
 
-- create/goto **index** of diary entries
-- **checkbox** list item management
-  - filter/toggle/(...in progress: sort/aggregate/calculate)
-  - copy last set of tasks `- [ ]` to current day's diary entry
+ - 🌕 create/goto **index** of diary entries
+ - 🌘 **checkbox** list item management
+   - 🌓 filter/toggle/archive/count
+   - 🌖 copy last set of tasks `- [ ]` to current day's diary entry
+ - 🌘 list-appropriate code folding
 
-### ! required
 
+#### options
+
+###### ! required
+
+**g:ephemeris_diary**  
 set the root directory for your diary entries `g:ephemeris_diary`, i.e. in your
+
 `.vimrc`:
 ```vim
 let g:ephemeris_diary = '~/diary'
 ```
 
-###### optional
-
-set the string for `EphemerisCopyTodos`, to look for.  default is `TODOs`.
+**g:ephemeris_todos**  
+Set the string for `EphemerisCopyTodos`, to look for. Default is `TODOs`.
 Everything below the marker in the most recent diary entry is copied and
 appended into the current day's entry. You can change it by setting it, i.e.
-in your `.vimrc`
+in your `.vimrc`. See `EphemerisCopyTodos`.
+Example:  
 ```vim
 let g:ephemeris_todos = '=== TASK LIST ==='
 ```
-See `EphemerisCopyTodos`
+
+**g:ephemeris_todo_list**  
+String list of characters to be used in checkbox items.
+Default: `' x'`, rendering as `- [ ]` and `- [x]`
+Example:  
+```vim
+let g:ephemeris_toggle_list = '🌑🌘🌓🌖🌕'
+```
+a checkbox will look like `- [🌖]`
+
+optional-but-helpful
+- [mattn/vim-calendar
+    /https://github.com/mattn/calendar-vim](https://github.com/mattn/calendar-vim)
+- [iamcco/markdown-preview](https://github.com/iamcco/markdown-preview.nvim)
+    or your preferred markdown preview / syntax highlighter tool
+- [plasticboy/vim-markdown](https://github.com/plasticboy/vim-markdown)
 
 ---------------------------------------------
+
 #### installation
 
 should work with your preferred vim plugin manager. e.g. add
@@ -88,13 +113,8 @@ to your `.vimrc` and run
 ```
 in command-line mode (see `:help cmdline`)
 
-##### optional-but-helpful
-- [vim-calendar
-    /https://github.com/mattn/calendar-vim](https://github.com/mattn/calendar-vim)
-- [markdown-preview](https://github.com/iamcco/markdown-preview.nvim)
-    or your preferred markdown preview / syntax highlighter tool
-
 ---------------------------------------------
+
 ### usage
 
 Call any of ephemeris' commands from anywhere. `:EphemerisFilterTasks`
@@ -105,16 +125,20 @@ functions below...
 #### commands
 **see [doc/ephemeris.txt](doc/ephemeris.txt) for additional help**
 
-*:EphemerisCreateIndex*  
+**:EphemerisCreateIndex**  
 Create markdown diary index of all '.md' files found under the
 |g:ephemeris_diary| directory, and go to vertical split.  Calls
 |ephemeris#ind#create_index()|
 
-*:EphemerisGotoIndex*  
+**:EphemerisGotoIndex**  
 Open diary index in a vertical split or focus diary index buffer. Index is
 found at |g:ephemeris_diary|/index.md. Calls |ephemeris#ind#goto_index()|
 
-*:EphemerisCopyTodos*  
+**:EphemerisGotoToday**  
+Open a split with today's diary entry. Index is found at
+|g:ephemeris_diary|/index.md.
+
+**:EphemerisCopyTodos**  
  Copy TODOs from last set of TODOs going back up to 10 years. Your
  @setting(g:ephemeris_diary) directory must  be organized in a
  `.../YYYY/MM/DD.md` hierarchy, in order for this function to know which set
@@ -125,10 +149,16 @@ found at |g:ephemeris_diary|/index.md. Calls |ephemeris#ind#goto_index()|
  open today's diary entry in a split. Calls
  @function(ephemeris#lst#copy_todos)
 
-*:EphemerisFilterTasks*  
+**:EphemerisToggleTask**  
+Toggle state of task item through items provided in `g:ephemeris_toggle_list`.
+The last item in the string is the complete item, used by e.g.
+`:EphemerisFilterTasks`
+
+
+**:EphemerisFilterTasks**  
  @usage [archive] [summary]  
  Delete completed tasks, e.g. list items containing `- [x]`, and all associated
- subblocks until the next incomplete task, e.g.  list items containing `- [ ]`,
+ subblocks until the next incomplete task, e.g. checkboxes not containing an 'x',
  a @setting(g:ephemeris_todos) marker, 2 newlines, or EOF. See example in
  @function(ephemeris#lst#filter_tasks). The first argument [archive] is a
  boolean which determines whether the filtered tasks are moved to
@@ -163,8 +193,27 @@ found at |g:ephemeris_diary|/index.md. Calls |ephemeris#ind#goto_index()|
             *----------------------------------------------*
 ```
 
-*:EphemerisToggleTask*  
-Toggles the state of a task found on the same line as the cursor between
+**:EphemerisFold**  
+ Fold file by line-separated paragraphs, works well with lists if you leave a
+ " space between list blocks. Set 'foldlevel' to 0 or type `zM` to fold all,
+ type " `zR` to open all folds.
+
+### code folding
+
+In the top left image, an unfolded list of items.  As these grow, navigating
+them and getting a high-level overview can be difficult. In the top right
+image, code-folding has been applied and all blocks have been closed `zM`.
+Blocks of newline-spaced list items are folded and visually condensed to their
+parent headers. In the bottom image, one fold has been opened `zo`.
+
+![full list](./img/full-list.png) ![folded
+list](./img/folded.png) ![open fold](./img/open_fold.png)
+
+
+___
+**:EphemerisToggleTask**  
+Toggles the state of a task found on the same line as the cursor through
+strings set at `g:ephemeris_todos`
 ```txt
     - [ ] incomplete
       and
@@ -177,21 +226,14 @@ will not affect the state of any other tasks. Calls
 
 ```vim
 nmap <leader>eci :EphemerisCreateIndex<CR>
-nmap <leader>egi :EphemerisGotoIndex<CR>
+nmap <leader>egt :EphemerisGotoToday<CR>
 nmap <leader>ect :EphemerisCopyTodos<CR>
-
+nmap <leader>ef  :EphemerisFold<CR>
 nmap <leader>eft :EphemerisFilterTasks 1 1<CR>
-" 1 to move to archive, 0 to delete ---^ ^---- 1 to print summary, 0 for no
-" summary
-
+"          1 = archive, 0 = delete ---^ ^---- 1 = summary, 0 = no summary
 nmap <leader>et  :EphemerisToggleTask<CR>
-" set `let g:ephemeris_toggle_block = 0` to disable toggle by block, see docs
-for `g:ephemeris_toggle_block`
 ```
 
-##### consider
+### CHANGELOG
 
-```vim
-" keeps index properly sized
-au BufEnter g:calendar_diary :vertical resize 38
-```
+- v0.8 folding, checkbox options

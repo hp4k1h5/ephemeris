@@ -55,12 +55,12 @@ command! -nargs=* EphemerisCreateIndex call ephemeris#ind#create_index(<f-args>)
 command! -nargs=* EphemerisGotoIndex call ephemeris#ind#goto_index(g:ephemeris_diary)
 
 ""
-"
-command! -nargs=0 EphemerisGotoToday call ephemeris#fs#goto_today(<f-args>)
+" Create a vertical split with today's diary entry.
+command! -nargs=0 EphemerisGotoToday call ephemeris#fs#goto_today()
 
 ""
-" Copy TODOs from last set of TODOs going back up to 10 years. Your
-" @setting(g:ephemeris_diary) directory must  be organized in a
+" Copy TODOs from last set of TODOs going back up to 2 years. Your
+" @setting(g:ephemeris_diary) directory must be organized in a
 " `.../YYYY/MM/DD.md` hierarchy, in order for this function to know which set of
 " TODOs are _most recent_. TODOs are defined by the string set in
 " @setting(g:ephemeris_todos). Default is 'TODOs'. Everything below that marker,
@@ -82,19 +82,21 @@ command! -nargs=* EphemerisCopyTodos call ephemeris#lst#copy_todos(<f-args>)
 command! -nargs=* EphemerisFilterTasks call ephemeris#lst#filter_tasks(<f-args>)
 
 ""
-" Toggles the state of a task between 
+" Toggles the state of a task between e.g.
 " >
 "   - [ ] incomplete
 "     and
 "   - [x] complete 
 " <
-" when the cursor is on a line containing a task. Calls
-" @function(ephemeris#lst#toggle_task). If @setting(g:ephemeris_toggle_block) is
-" true, activating the command will affect parent task items.
+" when the cursor is on a line containing a task. Will iterate over the list of
+" strings set at @setting(g:ephemeris_toggle_list). If cursor is on a line not
+" beginning a string provided to toggle list, a new list item will be
+" instantiated.
 command! -nargs=* EphemerisToggleTask call ephemeris#lst#toggle_task(<f-args>)
 
 
 ""
 " Fold file by line-separated paragraphs, works well with lists if you leave a
-" space between list blocks.
+" space between list blocks. Set 'foldlevel' to 0 or type `zM` to fold all, type
+" `zR` to open all folds.
 command! -nargs=* EphemerisFold call ephemeris#fold#list()

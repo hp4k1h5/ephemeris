@@ -4,8 +4,6 @@
 " Home: https://github.com/HP4k1h5/ephemeris/
 " Purpose: diary index utility functions 
 
-""
-" @public 
 " Find or create, and go to diary index file. {dir} is the directory path of the
 " diary whose index you wish to access. This is typically the same path as
 " 'g:ephemeris_diary'. ephemeris index located at 'g:ephemeris_diary'/index.md
@@ -35,8 +33,6 @@ endfunction
 " {#### MM}
 " {[DD.md](DD.md)}
 
-""
-" @public
 " Create an index of diary entries found recursively under the
 " @setting(g:ephemeris_diary) directory at `g:ephemeris_diary/index.md`, and
 " open the index in a vertical split. Entries are formatted as markdown links.

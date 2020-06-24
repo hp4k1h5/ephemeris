@@ -3,12 +3,9 @@
 " Description: everything concerning lists and checkboxes
 " Home: https://github.com/HP4k1h5/ephemeris/
 
-""
-" @public
-"
-" will find the nearest associated task looking back up the buffer 
-"
-" Returns the line number of the associated task or -1 if no such task is found
+
+" Finds the nearest associated task looking back up the buffer, and returns the
+" line number of the associated task or -1 if no such task is found
 function! ephemeris#lst#find_task()
   let cp = getcurpos()
 
@@ -27,8 +24,6 @@ function! ephemeris#lst#find_task()
 endfunction
 
 
-""
-" @public 
 " Copy TODOs from last set of TODOs going back up to 10 years. Your
 " @setting(g:ephemeris_diary) directory must  be organized in a
 " `.../YYYY/MM/DD.md` hierarchy, in order for this function to know which set of
@@ -79,7 +74,6 @@ function! ephemeris#lst#copy_todos()
         endif 
 
         let ex_str = 'silent! '.bufnr(fn).' bufdo! '.todo_start.','.todo_end.' w! >> '.today
-        echom  ex_str
 
         " add buff, dump todo list, open latest entry, exit loop
         execute 'badd '.fn
@@ -95,8 +89,6 @@ function! ephemeris#lst#copy_todos()
 endfunction
 
 
-""
-" @public 
 " Filter out completed tasks and their associated blocks in the current buffer.
 " i.e., if you have a set of tasks like,
 " >
@@ -153,6 +145,7 @@ function! ephemeris#lst#filter_tasks(...)
 
   " get/set ephemeris_todos, if no setting is provided, the default is set
   call ephemeris#var#get_set_g_todos()
+  let todo_list = ephemeris#var#get_g_toggle_list()
   
   let i = 1
   let skip = 0
@@ -172,7 +165,10 @@ function! ephemeris#lst#filter_tasks(...)
     " delete completed items, i.e. lines containing `- [x]` and associated
     " sub-blocks. on stridx >-1, check again for url after list item see
     " https://github.com/HP4k1h5/ephemeris/issues/13
-    if line =~ '- \[x\|-]' && line !~ '- [\(x\| \)\](.*)'
+    let complete = todo_list[-1:-1][0]
+    let complete = '^\s*- \['.complete.']'
+
+    if line =~ complete
       " add to count
       let completed_count += 1
 
@@ -186,8 +182,13 @@ function! ephemeris#lst#filter_tasks(...)
 
       " delete nested items underneath completed tasks
       " stop on any task item, g:ephemeris_todos, or 2 blank lines
+      " stop on incomplete block
+      let stop_re = 
+            \ '^\s*- \[\('
+            \ .join(todo_list, '\|')
+            \ .'\)]'
       while i <= line('$') 
-            \ && getline(i) !~ '^ *- \['
+            \ && getline(i) !~ stop_re
             \ && stridx(getline(i), g:ephemeris_todos) == -1
             \ && join(getline(i, i+1), '') !~ '^$' 
 
@@ -205,7 +206,7 @@ function! ephemeris#lst#filter_tasks(...)
 
     else
       " count incomplete tasks
-      if stridx(line, '- [ ]') > -1 && line !~ '- [ \](.*)'
+      if line !~ '\('.join(todo_list[0:-2], '\|').'\)'
         let incomplete_count += 1
       endif
       " continue iterating over the buffer lines
@@ -229,13 +230,9 @@ function! ephemeris#lst#filter_tasks(...)
   endif
 endfunction
 
-""
-" @public
 " Toggle state of task on the line under the cursor through
 " @public(g:ephemeris_cb_types). If a cursor has no list item, will create a new
-" one.
-"
-" Returns 0
+" one. Returns 0.
 function! ephemeris#lst#toggle_task()
 
   let l = getline('.')
@@ -243,8 +240,9 @@ function! ephemeris#lst#toggle_task()
   let box_i = 0
   let box_options = ephemeris#var#get_g_toggle_list()
   for o in box_options
-    if stridx(l, o) > -1
-      let current_box = o
+    let s = '- ['.o.']'
+    if stridx(l, s) > -1
+      let current_box = s
       let box_i += 1
       break 
     endif
@@ -253,8 +251,11 @@ function! ephemeris#lst#toggle_task()
 
   let next_box = box_options[float2nr(fmod(box_i, len(box_options)))]
   if current_box =~ '^\s*$'
-    let next_box = current_box.next_box.' '
+    let next_box = current_box.'- ['.next_box.'] '
+  else
+    let next_box = '- ['.next_box.']'
   endif
- 
+
   call setline(line('.'), substitute(l, escape(current_box, '['), next_box, ''))
+  call cursor('.', '$')
 endfunction

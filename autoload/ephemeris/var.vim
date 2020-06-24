@@ -1,12 +1,8 @@
-""
-" @public
 " helper function to get/set state of @setting(g:ephemeris_diary). If
 " g:ephemeris_diary is not found an error is thrown. errors should be handled
-" by calling functions
-"
-" Returns a string containing the expanded g:ephemeris_diary directory path
+" by calling functions. Returns a string containing the expanded
+" g:ephemeris_diary directory path
 function! ephemeris#var#get_g_diary()
-
   " if g:ephemeris_diary does not exist, throw an error message indicating that
   " the global variable must be set
   if !exists('g:ephemeris_diary')
@@ -41,21 +37,18 @@ function! ephemeris#var#get_g_diary()
 endfunction
 
 
-""
-" @public
-" helper function to get/set state of 'g:ephemeris_todos'
-"
-" Returns a string of the marker
+" Helper function to get/set state of 'g:ephemeris_todos'. Returns a string of
+" the marker
 function! ephemeris#var#get_set_g_todos()
   " get/set todo regex
   if !exists('g:ephemeris_todos')
     ""
-    " marker to indicate the beginning of the list of task items to be copied
-    " over to current day's diary entry. see
-    " @function(ephemeris#lst#copy_todos). Also serves as a delimiter for
-    " @function(ephemeris#lst#filter_tasks)
+    " marker to indicate the beginning and end of the list of task items to be
+    " copied over to current day's diary entry. see
+    " @function(EphemerisCopyTodos). Also serves as a delimiter for
+    " @function(EphemerisFilterTasks)
     "
-    " Default: TODOs
+    " Default: `TODOs`
     "
     " Example: `:let g:ephemeris_todos = '===TASK LIST==='`
     let g:ephemeris_todos = 'TODOs'
@@ -67,15 +60,16 @@ endfunction
 function! ephemeris#var#get_g_toggle_list()
 
   "" 
-  " @setting g:ephemeris_toggle_list
   " Accepts a list of strings that g:ephemeris_toggle_block will iterate over.
   " Mind that not all of these will be properly interpreted by standard
-  " markdown interpreters, which will only accept, if it accepts them, the
+  " markdown interpreters, which may only accept, if they accept them, the
   " default values.
-  " Example: :let g:ephemeris_toggle_list = [ '🌑', '🌘', '🌓', '🌖', '🌕' ]
-  " Example: :let g:ephemeris_toggle_list = ['- [ ]', '- [x]', '-']
-  " Example: :let g:ephemeris_toggle_list = ['.', 'o', 'O']
-  " The default value is  ['- [ ]', '- [x]']
-  return get(g:, 'ephemeris_toggle_list', 
-        \ ['- [ ]', '- [x]'])
+  " Example: `:let g:ephemeris_toggle_list = '🌑🌘🌓🌖🌕'`  
+  "
+  " Example: `:let g:ephemeris_toggle_list = '.oO'`
+  "
+  " Default: `' x`, when split produces: `- [ ]` and `- [x]`
+  let g:ephemeris_toggle_list = get(g:, 'ephemeris_toggle_list', 
+        \ ' x')
+  return split(g:ephemeris_toggle_list, '\zs')
 endfunction
