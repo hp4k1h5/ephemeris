@@ -228,26 +228,27 @@ function! ephemeris#lst#toggle_task()
   " check for toggle_block
   if ephemeris#var#get_g_toggle_block()
     let n = ephemeris#lst#find_task()
+    if n == -1
+      let n = line('.')
+    endif
   else
     let n = line('.')
   endif
   let l = getline(n)
 
-  let box_type = ''
+  let current_box = ''
   let box_i = 0
-  let box_options = ephemeris#var#get_g_ephemeris_toggle_list()
+  let box_options = ephemeris#var#get_g_toggle_list()
   for o in box_options
-    if stridx(getline('.'), o) > -1
-      let box_type = o
+    if stridx(l, o) > -1
+      let current_box = o
+      let box_i += 1
       break 
     endif
      let box_i += 1
   endfor
  
-  if box_i == ''
-    let next_box = '- [ ]'
-  else
-    let next_box = box_options[float2nr(fmod(box_i+1, len(box_options)))]
-  endif
-  call setline(n, substitute(l, escape(box_type, '['), next_box, ''))
+  let next_box = box_options[float2nr(fmod(box_i, len(box_options)))]
+  echom next_box.'NB'
+  call setline(n, substitute(l, escape(current_box, '['), next_box, ''))
 endfunction

@@ -28,10 +28,8 @@ include a date-aligned directory structure as outlined above.
 
 ![diary index and markdown side-by-side](img/side-by-side.png)
 
-**see [doc/ephemeris.txt](doc/ephemeris.txt) for additional user help**
-
-**see [CONTRIBUTING](.github/CONTRIBUTING.md) for contributor guidelines**
-
+**see [doc/ephemeris.txt](doc/ephemeris.txt) for additional user help**  
+**see [CONTRIBUTING](.github/CONTRIBUTING.md) for contributor guidelines**  
 **see [vader tests](.github/CONTRIBUTING.md#vader-tests) for testing
 documentation**
 
@@ -125,7 +123,7 @@ found at |g:ephemeris_diary|/index.md. Calls |ephemeris#ind#goto_index()|
  marker, until 2 consecutive newlines, an incomplete task, or a subsequent
  g:ephemeris_todos marker, is copied to the current day's diary entry. It will
  open today's diary entry in a split. Calls
- @function(ephemeris#lst#copy_todos) 
+ @function(ephemeris#lst#copy_todos)
 
 *:EphemerisFilterTasks*  
  @usage [archive] [summary]  

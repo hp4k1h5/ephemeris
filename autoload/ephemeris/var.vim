@@ -83,7 +83,7 @@ function! ephemeris#var#get_g_toggle_block()
   return get(g:, 'ephemeris_toggle_block', 1)
 endfunction
 
-function! ephemeris#var#get_g_ephemeris_toggle_list()
+function! ephemeris#var#get_g_toggle_list()
 
   "" 
   " @setting g:ephemeris_toggle_list
