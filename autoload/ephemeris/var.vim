@@ -60,18 +60,17 @@ endfunction
 function! ephemeris#var#get_g_toggle_list()
 
   "" 
+  " @setting g:ephemeris_toggle_list
   " Accepts a list of strings that g:ephemeris_toggle_block will iterate over.
   " Mind that not all of these will be properly interpreted by standard
   " markdown interpreters, which may only accept, if they accept them, the
   " default values.
-  " Example: `:let g:ephemeris_toggle_list = [ '- 🌑', '- 🌘', '- 🌓', '- 🌖', '- 🌕' ]`  
+  " Example: `:let g:ephemeris_toggle_list = '🌑🌘🌗🌖🌕'`  
   "
-  " Example: `:let g:ephemeris_toggle_list = ['- [ ]', '- [x]', '- ']`  
+  " Example: `:let g:ephemeris_toggle_list = '.oO'`
   "
-  " Example: `:let g:ephemeris_toggle_list = ['.', 'o', 'O']`
-  "
-  " Default: `['- [ ]', '- [x]']`
+  " Default: `' x`, when split produces: `- [ ]` and `- [x]`
   let g:ephemeris_toggle_list = get(g:, 'ephemeris_toggle_list', 
-        \ ['- [ ]', '- [x]'])
-  return g:ephemeris_toggle_list
+        \ ' x')
+  return split(g:ephemeris_toggle_list, '\zs')
 endfunction

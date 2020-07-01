@@ -74,7 +74,6 @@ function! ephemeris#lst#copy_todos()
         endif 
 
         let ex_str = 'silent! '.bufnr(fn).' bufdo! '.todo_start.','.todo_end.' w! >> '.today
-        echom  ex_str
 
         " add buff, dump todo list, open latest entry, exit loop
         execute 'badd '.fn
@@ -166,8 +165,10 @@ function! ephemeris#lst#filter_tasks(...)
     " delete completed items, i.e. lines containing `- [x]` and associated
     " sub-blocks. on stridx >-1, check again for url after list item see
     " https://github.com/HP4k1h5/ephemeris/issues/13
-    let complete = escape(todo_list[-1:-1][0], '[' )
-    if line =~ '^\s*'.complete
+    let complete = todo_list[-1:-1][0]
+    let complete = '^\s*- \['.complete.']'
+
+    if line =~ complete
       " add to count
       let completed_count += 1
 
@@ -183,11 +184,9 @@ function! ephemeris#lst#filter_tasks(...)
       " stop on any task item, g:ephemeris_todos, or 2 blank lines
       " stop on incomplete block
       let stop_re = 
-            \ '^ *\('
-            \ .escape(
-              \ join(todo_list, '\|')
-              \ , '[')
-            \ .'\)'
+            \ '^\s*- \[\('
+            \ .join(todo_list, '\|')
+            \ .'\)\]'
       while i <= line('$') 
             \ && getline(i) !~ stop_re
             \ && stridx(getline(i), g:ephemeris_todos) == -1
@@ -241,8 +240,9 @@ function! ephemeris#lst#toggle_task()
   let box_i = 0
   let box_options = ephemeris#var#get_g_toggle_list()
   for o in box_options
-    if stridx(l, o) > -1
-      let current_box = o
+    let s = '- ['.o.']'
+    if stridx(l, s) > -1
+      let current_box = s
       let box_i += 1
       break 
     endif
@@ -251,7 +251,9 @@ function! ephemeris#lst#toggle_task()
 
   let next_box = box_options[float2nr(fmod(box_i, len(box_options)))]
   if current_box =~ '^\s*$'
-    let next_box = current_box.next_box.' '
+    let next_box = current_box.'- ['.next_box.'] '
+  else
+    let next_box = '- ['.next_box.']'
   endif
 
   call setline(line('.'), substitute(l, escape(current_box, '['), next_box, ''))

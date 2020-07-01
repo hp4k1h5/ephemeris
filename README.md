@@ -83,32 +83,14 @@ let g:ephemeris_todos = '=== TASK LIST ==='
 ```
 
 **g:ephemeris_todo_list**  
-String list of characters to be used in checkbox items.  
+String list of characters to be used in checkbox items.
 Default: `' x'`, rendering as `- [ ]` and `- [x]`
-Example:
+Example:  
 ```vim
 let g:ephemeris_toggle_list = '🌑🌘🌓🌖🌕'
 ```
-and a checkbox will look like `- [🌖]`
+a checkbox will look like `- [🌖]`
 
----------------------------------------------
-
-optional-but-helpful
-- [mattn/vim-calendar
-    /https://github.com/mattn/calendar-vim](https://github.com/mattn/calendar-vim)
-- [iamcco/markdown-preview](https://github.com/iamcco/markdown-preview.nvim)
-    or your preferred markdown preview / syntax highlighter tool
-- [plasticboy/vim-markdown](https://github.com/plasticboy/vim-markdown)
-
----------------------------------------------
-
-#### installation
-
-should work with your preferred vim plugin manager. e.g. add
-```vim
-Plug 'HP4k1h5/ephemeris'
-Plug 'mattn/calendar-vim' " recommended
-```
 to your `.vimrc` and run
 ```vim
 :source $MYVIMRC | PlugInstall
@@ -151,7 +133,9 @@ Open a split with today's diary entry. Index is found at
  open today's diary entry in a split. Calls
  @function(ephemeris#lst#copy_todos)
 
-**:EphemerisFilterTasks**  
+**:EphemerisToggleTask**  
+Toggle state of task item through items provided in `g:ephemeris_toggle_list`.
+The last item in the string is the complete item, used by e.g.
  @usage [archive] [summary]  
  Delete completed tasks, e.g. list items containing `- [x]`, and all associated
  subblocks until the next incomplete task, e.g. checkboxes not containing an 'x',
