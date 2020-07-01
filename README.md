@@ -91,22 +91,6 @@ let g:ephemeris_toggle_list = '🌑🌘🌓🌖🌕'
 ```
 a checkbox will look like `- [🌖]`
 
-optional-but-helpful
-- [mattn/vim-calendar
-    /https://github.com/mattn/calendar-vim](https://github.com/mattn/calendar-vim)
-- [iamcco/markdown-preview](https://github.com/iamcco/markdown-preview.nvim)
-    or your preferred markdown preview / syntax highlighter tool
-- [plasticboy/vim-markdown](https://github.com/plasticboy/vim-markdown)
-
----------------------------------------------
-
-#### installation
-
-should work with your preferred vim plugin manager. e.g. add
-```vim
-Plug 'HP4k1h5/ephemeris'
-Plug 'mattn/calendar-vim' " recommended
-```
 to your `.vimrc` and run
 ```vim
 :source $MYVIMRC | PlugInstall
@@ -152,10 +136,6 @@ Open a split with today's diary entry. Index is found at
 **:EphemerisToggleTask**  
 Toggle state of task item through items provided in `g:ephemeris_toggle_list`.
 The last item in the string is the complete item, used by e.g.
-`:EphemerisFilterTasks`
-
-
-**:EphemerisFilterTasks**  
  @usage [archive] [summary]  
  Delete completed tasks, e.g. list items containing `- [x]`, and all associated
  subblocks until the next incomplete task, e.g. checkboxes not containing an 'x',

@@ -186,7 +186,7 @@ function! ephemeris#lst#filter_tasks(...)
       let stop_re = 
             \ '^\s*- \[\('
             \ .join(todo_list, '\|')
-            \ .'\)]'
+            \ .'\)\]'
       while i <= line('$') 
             \ && getline(i) !~ stop_re
             \ && stridx(getline(i), g:ephemeris_todos) == -1
@@ -206,9 +206,9 @@ function! ephemeris#lst#filter_tasks(...)
 
     else
       " count incomplete tasks
-      if line !~ '\('.join(todo_list[0:-2], '\|').'\)'
-        let incomplete_count += 1
-      endif
+      " if line !~ '\('.join(todo_list[1:-1], '\|').'\)'
+      "   let incomplete_count += 1
+      " endif
       " continue iterating over the buffer lines
       let i += 1
     endif

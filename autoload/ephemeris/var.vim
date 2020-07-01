@@ -60,11 +60,12 @@ endfunction
 function! ephemeris#var#get_g_toggle_list()
 
   "" 
+  " @setting g:ephemeris_toggle_list
   " Accepts a list of strings that g:ephemeris_toggle_block will iterate over.
   " Mind that not all of these will be properly interpreted by standard
   " markdown interpreters, which may only accept, if they accept them, the
   " default values.
-  " Example: `:let g:ephemeris_toggle_list = '🌑🌘🌓🌖🌕'`  
+  " Example: `:let g:ephemeris_toggle_list = '🌑🌘🌗🌖🌕'`  
   "
   " Example: `:let g:ephemeris_toggle_list = '.oO'`
   "
