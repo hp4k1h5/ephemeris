@@ -2,12 +2,12 @@
 ! experimental and unstable see [BUGS](#bugs)
 > a diary plugin for vim
 
-ephemeris is a diary and calendar extension plugin for vim. It provides a
-collection of functions and commands that can be used to create, edit, and
-curate diary/log entries.
+ephemeris is a diary and calendar plugin for vim. It provides a collection of
+functions and commands that can be used to create, edit, and curate diary/log
+entries.
 
 The diary is defined by the directories and files found recursively under the
-directory set in the global variable |g:ephemeris_diary|. ephemeris does not
+directory set in the global variable `g:ephemeris_diary`. ephemeris does not
 rely on any external programs and does not interfere with any external
 program, such as cal, etc. This plugin works best when the directory structure
 of `g:ephemeris_diary` is YYYY/MM/DD.md, as follows:
@@ -62,9 +62,7 @@ version information available at [vim.org](https://www.vim.org/scripts/script.ph
 
 #### options
 
-###### ! required
-
-**g:ephemeris_diary**  
+**g:ephemeris_diary (!!required)**  
 set the root directory for your diary entries `g:ephemeris_diary`, i.e. in your
 `.vimrc`:
 ```vim
@@ -83,7 +81,7 @@ Example:
 let g:ephemeris_todos = '=== TASK LIST ==='
 ```
 
-**g:ephemeris_todo_list**  
+**g:ephemeris_toggle_list**  
 String list of characters to be used in checkbox items.  
 Default: `' x'`, rendering as `- [ ]` and `- [x]`  
 Example:  
@@ -103,10 +101,13 @@ in command-line mode (see `:help cmdline`)
 
 ### usage
 
-Call any of ephemeris' commands from anywhere. `:EphemerisFilterTasks`
+1) Add the only required setting to your `.vimrc`, or set it locally with
+e.g.: `:let g:ephemeris_diary = '~/diary'`
+
+2) Call any of ephemeris' commands from anywhere. `:EphemerisFilterTasks`
 and `:EphemerisToggleTask` will operate on the currently active buffer.
 Otherwise all functions are buffer agnostic and should work anywhere. see
-functions below...
+commands below...
 
 #### commands
 **see [doc/ephemeris.txt](doc/ephemeris.txt) for additional help**
@@ -136,9 +137,23 @@ of TODOs are_most recent_. TODOs are defined by the string set in
  @function(ephemeris#lst#copy_todos)
 
 **:EphemerisToggleTask**  
-Toggle state of task item through items provided in `g:ephemeris_toggle_list`.
-The last character in the string is the complete item, used by e.g.
-`EphemerisFilterTasks`
+Toggle state of task item under cursor through items provided in
+`g:ephemeris_toggle_list`.  The last character in the string is the complete
+item, used by e.g.  `EphemerisFilterTasks`
+
+**:EphemerisPrintAgenda**
+Print [date]'s agenda composed of grepped lines found in files found in
+`g:ephemeris_diary` tagged with `(YYYY/MM/DD)` date-formatted markers. If no
+date is provided, today's date is used. If `g:ephemeris_todos` exists agenda
+items will be printed below that, otherwise at the top of the buffer.  
+Ex: `:EphemerisPrintAgenda '2020/07/04'`, yields in the current buffer
+```md
+# TODOs
+## 2020/07/04 AGENDA
+filename1 :: agenda item 1 due on... (2020/07/04)
+filename2 :: agenda item 2 (2020/07/04)
+filename3 :: agenda item 3 (2020/07/04)
+```
 
 **:EphemerisFilterTasks**  
  @usage [archive] [summary]  
@@ -151,7 +166,6 @@ The last character in the string is the complete item, used by e.g.
  [summary] is a boolean. If true this function will print a summary of
  filtered/remaining tasks at the bottom of the buffer. Default is 0.  
  Ex: `:EphemerisFilterTasks 1 1` " filters tasks, moves completed tasks to
-
 ```md
 *------------------------------------*
 | TODOs (before)                     |
@@ -194,11 +208,11 @@ parent headers. In the bottom image, one fold has been opened `zo`.
 list](./img/folded.png) ![open fold](./img/open_fold.png)
 
 #### example-mappings
-
 ```vim
 nmap <leader>eci :EphemerisCreateIndex<CR>
 nmap <leader>egt :EphemerisGotoToday<CR>
 nmap <leader>ect :EphemerisCopyTodos<CR>
+nmap <leader>epa :EphemerisPrintAgenda<CR>
 nmap <leader>ef  :EphemerisFold<CR>
 nmap <leader>eft :EphemerisFilterTasks 1 1<CR>
 "           1 = archive, 0 = delete ---^ ^---- 1 = summary, 0 = no summary

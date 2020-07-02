@@ -142,5 +142,9 @@ COMMANDS                                                  *ephemeris-commands*
   space between list blocks. Set 'foldlevel' to 0 or type `zM` to fold all,
   type `zR` to open all folds.
 
+:EphemerisPrintAgenda [date]                           *:EphemerisPrintAgenda*
+  Print [date]'s agenda to the current buffer. If no date is provided, today's
+  date is used.
+
 
 vim:tw=78:ts=8:ft=help:norl:
