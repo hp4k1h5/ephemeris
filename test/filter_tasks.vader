@@ -38,30 +38,29 @@ Expect(filtered tasks):
 
 # test 1.b
 Given (three lines of tasks and sub-blocks):
-  - 🌕 complete task A, should be removed
+  - [🌕] complete task A, should be removed
   stuff
-    - 🌘 subblock 1
-  - 🌑incomplete task B
-    - 🌓 - subblock 2
+    - [🌘] subblock 1
+  - [🌑]incomplete task B
+    - [🌓] - subblock 2
     more things
-  - 🌕 complete task C
+  - [🌕] complete task C
     -more things
-    - 🌑 should remain
+    - [🌑] should remain
 
 Execute (filter_tasks with no params):
-  let g:ephemeris_toggle_list = [ '- 🌑', '- 🌘', '- 🌓', '- 🌖', '- 🌕' ] 
+  let g:ephemeris_toggle_list = '🌑🌘🌓🌖🌕' 
   call ephemeris#lst#filter_tasks()
 
 " Check that the complete task and subblocks have been removed, and
 " that the incomplete tasks remain
 Expect(unicode filtered tasks):
-    - 🌘 subblock 1
-  - 🌑incomplete task B
-    - 🌓 - subblock 2
+    - [🌘] subblock 1
+  - [🌑]incomplete task B
+    - [🌓] - subblock 2
     more things
-    - 🌑 should remain
+    - [🌑] should remain
 
-==========================================
 # test 2
 " filtering should stop on 2 newlines, newlines should be preserved
 Given (tasks and 2 newlines and list items ensuing):
@@ -95,15 +94,14 @@ Expect(the completed task to be removed and the ensuing list item to be preserve
 
 ==========================================
 # test 4
-Given (unicode tasks):
-  - [x](https://test.ok)
-  - [x] (+1) completed task should go
-  - [x](completed task) should stay because it might be a link
+" Given (unicode tasks):
+"   - [x](https://test.ok)
+"   - [x] (+1) completed task should go
+"   - [x](completed task) should stay because it might be a link
 
-Execute (filter_tasks on url with count):
-  : call ephemeris#lst#filter_tasks(0)
+" Execute (filter_tasks on url with count):
+"   : call ephemeris#lst#filter_tasks(0)
 
-****skip
 " Expect (the item to remain):
 "   - [x](https://test.ok)
 "   - [x](completed task) should stay because it might be a link
@@ -147,3 +145,33 @@ Execute (filter_tasks with archive = true):
 Execute (delete test dirs):
   execute 'silent! ! rm -rf .tst_dir'
   Assert ! isdirectory('.tst_dir')
+
+
+==========================================
+
+Given (three lines of tasks and sub-blocks):
+  - [🌕] complete task A, should be removed
+  stuff
+    - [🌘] subblock 1
+  - [🌑]incomplete task B
+    - [🌓] - subblock 2
+    more things
+  - [🌕] complete task C
+    -more things
+    - [🌑] should remain
+
+Execute (filter_tasks with no params):
+  let g:ephemeris_toggle_list = '🌑🌘🌓🌖🌕' 
+  call ephemeris#lst#filter_tasks(0, 1)
+
+" Check that the complete task and subblocks have been removed, and
+" that the incomplete tasks remain
+Expect(unicode filtered tasks):
+    - [🌘] subblock 1
+  - [🌑]incomplete task B
+    - [🌓] - subblock 2
+    more things
+    - [🌑] should remain
+  ##### filter summary: TODOs
+  << 2 tasks deleted
+  >> 4 tasks remaining

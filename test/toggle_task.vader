@@ -13,6 +13,7 @@ Given (an unckecked checkbox):
   - [ ]
 
 Execute (toggle_task):
+  let g:ephemeris_toggle_list = ' x'
   call ephemeris#lst#toggle_task()
 
 Expect (task to be in a checked state):
