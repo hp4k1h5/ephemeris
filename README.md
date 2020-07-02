@@ -53,11 +53,11 @@ version information available at [vim.org](https://www.vim.org/scripts/script.ph
 
 #### functionalities
 
- - 🌕 create/goto **index** of diary entries
- - 🌘 **checkbox** list item management
-   - 🌓 filter/toggle/archive/count
-   - 🌖 copy last set of tasks `- [ ]` to current day's diary entry
- - 🌘 list-appropriate code folding
+ - [🌕] create/goto index/today
+ - [🌖] **checkbox** list item management
+   - [🌕] filter/toggle/archive/count
+   - [🌕] copy last set of tasks `- [ ]` to current day's diary entry
+ - [🌖] list-appropriate code folding
 
 
 #### options
@@ -66,30 +66,32 @@ version information available at [vim.org](https://www.vim.org/scripts/script.ph
 
 **g:ephemeris_diary**  
 set the root directory for your diary entries `g:ephemeris_diary`, i.e. in your
-
 `.vimrc`:
 ```vim
 let g:ephemeris_diary = '~/diary'
 ```
 
 **g:ephemeris_todos**  
-Set the string for `EphemerisCopyTodos`, to look for. Default is `TODOs`.
-Everything below the marker in the most recent diary entry is copied and
-appended into the current day's entry. You can change it by setting it, i.e.
-in your `.vimrc`. See `EphemerisCopyTodos`.
+Set the string for `EphemerisCopyTodos`, to look for.  Everything below the
+marker in the most recent diary entry is copied and appended into the current
+day's entry. You can change it by setting it, i.e.  in your `.vimrc`. See
+`EphemerisCopyTodos`.
+
+Default: `TODOs`  
 Example:  
 ```vim
 let g:ephemeris_todos = '=== TASK LIST ==='
 ```
 
 **g:ephemeris_todo_list**  
-String list of characters to be used in checkbox items.
-Default: `' x'`, rendering as `- [ ]` and `- [x]`
+String list of characters to be used in checkbox items.  
+Default: `' x'`, rendering as `- [ ]` and `- [x]`  
 Example:  
 ```vim
-let g:ephemeris_toggle_list = '🌑🌘🌓🌖🌕'
+let g:ephemeris_toggle_list = '🌑🌘🌗🌖🌕'
 ```
-a checkbox will look like `- [🌖]`
+a checkbox will look like `- [🌖]` and the last item in the list will be the
+completed item.
 
 to your `.vimrc` and run
 ```vim
@@ -126,7 +128,7 @@ Open a split with today's diary entry. Index is found at
  Copy TODOs from last set of TODOs going back up to 10 years. Your
  @setting(g:ephemeris_diary) directory must  be organized in a
  `.../YYYY/MM/DD.md` hierarchy, in order for this function to know which set
- of TODOs are _most recent_. TODOs are defined by the string set in
+of TODOs are_most recent_. TODOs are defined by the string set in
  @setting(g:ephemeris_todos). Default is 'TODOs'. Everything below that
  marker, until 2 consecutive newlines, an incomplete task, or a subsequent
  g:ephemeris_todos marker, is copied to the current day's diary entry. It will
@@ -135,18 +137,20 @@ Open a split with today's diary entry. Index is found at
 
 **:EphemerisToggleTask**  
 Toggle state of task item through items provided in `g:ephemeris_toggle_list`.
-The last item in the string is the complete item, used by e.g.
+The last character in the string is the complete item, used by e.g.
+`EphemerisFilterTasks`
+
+**:EphemerisFilterTasks**  
  @usage [archive] [summary]  
- Delete completed tasks, e.g. list items containing `- [x]`, and all associated
- subblocks until the next incomplete task, e.g. checkboxes not containing an 'x',
- a @setting(g:ephemeris_todos) marker, 2 newlines, or EOF. See example in
+ Delete or move completed tasks, e.g. list items containing `- [x]`, and all
+ associated subblocks until the next incomplete task
+ @setting(g:ephemeris_todos) marker, 2 newlines, or EOF.  See example in
  @function(ephemeris#lst#filter_tasks). The first argument [archive] is a
  boolean which determines whether the filtered tasks are moved to
  'g:ephemeris_diary'/.cache/archive.md. Default is 0. The second argument
  [summary] is a boolean. If true this function will print a summary of
  filtered/remaining tasks at the bottom of the buffer. Default is 0.  
  Ex: `:EphemerisFilterTasks 1 1` " filters tasks, moves completed tasks to
-
 
 ```md
 *------------------------------------*
@@ -182,25 +186,12 @@ The last item in the string is the complete item, used by e.g.
 
 In the top left image, an unfolded list of items.  As these grow, navigating
 them and getting a high-level overview can be difficult. In the top right
-image, code-folding has been applied and all blocks have been closed `zM`.
+image, `EphemerisFold` has been applied and all blocks have been closed `zM`.
 Blocks of newline-spaced list items are folded and visually condensed to their
 parent headers. In the bottom image, one fold has been opened `zo`.
 
 ![full list](./img/full-list.png) ![folded
 list](./img/folded.png) ![open fold](./img/open_fold.png)
-
-
-___
-**:EphemerisToggleTask**  
-Toggles the state of a task found on the same line as the cursor through
-strings set at `g:ephemeris_todos`
-```txt
-    - [ ] incomplete
-      and
-    - [x] complete
-```
-will not affect the state of any other tasks. Calls
-|ephemeris#lst#toggle_task()|
 
 #### example-mappings
 
@@ -210,7 +201,7 @@ nmap <leader>egt :EphemerisGotoToday<CR>
 nmap <leader>ect :EphemerisCopyTodos<CR>
 nmap <leader>ef  :EphemerisFold<CR>
 nmap <leader>eft :EphemerisFilterTasks 1 1<CR>
-"          1 = archive, 0 = delete ---^ ^---- 1 = summary, 0 = no summary
+"           1 = archive, 0 = delete ---^ ^---- 1 = summary, 0 = no summary
 nmap <leader>et  :EphemerisToggleTask<CR>
 ```
 

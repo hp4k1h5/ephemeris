@@ -62,25 +62,27 @@ function! ephemeris#lst#copy_todos()
       "     : will only grab `-` etc lines up to a natural end, 
       "     : e.g. 3 consecutive newlines
       let todos = split(system('grep -n "'.g:ephemeris_todos.'" '.fn), '\n')
-      if len(todos)
-        let todos = map(todos, 'split(v:val, ":")')
-
-        " get line number of g:ephemeris_todos string
-        let todo_start = todos[0][0]
-        if len(todos) > 1
-          let todo_end = todos[1][0]-1
-        else 
-          let todo_end = '$'
-        endif 
-
-        let ex_str = 'silent! '.bufnr(fn).' bufdo! '.todo_start.','.todo_end.' w! >> '.today
-
-        " add buff, dump todo list, open latest entry, exit loop
-        execute 'badd '.fn
-        execute ex_str
-        execute 'silent! b '.today
-        break
+      if ! len(todos)
+        continue
       endif
+
+      let todos = map(todos, 'split(v:val, ":")')
+
+      " get line number of g:ephemeris_todos string
+      let todo_start = todos[0][0]
+      if len(todos) > 1
+        let todo_end = todos[1][0]-1
+      else 
+        let todo_end = '$'
+      endif 
+
+      " add buff, dump todo list, open latest entry, exit loop
+      execute 'badd '.fn
+      let ex_str = 'silent! '.bufnr(fn).' bufdo! '
+            \ .todo_start.','.todo_end.' w! >> '.today
+      execute ex_str
+      execute 'silent! b '.today
+      break
     endif
 
     " go back one day further
