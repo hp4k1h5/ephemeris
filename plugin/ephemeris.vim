@@ -100,3 +100,8 @@ command! -nargs=* EphemerisToggleTask call ephemeris#lst#toggle_task(<f-args>)
 " space between list blocks. Set 'foldlevel' to 0 or type `zM` to fold all, type
 " `zR` to open all folds.
 command! -nargs=* EphemerisFold call ephemeris#fold#list()
+
+""
+" Print [date]'s agenda to the current buffer. If no date is provided, today's
+" date is used. 
+command! -nargs=? EphemerisPrintAgenda call ephemeris#agenda#print(<f-args>)
