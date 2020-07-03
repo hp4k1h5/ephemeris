@@ -28,6 +28,7 @@ endfunction
 " the agenda will be printed there, otherwise at the top of the buffer.
 function! ephemeris#agenda#print(...)
  
+  " set date to today if none provided
   if a:0 != 1
     let date = strftime('%Y/%m/%d')
   else 
@@ -44,6 +45,11 @@ function! ephemeris#agenda#print(...)
     let line = str2nr(split(start_line, ':')[0])
   else
     let line = 0
+  endif
+
+  if ! agenda 
+    call append(line, '## NO AGENDA for '.date)
+    return
   endif
 
   " print

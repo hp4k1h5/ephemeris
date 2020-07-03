@@ -154,8 +154,10 @@ of TODOs are_most recent_. TODOs are defined by the string set in
 
 **:EphemerisToggleTask**  
 Toggle state of task item under cursor through items provided in
-`g:ephemeris_toggle_list`.  The last character in the string is the complete
-item, used by e.g.  `EphemerisFilterTasks`
+`g:ephemeris_toggle_list`. The last character in the string is the "completed"
+item, used by e.g. `EphemerisFilterTasks`. If no task item is present a new
+one will be created, using the left-most item in the
+`g:ephemeris_toggle_list`.
 
 **:EphemerisPrintAgenda**
 Print [date]'s agenda composed of grepped lines found in files found in
