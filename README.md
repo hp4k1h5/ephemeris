@@ -39,15 +39,15 @@ version information available at [vim.org](https://www.vim.org/scripts/script.ph
 
 ## contents
 
-- [functionalities](#functionalities)
-- [options](#options)
-    - [! required](#!-required)
-- [installation](#installation)
-- [usage](#usage)
-- [commands](#commands)
-  - [code folding](#code-folding)
-- [example-mappings](#example-mappings)
-- [CHANGELOG](#changelog)
+  - [functionalities](#functionalities)
+  - [installation](#installation)
+  - [usage](#usage)
+  - [workflow](#workflow)
+  - [options](#options)
+  - [commands](#commands)
+    - [code folding](#code-folding)
+  - [example-mappings](#example-mappings)
+  - [CHANGELOG](#changelog)
 
 ---------------------------------------------
 
@@ -57,7 +57,40 @@ version information available at [vim.org](https://www.vim.org/scripts/script.ph
  - [🌖] **checkbox** list item management
    - [🌕] filter/toggle/archive/count
    - [🌕] copy last set of tasks `- [ ]` to current day's diary entry
+ - [🌗] print day's agenda
  - [🌖] list-appropriate code folding
+
+---------------------------------------------
+
+### installation
+
+Add `Plug 'HP4k1h5/ephemeris'` to your `.vimrc` and run
+```vim
+:source $MYVIMRC | PlugInstall
+```
+
+---------------------------------------------
+
+### usage
+Generally, ephemeris may work for those who like to keep a daily journal or log
+and a todo list and other note, task, and reminder related items in the same
+place. As functionalities grow, the principle of moving data from one place
+to another efficiently will be prioritised.
+
+### workflow
+1) Add the only required setting to your `.vimrc`, with e.g. `:let
+g:ephemeris_diary = '~/diary'`
+2) Either create a new entry with `:EphemerisGotoToday`, or copy over todos
+from the last entry with `:EphemerisCopyTodos` if you already have entries
+that contain `g:ephemeris_todos` markers.
+3) If you use task lists, `:EphemerisToggleTask` can create task items and
+toggle task items between by default, `- [ ]`, for incomplete, and `- [x]` for
+complete tasks. `:EphemerisFilterTasks` will move to archive or delete
+completed tasks and their associated subblocks.
+4) `:EphemerisPrintAgenda` will grep all diary entries for date tags of the
+date provided, e.g. `(YYYY/MM/DD)` or today, if no date is provided.
+
+---------------------------------------------
 
 
 #### options
@@ -73,10 +106,9 @@ let g:ephemeris_diary = '~/diary'
 Set the string for `EphemerisCopyTodos`, to look for.  Everything below the
 marker in the most recent diary entry is copied and appended into the current
 day's entry. You can change it by setting it, i.e.  in your `.vimrc`. See
-`EphemerisCopyTodos`.
-
+`EphemerisCopyTodos`.  
 Default: `TODOs`  
-Example:  
+Example:
 ```vim
 let g:ephemeris_todos = '=== TASK LIST ==='
 ```
@@ -91,23 +123,7 @@ let g:ephemeris_toggle_list = '🌑🌘🌗🌖🌕'
 a checkbox will look like `- [🌖]` and the last item in the list will be the
 completed item.
 
-to your `.vimrc` and run
-```vim
-:source $MYVIMRC | PlugInstall
-```
-in command-line mode (see `:help cmdline`)
-
 ---------------------------------------------
-
-### usage
-
-1) Add the only required setting to your `.vimrc`, or set it locally with
-e.g.: `:let g:ephemeris_diary = '~/diary'`
-
-2) Call any of ephemeris' commands from anywhere. `:EphemerisFilterTasks`
-and `:EphemerisToggleTask` will operate on the currently active buffer.
-Otherwise all functions are buffer agnostic and should work anywhere. see
-commands below...
 
 #### commands
 **see [doc/ephemeris.txt](doc/ephemeris.txt) for additional help**
@@ -219,6 +235,9 @@ nmap <leader>eft :EphemerisFilterTasks 1 1<CR>
 nmap <leader>et  :EphemerisToggleTask<CR>
 ```
 
+---------------------------------------------
+
 ### CHANGELOG
 
+- v0.9 bugfixes, agenda
 - v0.8 folding, checkbox options
